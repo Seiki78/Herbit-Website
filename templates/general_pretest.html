@@ -77,10 +77,12 @@
         <a href="" class="btn-download">เพิ่ม</a>
     </div>
 
+	{% if users.count() == 0 %}
+        <p>ไม่พบผู้ใช้ในฐานข้อมูลแม้แต่คนเดียวจ้า</p>
 
     <div class="table-data">
         <div class="order">
-
+			{% else %}
             <table>
                 <thead>
                     <tr>
@@ -89,17 +91,17 @@
                     </tr>
                 </thead>
                 <tbody>
-   
+					{% for user in users %}
                     <tr>
-                        <td></td>
-                        <td></td>
+                        <td>{{ user['username'] }}</td>
+                        <td>{{ user['email'] }}</td>
                     </tr>
 
-
+					{% endfor %}
                 </tbody>
             </table>
             <br>
-        
+			{% endif %}
     </div>
 
 
