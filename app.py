@@ -6,8 +6,8 @@ app = Flask(__name__)
 
 # เชื่อมต่อกับ MongoDB Atlas
 client = MongoClient("mongodb+srv://mongodb:mg12345678@cluster0.fvpxm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-db = client['herb']
-collection = db['herbals_info']
+db = client['nobita_database']
+collection = db['users']
 
 @app.route('/')
 def index():
@@ -16,10 +16,11 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add_user():
-    h_name = request.form['h_name']
+    username = request.form['username']
+    email = request.form['email']
     
     # เพิ่มข้อมูลใหม่ลงใน MongoDB
-    collection.insert_one({'h_name': h_name})
+    collection.insert_one({'username': username, 'email': email})
     
     flash('Herbal added successfully!', 'success')
     return redirect(url_for('index'))
