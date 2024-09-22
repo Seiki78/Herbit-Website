@@ -1,0 +1,1554 @@
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+body {
+    font-family: 'Mitr_Light', Fallback, sans-serif !important;
+    /*background-image: url(hh01.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed; */
+    /*background-color: #e0e0e0;*/
+    background: var(--grey);
+	overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+body.dark {
+	--light: #0C0C1E;
+	--grey: #060714;
+	--dark: #FBFBFB;
+}
+
+html {
+	overflow-x: hidden;
+}
+
+@font-face {
+    font-family: 'Mitr_Light';
+    src: url('../static/Mitr_Light.ttf') format('truetype');
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width: 480px) {
+    /* Styles for smartphones */
+}
+
+/* Tablets (portrait and landscape) ----------- */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    /* Styles for tablets */
+}
+
+/* Desktops and laptops ----------- */
+@media only screen and (min-width: 1224px) {
+    /* Styles for desktops and laptops */
+}
+
+/*.alert-overlay {
+    position: fixed;
+    top: 20px; /* Adjust this value to position the alert from the top */
+   /* right: 20px; /* Adjust this value to position the alert from the right */
+    /*z-index: 1000; /* Ensures the alert appears above other elements */
+    /*opacity: 1;
+    transition: opacity 0.5s ease-in-out; /* Adds a fade effect */
+/*}*/ 
+
+@keyframes slide-in {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slide-out {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100%);
+    }
+  }
+
+a {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+
+:root {
+	--light: #F9F9F9;
+	--blue: #3C91E6;
+	--light-blue: #CFE8FF;
+	--grey: #eee;
+	--dark-grey: #AAAAAA;
+	--dark: #342E37;
+	--red: #DB504A;
+	--yellow: #FFCE26;
+	--light-yellow: #FFF2C6;
+	--orange: #FD7238;
+	--light-orange: #FFE0D3;
+}
+
+.alert-overlay {
+    position: fixed;
+    top: 3%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    width: 250px; /* ปรับตามความต้องการ */
+    height: 100px; /* ปรับตามความต้องการ */
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: slide-in 0.3s ease-in-out forwards;
+    opacity: 1;
+  }
+  
+  .alert-success {
+    background-color: #b0ddb1;
+    color: rgb(0, 0, 0);
+  }
+  
+  .alert-info {
+    background-color: #b3c9db;
+    color: rgb(0, 0, 0);
+  }
+  
+  .alert-warning {
+    background-color: #e4ac7f;
+    color: rgb(0, 0, 0);
+  }
+  
+  .alert-danger {
+    background-color: #e4655c;
+    color: rgb(0, 0, 0);
+  }
+  
+.hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #a1a1a1;
+    padding: 1em;
+}
+
+nav a {
+    color: rgb(0, 0, 0);
+    padding: 0 15px;
+    text-decoration: none;
+}
+
+form {
+    margin: 30px auto;
+}
+/*input[type=text], input[type=password], input[type=email] */
+
+input {
+	font-family: 'Mitr_Light', Fallback, sans-serif;
+}
+
+.container input  {
+    position: relative;
+    width: 100%;
+    height: 50px ;
+    margin: 3% 0; 
+    
+}
+
+.input-box input {
+    font-family: 'Mitr_Light', Fallback, sans-serif !important;
+    position: relative;
+    background-color: #ffffff;
+    width: 290px;
+    height: 100%;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255 .2);
+    border-radius: 40px;
+    font-size: 18px;
+    color: rgb(44, 44, 44);
+    padding: 20px 15px 20px 20px;
+}
+
+.input-bux input {
+    font-family: 'Mitr_Light', Fallback, sans-serif !important;
+    position: relative;
+    background-color: #d4d4d4;
+    width: 220px;
+    height: 40px;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255 .2);
+    border-radius: 40px;
+    font-size: 18px;
+    color: rgb(44, 44, 44);
+    padding: 20px 15px 20px 20px;
+}
+
+/*.input-box input::placeholder{
+    color: #000000;
+}*/
+
+/*.input-box i{
+    position: relative;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}*/
+
+.btn1 {
+    font-family: 'Mitr_Light', Fallback, sans-serif !important;
+    background-color: #292929;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0 .1);
+    cursor: pointer;
+    width: 160px;
+    height: 45px;
+    margin-top: 50px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.headform {
+    font-size: 22px;
+    text-align: center;
+    font-weight: 500;
+    padding: 0;
+}
+
+.container {
+    width: 320px;
+    margin: 40px auto;
+    padding: 30px 40px;
+    text-align: center;
+}
+
+.bigcontainer {
+    width: 1400px;
+    margin: 40px auto;
+    padding: 30px 40px;
+    text-align: center;
+}
+
+.glass{
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border:1px solid rgba(158, 62, 62, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+p {
+    color: #000000;
+}
+
+.p1 {
+    font-size: 16px;
+    color: #727272;
+}
+
+.p2 {
+    font-size: 40px;
+}
+
+.line {
+    border-bottom: 0.5px solid #cfcfcf; /* เส้นขนาด 2px สีดำ */
+    display: inline-block; /* ให้เส้นเป็นแนวนอน */
+    width: 100%; /* กำหนดความยาวของเส้น */
+    margin: 0 5px; /* ระยะห่างด้านซ้ายและขวาของเส้น */
+  }
+  
+  .line-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .line-text {
+    padding: 0 5px; /* ระยะห่างข้างในของข้อความ */
+  }
+
+
+  /*dashboard*/
+
+  /* SIDEBAR */
+#sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 280px;
+	height: 100%;
+	background: var(--light);
+	z-index: 2000;
+	font-family: 'Mitr_Light', Fallback, sans-serif;
+	transition: .3s ease;
+	overflow-x: hidden;
+	scrollbar-width: none;
+}
+#sidebar::--webkit-scrollbar {
+	display: none;
+}
+#sidebar.hide {
+	width: 60px;
+}
+#sidebar .brand {
+	font-size: 24px;
+	font-weight: 700;
+	height: 56px;
+	display: flex;
+	align-items: center;
+	color: var(--blue);
+	position: sticky;
+	top: 0;
+	left: 0;
+	background: var(--light);
+	z-index: 500;
+	padding-bottom: 20px;
+	box-sizing: content-box;
+}
+#sidebar .brand .bx {
+	min-width: 60px;
+	display: flex;
+	justify-content: center;
+}
+#sidebar .side-menu {
+	width: 100%;
+	margin-top: 48px;
+}
+#sidebar .side-menu li {
+	height: 48px;
+	background: transparent;
+	margin-left: 6px;
+	border-radius: 48px 0 0 48px;
+	padding: 4px;
+}
+#sidebar .side-menu li.active {
+	background: var(--grey);
+	position: relative;
+}
+#sidebar .side-menu li.active::before {
+	content: '';
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	top: -40px;
+	right: 0;
+	box-shadow: 20px 20px 0 var(--grey);
+	z-index: -1;
+}
+#sidebar .side-menu li.active::after {
+	content: '';
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	bottom: -40px;
+	right: 0;
+	box-shadow: 20px -20px 0 var(--grey);
+	z-index: -1;
+}
+#sidebar .side-menu li a {
+	width: 100%;
+	height: 100%;
+	background: var(--light);
+	display: flex;
+	align-items: center;
+	border-radius: 48px;
+	font-size: 16px;
+	color: var(--dark);
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+#sidebar .side-menu.top li.active a {
+	color: var(--blue);
+}
+#sidebar.hide .side-menu li a {
+	width: calc(48px - (4px * 2));
+	transition: width .3s ease;
+}
+#sidebar .side-menu li a.logout {
+	color: var(--red);
+}
+#sidebar .side-menu li a.login {
+	color: var(--dark);
+}
+#sidebar .side-menu.top li a:hover {
+	color: var(--blue);
+}
+#sidebar .side-menu li a .bx {
+	min-width: calc(60px  - ((4px + 6px) * 2));
+	display: flex;
+	justify-content: center;
+}
+/* SIDEBAR */
+
+
+/*content */
+#content {
+	position: relative;
+	width: calc(100% - 280px);
+	left: 280px;
+	transition: .3s ease;
+}
+#sidebar.hide ~ #content {
+	width: calc(100% - 60px);
+	left: 60px;
+}
+
+/* NAVBAR */
+#content nav {
+	height: 56px;
+	background: var(--light);
+	padding: 0 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between; /* จัดเนื้อหาชิดซ้ายและขวา */
+	grid-gap: 24px; /* ช่องว่างระหว่างเนื้อหา */
+	grid-gap: 24px;
+	font-family: var(--lato);
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+}
+#content nav::before {
+	content: '';
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	bottom: -40px;
+	left: 0;
+	border-radius: 50%;
+	box-shadow: -20px -20px 0 var(--light);
+}
+#content nav a {
+	color: var(--dark);
+}
+#content nav .bx.bx-menu {
+	cursor: pointer;
+	color: var(--dark);
+}
+#content nav .nav-link {
+	font-size: 16px;
+	transition: .3s ease;
+}
+#content nav .nav-link:hover {
+	color: var(--blue);
+}
+#content nav form {
+	/* max-width: 400px;
+	width: 100%;
+	margin-right: auto; */
+	display: none;
+}
+#content nav form .form-input {
+	display: flex;
+	align-items: center;
+	height: 36px;
+}
+#content nav form .form-input input {
+	flex-grow: 1;
+	padding: 0 16px;
+	height: 100%;
+	border: none;
+	background: var(--grey);
+	border-radius: 36px 0 0 36px;
+	outline: none;
+	width: 100%;
+	color: var(--dark);
+}
+#content nav form .form-input button {
+	width: 36px;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: var(--blue);
+	color: var(--light);
+	font-size: 18px;
+	border: none;
+	outline: none;
+	border-radius: 0 36px 36px 0;
+	cursor: pointer;
+}
+#content nav .notification {
+	font-size: 20px;
+	position: relative;
+}
+#content nav .notification .num {
+	position: absolute;
+	top: -6px;
+	right: -6px;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	border: 2px solid var(--light);
+	background: var(--red);
+	color: var(--light);
+	font-weight: 700;
+	font-size: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#content nav .profile img {
+	width: 36px;
+	height: 36px;
+	object-fit: cover;
+	border-radius: 50%;
+}
+/* #content nav .switch-mode {
+	display: block;
+	min-width: 50px;
+	height: 25px;
+	border-radius: 25px;
+	background: var(--grey);
+	cursor: pointer;
+	position: relative;
+	display: none;
+} */
+
+#content nav .switch-mode {
+    display: block; /* แสดงสวิตช์โหมด */
+    min-width: 50px;
+    height: 25px;
+    border-radius: 25px;
+    background: var(--grey);
+    cursor: pointer;
+    position: relative;
+}
+
+#content nav .switch-mode::before {
+	content: '';
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	bottom: 2px;
+	width: calc(25px - 4px);
+	background: var(--blue);
+	border-radius: 50%;
+	transition: all .3s ease;
+}
+#content nav #switch-mode:checked + .switch-mode::before {
+	left: calc(100% - (25px - 4px) - 2px);
+}
+/* NAVBAR */
+
+
+
+
+
+/* MAIN */
+#content main {
+	width: 100%;
+	padding: 36px 24px;
+	font-family: 'Mitr_Light', Fallback, sans-serif !important;
+	max-height: calc(100vh - 56px);
+	overflow-y: auto;
+}
+#content main .head-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	grid-gap: 16px;
+	flex-wrap: wrap;
+}
+#content main .head-title .left h1 {
+	font-size: 36px;
+	font-weight: 600;
+	margin-bottom: 10px;
+	color: var(--dark);
+}
+#content main .head-title .left .breadcrumb {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+}
+#content main .head-title .left .breadcrumb li {
+	color: var(--dark);
+}
+#content main .head-title .left .breadcrumb li a {
+	color: var(--dark-grey);
+	/* pointer-events: none; */
+}
+#content main .head-title .left .breadcrumb li a.active {
+	color: var(--blue);
+	pointer-events: unset;
+}
+#content main .head-title .btn-download {
+	height: 36px;
+	padding: 0 16px;
+	border-radius: 36px;
+	background: var(--blue);
+	color: var(--light);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 500;
+}
+
+
+
+
+#content main .box-info {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	grid-gap: 24px;
+	margin-top: 36px;
+}
+#content main .box-info li {
+	padding: 24px;
+	background: var(--light);
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	grid-gap: 24px;
+}
+#content main .box-info li .bx {
+	width: 80px;
+	height: 80px;
+	border-radius: 10px;
+	font-size: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#content main .box-info li:nth-child(1) .bx {
+	background: var(--light-blue);
+	color: var(--blue);
+}
+#content main .box-info li:nth-child(2) .bx {
+	background: var(--light-yellow);
+	color: var(--yellow);
+}
+#content main .box-info li:nth-child(3) .bx {
+	background: var(--light-orange);
+	color: var(--orange);
+}
+#content main .box-info li .text h3 {
+	font-size: 24px;
+	font-weight: 600;
+	color: var(--dark);
+}
+#content main .box-info li .text p {
+	color: var(--dark);	
+}
+
+
+
+
+
+#content main .table-data {
+	display: flex;
+	flex-wrap: wrap;
+	grid-gap: 24px;
+	margin-top: 24px;
+	width: 100%;
+	color: var(--dark);
+	padding: 15px;
+}
+#content main .table-data > div {
+	border-radius: 20px;
+	background: var(--light);
+	padding: 24px;
+	overflow-x: auto;
+}
+#content main .table-data .head {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+	margin-bottom: 24px;
+}
+#content main .table-data .head h3 {
+	margin-right: auto;
+	font-size: 24px;
+	font-weight: 600;
+}
+#content main .table-data .head .bx {
+	cursor: pointer;
+}
+
+#content main .table-data .order {
+	flex-grow: 1;
+	flex-basis: 500px;
+}
+#content main .table-data .order table {
+	width: 100%;
+	border-collapse: collapse;
+}
+#content main .table-data .order table th {
+	padding-bottom: 12px;
+	font-size: 13px;
+	text-align: left;
+	border-bottom: 1px solid var(--grey);
+}
+#content main .table-data .order table td {
+	padding: 16px 0;
+}
+#content main .table-data .order table tr td:first-child {
+	display: flex;
+	align-items: center;
+	grid-gap: 12px;
+	padding-left: 6px;
+}
+#content main .table-data .order table td img {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+#content main .table-data .order table tbody tr:hover {
+	background: var(--grey);
+}
+#content main .table-data .order table tr td .status {
+	font-size: 10px;
+	padding: 6px 16px;
+	color: var(--light);
+	border-radius: 20px;
+	font-weight: 700;
+}
+#content main .table-data .order table tr td .status.completed {
+	background: var(--blue);
+}
+#content main .table-data .order table tr td .status.process {
+	background: var(--yellow);
+}
+#content main .table-data .order table tr td .status.pending {
+	background: var(--red);
+}
+
+
+#content main .table-data .todo {
+	flex-grow: 1;
+	flex-basis: 300px;
+}
+#content main .table-data .todo .todo-list {
+	width: 100%;
+}
+#content main .table-data .todo .todo-list li {
+	width: 100%;
+	margin-bottom: 16px;
+	background: var(--grey);
+	border-radius: 10px;
+	padding: 14px 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+#content main .table-data .todo .todo-list li .bx {
+	cursor: pointer;
+}
+#content main .table-data .todo .todo-list li.completed {
+	border-left: 10px solid var(--blue);
+}
+#content main .table-data .todo .todo-list li.not-completed {
+	border-left: 10px solid var(--orange);
+}
+#content main .table-data .todo .todo-list li:last-child {
+	margin-bottom: 0;
+}
+/* MAIN */
+/* CONTENT */
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 768px) {
+	#sidebar {
+		width: 200px;
+	}
+
+	#content {
+		width: calc(100% - 60px);
+		left: 200px;
+	}
+
+	#content nav .nav-link {
+		display: none;
+	}
+}
+
+
+
+
+
+
+@media screen and (max-width: 576px) {
+	#content nav form .form-input input {
+		display: none;
+	}
+
+	#content nav form .form-input button {
+		width: auto;
+		height: auto;
+		background: transparent;
+		border-radius: none;
+		color: var(--dark);
+	}
+
+	#content nav form.show .form-input input {
+		display: block;
+		width: 100%;
+	}
+	#content nav form.show .form-input button {
+		width: 36px;
+		height: 100%;
+		border-radius: 0 36px 36px 0;
+		color: var(--light);
+		background: var(--red);
+	}
+
+	#content nav form.show ~ .notification,
+	#content nav form.show ~ .profile {
+		display: none;
+	}
+
+	#content main .box-info {
+		grid-template-columns: 1fr;
+	}
+
+	#content main .table-data .head {
+		min-width: 420px;
+	}
+	#content main .table-data .order table {
+		min-width: 420px;
+	}
+	#content main .table-data .todo .todo-list {
+		min-width: 420px;
+	}
+}
+
+.icon-mini {
+	width: 20px;
+	height: auto;
+}
+
+.icon-im {
+	width: 45px;
+	height: auto;
+}
+.logo-im {
+	width: 25px;
+	height: auto;
+}
+
+#menstruationDays {
+	width: 40px;
+}
+#weight {
+	width: 50px;
+}
+#hight {
+	width: 50px;
+}
+#temp {
+	width: 50px;
+}
+#SYS {
+	width: 80px;
+}
+#DIA {
+	width: 80px;
+}
+#Blood_Sugar {
+	width: 80px;
+}
+#medicine {
+	width: 140px;
+}
+#allergies {
+	width: 140px;
+}
+#Chronic_Disease {
+	width: 140px;
+}
+#warning {
+	width: 140px;
+}
+.p3 {
+	font-size: 26px;
+	font-weight: 600;
+	color: var(--dark);
+}
+
+.table-data2 {
+	background-color: #d4d4d4;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	grid-gap: 24px;
+	margin-top: 24px;
+	width: 100%;
+	color: var(--dark);
+}
+.bot1 {
+	display: flex;
+	justify-content: left;
+}
+.bot2 {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+	margin-top: 0;
+}
+
+.btn2 {
+    font-family: 'Mitr_Light', Fallback, sans-serif !important;
+    background-color: #bbbbbb;
+    color: rgb(48, 48, 48);
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0 .1);
+    cursor: pointer;
+    width: 100px;
+    height: 45px;
+    margin-top: 50px;
+	padding: 10px;
+	text-align: center;
+}
+
+.checkbox-label {
+	position: relative;
+	font-size: 22px;
+	text-align: center;
+  }
+  
+  .checkbox-item {
+	display: none;
+  }
+  
+  .checkbox-overlay {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: transparent;
+	border: 2px solid transparent;
+	border-radius: 6px;
+	padding: 5px;
+	cursor: pointer;
+  }
+
+  .checkbox-item:checked + .checkbox-overlay {
+	background-color: rgba(31, 153, 235, 0.3); /* สีพื้นหลังเมื่อ checkbox ถูกเลือก */
+	border: 2px solid rgb(0, 0, 0)0, 81, 255; /* สีเส้นขอบ */
+  }
+  
+.head-turtle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	grid-gap: 16px;
+	flex-wrap: wrap;
+}
+.head {
+	display: flex;
+	align-items: center;
+	grid-gap: 16px;
+	margin-bottom: 24px;
+}
+
+.cat1 {
+	display: flex;
+	justify-content: center;
+	border-radius: 2px;
+	padding: 15px;
+	width: 90px;
+	border-radius: 40px;
+	background-color: var(--blue);
+	font-weight: 500;
+	font-size: 20px;
+	text-align: center;
+	color: var(--dark);
+	cursor: pointer;
+}
+.cat2 {
+	display: flex;
+	justify-content: center;
+	border-radius: 2px;
+	padding: 15px;
+	width: 150px;
+	border-radius: 40px;
+	background-color: var(--blue);
+	font-weight: 500;
+	font-size: 20px;
+	text-align: center;
+	color: var(--dark);
+	cursor: pointer;
+}
+.cat3 {
+	display: flex;
+	justify-content: center;
+	border-radius: 2px;
+	padding: 15px;
+	width: 160px;
+	border-radius: 40px;
+	background-color: var(--blue);
+	font-weight: 500;
+	font-size: 20px;
+	text-align: center;
+	color: var(--dark);
+	cursor: pointer;
+}
+
+/* .tooltip {
+    position: absolute;
+	font-size: 12px;
+	text-align: left;
+    top: 0;
+    left: 100%;
+    background-color: #f0f0f0;
+	width: 160px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: none;
+    transition: left 0.3s ease;
+} */
+
+/* .checkbox-label:hover .tooltip {
+    display: block;
+    left: 110%;
+} */
+
+/* results */
+.medication {
+	background-color: #ffffff;
+	margin: 10px 0;
+	padding: 15px;
+	border-radius: 5px;
+	list-style-type: none;
+	box-shadow: 0px 4px 6px -1px #d1d9e6;
+}
+.medication-name {
+	font-size: 20px;
+	font-weight: normal;
+	color: #495057;
+	cursor: pointer;
+}
+.medication-info {
+	display: none;
+	margin-top: 10px;
+}
+.meds-info {
+	border-bottom: 1px solid #8a8a8a;;
+	margin-bottom: 10px;
+	padding-bottom: 5px; 
+}
+.info-title {
+	font-weight: bold;
+	margin-right: 5px;
+}
+.medication-recipe, .medication-dosage, .medication-advice {
+	margin: 10px 0;
+	color: #000000;
+}
+.medication-warning {
+	margin: 10px 0;
+	color: #ca0a0a;
+}
+/* ปรับขนาดปุ่มให้พอดีกับรูปภาพ */
+.submit-btn {
+    background: none; /* เอาพื้นหลังของปุ่มออก */
+    border: none; /* เอาขอบของปุ่มออก */
+    padding: 0; /* เอา padding ออก */
+    cursor: pointer; /* เปลี่ยน cursor เป็นมือเมื่อ hover */
+}
+.submit-btn img {
+    display: block; /* เอาพื้นที่ว่างรอบๆ รูปออก */
+    width: 40px; /* ปรับขนาดรูปให้พอดีกับปุ่ม */
+    height: 40px; /* ปรับขนาดรูปให้พอดีกับปุ่ม */
+}
+
+.back img {
+	width: 30px;
+	height: 30px;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.custom-select {
+	width: 100%;
+	height: 40px;
+}
+
+.selected-list {
+	margin-top: 10px;
+}
+.selected-list ul {
+	list-style-type: none;
+	padding: 0;
+}
+.selected-list li {
+	margin-bottom: 5px;
+}
+
+.underline {
+    border-bottom: 1px solid gray; /* สีเทาและความหนาของเส้นใต้ */
+    padding-bottom: 5px; /* เพิ่มพื้นที่ระหว่างเนื้อหาและเส้นใต้ */
+    display: block; /* หรือ inline หรือ inline-block ขึ้นอยู่กับความต้องการ */
+    width: 100%; /* ให้เส้นใต้ยาวเต็มพื้นที่ที่วาง */
+    box-sizing: border-box; /* ให้การจัดการขนาดเป็นไปตามรวม padding */
+}
+
+#content main .table-data .btn-changepass {
+	height: 34px;
+	width: 135px;
+	padding: 0 16px;
+	border-radius: 36px;
+	border: solid var(--blue);
+	background: var(--light);
+	color: var(--blue);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 500;
+}
+
+
+
+/* พื้นหลังหลัก */
+.main-content {
+    padding: 20px;
+}
+
+.blurred {
+    filter: blur(5px); /* เอฟเฟกต์เบลอ */
+}
+
+/* สไตล์สำหรับ modal */
+.modal {
+    display: none; /* ซ่อน modal */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    z-index: 1000; /* ให้อยู่ด้านหน้าสุด */
+	flex-direction: column; /* จัดเรียงเนื้อหาในแนวตั้ง */
+    align-items: center; /* จัดกลางในแนวนอน */
+    justify-content: center; /* จัดกลางในแนวตั้ง */
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* พื้นหลังโปร่งแสง */
+    z-index: 999; /* อยู่หลัง modal */
+    display: none;
+}
+
+.modal h2 {
+    text-align: center; /* จัดข้อความให้กลาง */
+    margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่าง */
+	font-size: 18px;
+}
+
+.modal-overlay.active {
+    display: block;
+}
+.modal form {
+    display: flex;
+    flex-direction: column; /* จัดเรียงเนื้อหาในแนวตั้ง */
+    align-items: center; /* จัดกลางในแนวนอน */
+}
+
+/* สไตล์สำหรับ modal2 */
+.modal2 {
+    display: none; /* ซ่อน modal */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    z-index: 1000; /* ให้อยู่ด้านหน้าสุด */
+	flex-direction: column; /* จัดเรียงเนื้อหาในแนวตั้ง */
+    align-items: center; /* จัดกลางในแนวนอน */
+    justify-content: center; /* จัดกลางในแนวตั้ง */
+}
+
+.modal2.active {
+    display: block;
+}
+
+.modal2-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* พื้นหลังโปร่งแสง */
+    z-index: 999; /* อยู่หลัง modal */
+    display: none;
+}
+
+.modal2 h2 {
+    text-align: center; /* จัดข้อความให้กลาง */
+    margin-bottom: 20px; /* เพิ่มระยะห่างด้านล่าง */
+	font-size: 18px;
+}
+
+.modal2-overlay.active {
+    display: block;
+}
+.modal2 form {
+    display: flex;
+    flex-direction: column; /* จัดเรียงเนื้อหาในแนวตั้ง */
+    align-items: center; /* จัดกลางในแนวนอน */
+}
+
+
+/* สไตล์ฟอร์มใน modal */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.btn-submit {
+    display: block;
+    width: 140px;
+    padding: 10px;
+    background-color: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 36px;
+    cursor: pointer;
+    font-size: 14px;
+	margin-top: 20px;
+}
+
+.btn-submit:hover {
+    background-color: var(--blue);
+}
+
+.btn-open-modal {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+.form-group-horizontal {
+    display: flex; /* ใช้ Flexbox */
+    align-items: center; /* จัดแนวกลางในแนวตั้ง */
+    margin-bottom: 15px;
+}
+
+.form-group-horizontal label {
+    flex: 0 0 150px; /* กำหนดความกว้างของ label */
+    margin-right: 10px; /* เพิ่มระยะห่างขวาระหว่าง label กับ input */
+    font-size: 14px;
+    color: black;
+    text-align: left; /* จัดข้อความให้อยู่ทางขวาของ label */
+}
+
+.form-group-horizontal input {
+    flex: 1; /* ให้ input ใช้พื้นที่ที่เหลือ */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.bunny {
+	width: 26px;
+	height: auto;
+}
+
+
+
+
+
+.layout-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* คอลัมน์แรกใหญ่กว่าคอลัมน์สอง */
+    grid-template-rows: 1fr 1fr; /* แต่ละแถวมีขนาดเท่ากัน */
+    gap: 10px; /* ช่องว่างระหว่างกล่อง */
+    height: 100vh; /* ให้ความสูงเต็มหน้าจอ */
+}
+
+.layout-box {
+    /* background-color: rgb(19, 101, 182); */
+	background-color: white;
+	color: black;
+    padding: 20px;
+    font-size: 18px;
+    display: flex;
+    justify-content: flex-start; /* จัดให้อยู่ทางซ้าย */
+    align-items: flex-start; /* จัดให้อยู่ด้านบน */
+    flex-direction: column; /* ให้เนื้อหาวางในแนวตั้ง */
+	border-radius: 18px;
+}
+
+.box-left-top {
+    grid-column: 1 / 2; /* ซ้ายบน */
+    grid-row: 1 / 2;
+}
+
+.box-right-top {
+    grid-column: 2 / 3; /* ขวาบน */
+    grid-row: 1 / 2;
+}
+
+.box-left-bottom {
+    grid-column: 1 / 2; /* ซ้ายล่าง */
+    grid-row: 2 / 3;
+}
+
+.box-right-bottom {
+    grid-column: 2 / 3; /* ขวาล่าง */
+    grid-row: 2 / 3;
+}
+
+.content {
+    display: flex;
+    align-items: flex-start; /* จัดข้อความกับรูปภาพให้เริ่มต้นที่ตำแหน่งเดียวกัน */
+    justify-content: space-between; /* เว้นระยะห่างระหว่างข้อความกับรูปภาพ */
+}
+
+.content h1 {
+    margin-right: 10px; /* ระยะห่างระหว่างข้อความกับรูปภาพ */
+}
+
+.content ul {
+    margin-right: 10px; /* ระยะห่างระหว่างข้อความกับรูปภาพ */
+}
+
+.text-container {
+    display: inline-block;
+}
+
+.right-image {
+    max-height: 100%; /* ปรับขนาดรูปภาพให้มีความสูงเท่ากับข้อความสองบรรทัด */
+    max-width: 160px; /* กำหนดขนาดรูปภาพตามที่คุณต้องการ */
+    height: auto;
+    margin-left: 420px; /* ระยะห่างระหว่างรูปภาพกับข้อความ */
+}
+
+.btn-predict {
+	height: auto;
+	width: 100%;
+	padding: 0 16px;
+	border-radius: 36px;
+	border: solid var(--blue);
+	background: var(--blue);
+	color: var(--light);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 500;
+}
+
+.btn-choise {
+	height: auto;
+	width: 100%;
+	padding: 0 16px;
+	border-radius: 36px;
+	border: solid var(--blue);
+	background: var(--light);
+	color: black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	grid-gap: 10px;
+	font-weight: 500;
+}
+
+.symphony
+{
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+}
+.symphony div{
+	margin: 10px;
+}
+.symphony div label
+{
+	cursor: pointer;
+}
+.symphony div label input[type="checkbox"]
+{
+	display: none;
+}
+.symphony div label span
+{
+	position: relative;
+	display: inline-block;
+	background: #cbcbcb;
+	padding: 10px 20px;
+	color: #ffffff;
+	text-shadow: 0 1px 4px rgb(0, 0, 0, .3);
+	border-radius: 30px;
+	font-size: 20px;
+	transition: 0.5s;
+	user-select: none;
+	overflow: hidden;
+}
+.symphony div label span:before
+{
+	contain: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50%;
+	background: rgb(255, 255, 255, .1);
+}
+.symphony div label input[type="checkbox"]:checked ~ span
+{
+	background: var(--blue);
+}
+
+
+/* Tooltip CSS */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-icon {
+    width: 20px; /* ขนาดของรูปภาพ */
+    height: 20px; /* ขนาดของรูปภาพ */
+    cursor: pointer;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 290px; /* ความกว้างของ tooltip */
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1000; /* ทำให้ tooltip อยู่เหนือเนื้อหาอื่น */
+    bottom: 125%; /* ปรับตำแหน่ง tooltip */
+    left: 50%;
+    margin-left: -60px; /* ปรับการจัดกลาง */
+    opacity: 0;
+    transition: opacity 0.3s;
+    /* เพิ่มความชัดเจนของ tooltip */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.marquee-container {
+	width: 100%; /* ขนาดของคอนเทนเนอร์ให้เต็มหน้าจอ */
+	overflow: hidden; /* ซ่อนส่วนที่เกินออกจากคอนเทนเนอร์ */
+	white-space: nowrap; /* ทำให้ข้อความอยู่ในบรรทัดเดียว */
+}
+
+.marquee {
+	display: inline-block;
+	padding: 0;
+	animation: marquee 34s linear infinite; /* ความเร็วของการเคลื่อนไหวและทำซ้ำ */
+}
+
+@keyframes marquee {
+	0% {
+		transform: translateX(100%); /* เริ่มต้นที่ด้านขวาของคอนเทนเนอร์ */
+	}
+	100% {
+		transform: translateX(-100%); /* เคลื่อนที่ไปที่ด้านซ้ายสุดของคอนเทนเนอร์ */
+	}
+}
+
+
+.form-group-horizontal2 {
+    display: flex; /* ใช้ Flexbox */
+    align-items: center; /* จัดแนวกลางในแนวตั้ง */
+    margin-bottom: 15px;
+}
+
+.form-group-horizontal2 label {
+    flex: 0 0 80px; /* กำหนดความกว้างของ label */
+    margin-right: 10px; /* เพิ่มระยะห่างขวาระหว่าง label กับ input */
+    font-size: 14px;
+    color: black;
+    text-align: left; /* จัดข้อความให้อยู่ทางขวาของ label */
+}
+
+.form-group-horizontal2 input {
+    flex: 1; /* ให้ input ใช้พื้นที่ที่เหลือ */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
