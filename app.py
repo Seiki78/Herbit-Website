@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from pymongo import MongoClient
 
@@ -24,4 +25,7 @@ def add_user():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # อ่านพอร์ตจาก environment variables
+    port = int(os.environ.get("PORT", 5000))
+    # รันแอปโดยฟังที่ 0.0.0.0 และพอร์ตที่ถูกกำหนดโดย Render
+    app.run(host="0.0.0.0", port=port, debug=True)
