@@ -4,6 +4,8 @@ from pymongo import MongoClient
 
 app = Flask(__name__)
 
+app.secret_key = os.urandom(24)
+
 # เชื่อมต่อกับ MongoDB Atlas
 client = MongoClient("mongodb+srv://mongodb:mg12345678@cluster0.fvpxm.mongodb.net/nobita_database?retryWrites=true&w=majority")
 db = client['nobita_database']
