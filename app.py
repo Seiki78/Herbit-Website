@@ -11,8 +11,9 @@ collection = db['users']
 
 @app.route('/')
 def index():
-    herbals_info = collection.find()  # ดึงข้อมูลผู้ใช้ทั้งหมดจาก MongoDB
-    return render_template('general_pretest.html', herbals_info=herbals_info)
+    # ดึงข้อมูลผู้ใช้ทั้งหมดจาก Collection
+    users = collection.find()  # `find()` จะดึงเอกสารทั้งหมด
+    return render_template('general_pretest.html', users=users)
 
 @app.route('/add', methods=['POST'])
 def add_user():
