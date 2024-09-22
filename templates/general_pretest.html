@@ -77,33 +77,16 @@
         <a href="" class="btn-download">เพิ่ม</a>
     </div>
 
-	
+	{% if users.count() == 0 %}
+        <p>No users found in the database.</p>
+    {% else %}
+		<ul>
+        {% for user in users %}
+            <li>{{ user['username'] }} - {{ user['email'] }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 
-    <div class="table-data">
-        <div class="order">
-			{% if users.count() == 0 %}
-        		<p>ไม่พบผู้ใช้ในฐานข้อมูลแม้แต่คนเดียวจ้า</p>
-			{% else %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-					{% for user in users %}
-                    <tr>
-                        <td>{{ user['username'] }}</td>
-                        <td>{{ user['email'] }}</td>
-                    </tr>
-
-					{% endfor %}
-                </tbody>
-            </table>
-            <br>
-			{% endif %}
-    </div>
 
 
 </main>
