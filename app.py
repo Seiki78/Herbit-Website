@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from pymongo import MongoClient
+from bson.objectid import ObjectId  # ต้องใช้ ObjectId เพื่อจัดการกับ MongoDB IDs
 
 app = Flask(__name__)
 
@@ -26,8 +27,32 @@ def add_user():
     # เพิ่มข้อมูลใหม่ลงใน MongoDB
     collection.insert_one({'username': username, 'email': email})
     
-    flash('Herbal added successfully!', 'success')
+    flash('User added successfully!', 'success')
     return redirect(url_for('index'))
+
+@app.route('/delete/<user_id>', methods=['POST'])
+def delete_user(user_id):
+    # ลบผู้ใช้จาก MongoDB โดยใช้ ObjectId
+    collection.delete_one({'_id': ObjectId(user_id)})
+    flash('User deleted successfully!', 'success')
+    return redirect(url_for('index'))
+
+@app.route('/edit/<user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    if request.method == 'POST':
+        # รับข้อมูลใหม่จากฟอร์ม
+        username = request.form['username']
+        email = request.form['email']
+        
+        # อัปเดตข้อมูลผู้ใช้ใน MongoDB
+        collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email}})
+        
+        flash('User updated successfully!', 'success')
+        return redirect(url_for('index'))
+    
+    # ดึงข้อมูลผู้ใช้ที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
+    user = collection.find_one({'_id': ObjectId(user_id)})
+    return render_template('edit.html', user=user)
 
 if __name__ == '__main__':
     # อ่านพอร์ตจาก environment variables
