@@ -77,10 +77,10 @@
         <a href="" class="btn-download">เพิ่ม</a>
     </div>
 
-	{% if users.count() == 0 %}
+	{% if user_count == 0 %}
         <p>No users found in the database.</p>
     {% else %}
-		<ul>
+        <ul>
         {% for user in users %}
             <li>{{ user['username'] }} - {{ user['email'] }}</li>
         {% endfor %}

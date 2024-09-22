@@ -13,7 +13,8 @@ collection = db['users']
 def index():
     # ดึงข้อมูลผู้ใช้ทั้งหมดจาก Collection
     users = collection.find()  # `find()` จะดึงเอกสารทั้งหมด
-    return render_template('index.html', users=users)
+    user_count = collection.count_documents({})  # ใช้ count_documents เพื่อนับจำนวนเอกสารใน Collection
+    return render_template('index.html', users=users, user_count=user_count)
 
 @app.route('/add', methods=['POST'])
 def add_user():
