@@ -77,11 +77,12 @@
         <a href="" class="btn-download">เพิ่ม</a>
     </div>
 
-	{% if users.count() == 0 %}
-        <p>ไม่พบผู้ใช้ในฐานข้อมูลแม้แต่คนเดียวจ้า</p>
+	
 
     <div class="table-data">
         <div class="order">
+			{% if users.count() == 0 %}
+        		<p>ไม่พบผู้ใช้ในฐานข้อมูลแม้แต่คนเดียวจ้า</p>
 			{% else %}
             <table>
                 <thead>
