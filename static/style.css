@@ -808,7 +808,32 @@ p {
 
 
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 768px) {
+	body {
+		font-size: 16px;
+	}
+	#sidebar {
+        width: 100px;
+    }
+
+    #content {
+        margin-left: 100px;
+    }
+
+    /* ปรับเมนูให้เรียงแนวตั้งเมื่ออยู่ในจอมือถือ */
+    #sidebar ul {
+        display: block;
+    }
+
+    .table-data table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .marquee-container {
+        padding: 10px;
+    }
 	#content nav form .form-input input {
 		display: none;
 	}
