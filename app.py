@@ -47,9 +47,6 @@ def pop_login():
         else:
             flash('ข้อมูลไม่ถูกต้อง!', 'danger')
             return redirect(url_for('index'))
-        
-    flash('ข้อมูลไม่ถูกต้อง!', 'danger')
-    return redirect(url_for('index'))
 
 @app.route('/logout', methods=['GET'])
 def logout():
