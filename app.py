@@ -65,7 +65,6 @@ def general_pre():
     return render_template('general_predict.html', chronics=chronics)
 
 if __name__ == '__main__':
-    # อ่านพอร์ตจาก environment variables
-    port = int(os.environ.get("PORT", 5000))
-    # รันแอปโดยฟังที่ 0.0.0.0 และพอร์ตที่ถูกกำหนดโดย Render
-    app.run(host="0.0.0.0", port=port, debug=True)
+    # อ่านพอร์ตจาก environment variables ที่ Render กำหนดให้
+    port = int(os.environ.get("PORT", 5000))  # ใช้พอร์ตจาก Render ถ้าไม่เจอจะใช้พอร์ต 5000
+    app.run(host="0.0.0.0", port=port)
