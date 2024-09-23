@@ -76,18 +76,66 @@
 
 <!-- MAIN -->
 <main>
+    <div class="head-title">
+        <div class="left">
+            <h2>โรคประจำตัว</h2>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="{{ url_for('manage_Chronic_Disease') }}" class="active">จัดการข้อมูล</a>
+                </li>
+            </ul>
+        </div>
 
-	<h1>โรคประจำตัว</h1>
+    </div>
 
-    <h2>เพิ่มข้อมูลโรคประจำตัว</h2>
+
+    <h4>เพิ่มข้อมูล</h4>
     <form action="{{ url_for('add_chronic') }}" method="POST">
         <label for="cn_n">ชื่อโรค</label>
         <input type="text" id="cn_n" name="cn_n" required>
-        <button type="submit">เพิ่มโรค</button>
-    </form>
+        <button type="submit">เพิ่ม</button>
+    </form><br>
+
+    <div class="table-data">
+        <div class="order">
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>ข้อมูลโรคประจำตัว</th>
+                        <th colspan="2"></th>
+                    </tr>
+                    <tr>
+                        <td>รหัส</td>
+                        <td>ชื่อโรค</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chronic in chronics %}
+                    <tr>
+                        <td>{{ chronic['cn_id'] }} - </td>
+                        <td>{{ chronic['cn_n'] }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_chronic', chronic_id=chronic['_id']) }}" method="POST" style="display:inline;">
+                                <button type="submit">ลบ</button>
+                            </form>
+                            <a href="{{ url_for('edit_chronic', chronic_id=chronic['_id']) }}">แก้ไข</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">ไม่พบข้อมูลโรคประจำตัว</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 
 
-    <ul>
+    <!-- <ul>
         {% for chronic in chronics %}
             <li>{{ chronic['cn_id'] }} - {{ chronic['cn_n'] }}
                 <form action="{{ url_for('delete_chronic', chronic_id=chronic['_id']) }}" method="POST" style="display:inline;">
@@ -98,7 +146,7 @@
             {% else %}
             <li>ไม่พบข้อมูลโรคประจำตัว</li>
         {% endfor %}
-    </ul>
+    </ul> -->
     
 
 
