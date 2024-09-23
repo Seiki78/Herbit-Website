@@ -1,8 +1,10 @@
 import pandas as pd
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from pymongo import MongoClient
 from bson.objectid import ObjectId  # ต้องใช้ ObjectId เพื่อจัดการกับ MongoDB IDs
+from bson import ObjectId  # สำหรับจัดการ ObjectId ของ MongoDB
+from werkzeug.security import check_password_hash, generate_password_hash  # สำหรับการจัดการรหัสผ่าน
 
 app = Flask(__name__)
 
@@ -21,15 +23,61 @@ def index():
     user_count = users_collection.count_documents({})  # ใช้ count_documents เพื่อนับจำนวนเอกสารใน Collection
     return render_template('index.html', users=users, user_count=user_count)
 
-@app.route('/add', methods=['POST'])
+@app.route('/pop_login', methods=['GET', 'POST'])
+def pop_login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        # ดึงข้อมูลผู้ใช้จาก MongoDB
+        users = users_collection.find_one({'username': username, 'password': password})
+        
+        if users:
+            print(f"ข้อมูลผู้ใช้: {users}")
+            print(f"รหัสผ่านที่กรอกมา: {password}")
+            print(f"รหัสผ่านที่มีในระบบ Hashed: {users['password']}")  # MongoDB เก็บรหัสผ่านที่แฮชแล้ว
+            print(f"รหัสผ่านที่กรอกมา หลัง Hashed: {generate_password_hash(password, method='pbkdf2:sha256')}")
+        
+        # ตรวจสอบว่าผู้ใช้มีอยู่และรหัสผ่านถูกต้อง
+        if users and check_password_hash(users['password'], password):
+            session['user_id'] = str(users['_id'])  # MongoDB ใช้ ObjectId จึงต้องแปลงเป็น string
+            session['user_role'] = users.get('role')  # เรียก role
+            flash('เข้าสู่ระบบสำเร็จ!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('ข้อมูลไม่ถูกต้อง!', 'danger')
+            return redirect(url_for('index'))
+
+    return redirect(url_for('index'))
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.pop('user_id', None)
+    return redirect(url_for('index'))
+
+@app.route('/dashboard')
+def dashboard():
+    user_id = session.get('user_id', None)
+    if user_id is None:
+        return redirect(url_for('index'))
+    
+    # ตรวจสอบสิทธิ์
+    if 'user_role' in session and session['user_role'] == 'admin':
+        return render_template('admin_dashboard.html')
+    else:
+        return render_template('member_dashboard.html')
+
+@app.route('/add_user', methods=['POST'])
 def add_user():
     username = request.form['username']
     email = request.form['email']
+    password = request.form['password']
+    hashed_password = {generate_password_hash(password, method='pbkdf2:sha256')}
     
     # เพิ่มข้อมูลใหม่ลงใน MongoDB
-    users_collection.insert_one({'username': username, 'email': email})
+    users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member'})
     
-    flash('User added successfully!', 'success')
+    flash('เพิ่มผู้ใช้สำเร็จ!', 'success')
     return redirect(url_for('index'))
 
 @app.route('/delete/<user_id>', methods=['POST'])

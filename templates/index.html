@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <title>index</title>
+	<link rel="icon" href="{{ url_for('static', filename='leafe_oo.png') }}" type="image/png">
+    <title>หน้าหลัก</title>
 </head> 
 <body>
     
@@ -39,7 +40,7 @@
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="" class="" id="">
+				<a href="{{ url_for('pop_login') }}" class="" id="">
 					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<p class="text">เข้าสู่ระบบ</p>
 				</a>
@@ -76,20 +77,60 @@
 
 <!-- MAIN -->
 <main>
+	<!-- พื้นหลังโปร่งแสง -->
+	<div class="modal-overlay"></div>
+
+	<!-- Modal เข้าสู่ระบบ -->
+	<div class="modal">
+		<h2>เข้าสู่ระบบ</h2>
+			<form action="{{ url_for('pop_login') }}" method="POST">
+			<div class="form-group">
+				<div class="form-group-horizontal2">
+					<label for="username">ชื่อผู้ใช้</label>
+					<input type="text" id="username" name="username" required>
+				</div>
+
+				<div class="form-group-horizontal2">
+					<label for="password">รหัสผ่าน</label>
+					<input type="password" id="password" name="password" required>
+				</div>
+
+			</div>
+
+			<button type="submit" class="btn-submit">ยืนยัน</button><br>
+
+		</form>
+	</div>
+
 
 	<div class="head-title"></div>
         <div class="left">
             <h1>ระบบจัดการสมาชิก (ทดสอบ)</h1>
         </div>
-        <a href="" class="btn-download">เพิ่ม</a>
     </div>
+
+	<br>
+
+	<h2>เพิ่มสมาชิก</h2>
+    <form action="/add_user" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+		<label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+		<br>
+        <button type="submit">เพิ่ม</button>
+    </form>
 
 	{% if user_count == 0 %}
         <p>No users found in the database.</p>
     {% else %}
 		<ul>
 			{% for user in users %}
-				<li>{{ user['username'] }} - {{ user['email'] }}
+				<li>{{ user['username'] }} - {{ user['email'] }} - Role : {{ user['role'] }}
 					<form action="{{ url_for('delete_user', user_id=user['_id']) }}" method="POST" style="display:inline;">
 						<button type="submit">ลบ</button>
 					</form>
@@ -100,16 +141,7 @@
     {% endif %}
 
 	
-	<h2>เพิ่มสมาชิก</h2>
-    <form action="/add" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br>
-        <button type="submit">Add User</button>
-    </form>
+	
 
 </main>
 <!-- MAIN -->
@@ -121,6 +153,30 @@
 
 
     <script>
+
+		const modal = document.querySelector('.modal');
+        const overlay = document.querySelector('.modal-overlay');
+        const openModalBtn = document.querySelector('.btn-open-modal');
+        const mainContent = document.querySelector('.main-content');
+
+        // เมื่อคลิกปุ่มเปิด modal
+        openModalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('active');
+            overlay.classList.add('active');
+            mainContent.classList.add('blurred'); // เพิ่มเอฟเฟกต์เบลอให้กับเนื้อหาหลัก
+        });
+
+
+        // เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal
+        overlay.addEventListener('click', function() {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+            mainContent.classList.remove('blurred'); // เอาเอฟเฟกต์เบลอออก
+        });
+
+
+
 
         document.addEventListener('DOMContentLoaded', function() {
             // Remove the 'hidden' class to make the alert visible

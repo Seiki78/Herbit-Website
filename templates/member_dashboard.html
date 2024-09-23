@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <title>หน้าหลัก</title>
+    <link rel="icon" href="{{ url_for('static', filename='leafe_oo.png') }}" type="image/png">
+    <title>แดชบอร์ดสมาชิก</title>
 </head> 
 <body>
     
@@ -21,33 +22,39 @@
     <section id="sidebar">
         <a href="" class="brand">
             <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
-			<span class="text">Mongo</span>
+			<span class="text">Herbit</span>
 		</a>
 		<ul class="side-menu top">
-            <li  class="active">
-				<a href="{{ url_for('index') }}">
-					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">Mongo test</span>
+			<li class="active">
+				<a href="">
+					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">แดชบอร์ด</span>
 				</a>
 			</li>
 			<li>
-				<a href="{{ url_for('manage_chronics') }}">
-					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">จัดการโรคประจำตัว</span>
+				<a href="">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='health-report.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">ข้อมูลสุขภาพ</span>
+				</a>
+			</li>
+            <li>
+                <a href="">
+                  <i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='patient.png') }}" class="icon-mini" alt="Menu Icon"></i>
+                  <span class="text">โปรไฟล์</span>
+                </a>
+              </li>
+			<li>
+				<a href="">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='medical.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">วิเคราะห์ยาสมุนไพรด้วยตนเอง</span>
 				</a>
 			</li>
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="{{ url_for('pop_login') }}" class="" id="">
-					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<p class="text">เข้าสู่ระบบ</p>
-				</a>
-			</li>
-			<li>
-				<a href="" class="" id="">
-					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<p class="text">สมัครสมาชิก</p>
+				<a href="{{ url_for('logout') }}" class="logout">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='logout.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">ออกจากระบบ</span>
 				</a>
 			</li>
 		</ul>
@@ -64,37 +71,30 @@
     <i class='bx bx-menu'>
         <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
     </i>
-
-	<div class="marquee-container">
-        <div class="marquee">
-            <p style="color: rgb(161, 193, 226);">เป็นเพียงการให้ความรู้เกี่ยวกับยาสมุนไพร โดยอ้างอิงข้อมูลจาก NLEM:บัญชียาหลักแห่งชาติ (ฉบับที่ 2) พ.ศ. 2555 ประกาศ ณ วันที่ 21 สิงหาคม พ.ศ. 2555 เท่านั้น ไม่ใช่การรักษาโรคแต่อย่างใด หากป่วยควรพบแพทย์ผู้เชี่ยวชาญเพื่อรับการรักษาต่อไป</p>
-        </div>
-    </div>
-
-</nav>
+  
+    <!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
+    <a href="" class="profile">
+        <img src="{{ url_for('static', filename='user.png') }}">
+    </a>
+  </nav>
 <!-- NAVBAR -->
 
 <!-- MAIN -->
 <main>
-
-	<div class="head-title"></div>
+    <div class="head-title">
         <div class="left">
-            <h1>ระบบจัดการสมาชิก (ทดสอบ)</h1>
+            <h1>แดชบอร์ดสมาชิก (ทดสอบ)</h1>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="{{ url_for('dashboard') }}">หน้าหลัก</a>
+                </li>
+
+            </ul>
         </div>
+
     </div>
 
-	
-	<h2>แก้ไขข้อมูล</h2>
-    <form action="{{ url_for('edit_user', user_id=user['_id']) }}" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{ user['username'] }}" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ user['email'] }}" required>
-        <br>
-        <button type="submit">Save Changes</button>
-    </form>
-
+    
 </main>
 <!-- MAIN -->
 
@@ -103,9 +103,7 @@
 
 
 
-
     <script>
-
         document.addEventListener('DOMContentLoaded', function() {
             // Remove the 'hidden' class to make the alert visible
             var alerts = document.querySelectorAll('.alert');
