@@ -159,6 +159,6 @@ def edit_chronic(chronic_id):
 
 
 if __name__ == '__main__':
-    # อ่านพอร์ตจาก environment variables ที่ Render กำหนดให้
-    port = int(os.environ.get("PORT", 5000))  # ใช้พอร์ตจาก Render ถ้าไม่เจอจะใช้พอร์ต 5000
+
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
