@@ -67,9 +67,14 @@ def manage_chronics():
 @app.route('/add_chronic', methods=['POST'])
 def add_chronic():
 
-    # หาจำนวนเอกสารที่มีอยู่ใน Collection เพื่อใช้สร้างรหัสโรคใหม่
-    chronic_count = chronics_data_collection.count_documents({})  # นับจำนวนเอกสารทั้งหมดใน Collection
-    cn_id = chronic_count + 1  # รหัสโรคใหม่จะเป็นจำนวนที่นับได้ +1
+    # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี cn_id มากที่สุด
+    last_chronic = chronics_data_collection.find_one(sort=[("cn_id", -1)])
+    
+    # ถ้ามีเอกสารอยู่ ให้เอา cn_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 101
+    if last_chronic:
+        cn_id = last_chronic['cn_id'] + 1
+    else:
+        cn_id = 101  # กำหนดค่าเริ่มต้นเป็น 101 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
     cn_n = request.form['cn_n']
     
     # เพิ่มข้อมูลใหม่ลงใน Collection chronic
