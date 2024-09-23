@@ -153,11 +153,14 @@
 
 
     <script>
-
 		const modal = document.querySelector('.modal');
         const overlay = document.querySelector('.modal-overlay');
         const openModalBtn = document.querySelector('.btn-open-modal');
         const mainContent = document.querySelector('.main-content');
+
+		const modal2 = document.querySelector('.modal2');
+		const overlay2 = document.querySelector('.modal2-overlay');
+		const openModalBtn2 = document.querySelector('.btn-open-modal2');
 
         // เมื่อคลิกปุ่มเปิด modal
         openModalBtn.addEventListener('click', function(e) {
@@ -167,11 +170,25 @@
             mainContent.classList.add('blurred'); // เพิ่มเอฟเฟกต์เบลอให้กับเนื้อหาหลัก
         });
 
+		// เมื่อคลิกปุ่มเปิด modal2
+        openModalBtn2.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal2.classList.add('active');
+            overlay2.classList.add('active');
+            mainContent.classList.add('blurred'); // เพิ่มเอฟเฟกต์เบลอให้กับเนื้อหาหลัก
+        });
 
         // เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal
         overlay.addEventListener('click', function() {
             modal.classList.remove('active');
             overlay.classList.remove('active');
+            mainContent.classList.remove('blurred'); // เอาเอฟเฟกต์เบลอออก
+        });
+
+		// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal2
+        overlay2.addEventListener('click', function() {
+            modal2.classList.remove('active');
+            overlay2.classList.remove('active');
             mainContent.classList.remove('blurred'); // เอาเอฟเฟกต์เบลอออก
         });
 
