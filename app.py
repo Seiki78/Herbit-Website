@@ -47,7 +47,8 @@ def pop_login():
         else:
             flash('ข้อมูลไม่ถูกต้อง!', 'danger')
             return redirect(url_for('index'))
-
+        
+    flash('ข้อมูลไม่ถูกต้อง!', 'danger')
     return redirect(url_for('index'))
 
 @app.route('/logout', methods=['GET'])
@@ -72,7 +73,7 @@ def add_user():
     username = request.form['username']
     email = request.form['email']
     password = request.form['password']
-    
+
     # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
     hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
     
