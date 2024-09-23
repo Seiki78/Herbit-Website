@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <title>วิเคราะห์ยาสมุนไพร</title>
+</head> 
+<body>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-overlay alert-{{ category }} hidden">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="sidebar">
+        <a href="" class="brand">
+            <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+			<span class="text">Mongo</span>
+		</a>
+		<ul class="side-menu top">
+            <li>
+				<a href="{{ url_for('index') }}">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">Mongo test</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="{{ url_for('general_pre') }}">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">วิเคราะห์ยาสมุนไพร</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="" class="" id="">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<p class="text">เข้าสู่ระบบ</p>
+				</a>
+			</li>
+			<li>
+				<a href="" class="" id="">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<p class="text">สมัครสมาชิก</p>
+				</a>
+			</li>
+		</ul>
+
+    </section>
+
+
+
+
+    <section id="content">
+<!-- NAVBAR -->
+<nav>
+    <!-- เมนูไอคอนอยู่ชิดซ้าย -->
+    <i class='bx bx-menu'>
+        <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
+    </i>
+
+	<div class="marquee-container">
+        <div class="marquee">
+            <p style="color: rgb(161, 193, 226);">เป็นเพียงการให้ความรู้เกี่ยวกับยาสมุนไพร โดยอ้างอิงข้อมูลจาก NLEM:บัญชียาหลักแห่งชาติ (ฉบับที่ 2) พ.ศ. 2555 ประกาศ ณ วันที่ 21 สิงหาคม พ.ศ. 2555 เท่านั้น ไม่ใช่การรักษาโรคแต่อย่างใด หากป่วยควรพบแพทย์ผู้เชี่ยวชาญเพื่อรับการรักษาต่อไป</p>
+        </div>
+    </div>
+
+</nav>
+<!-- NAVBAR -->
+
+<!-- MAIN -->
+<main>
+
+	<h1>โรคประจำตัว</h1>
+
+    <ul>
+        {% for chronic in chronics %}
+            <li>ID: {{ chronic['cn_id'] }} - Name: {{ chronic['cn_n'] }}</li>
+        {% else %}
+            <li>ไม่พบข้อมูลโรคประจำตัว</li>
+        {% endfor %}
+    </ul>
+
+
+      
+</main>
+<!-- MAIN -->
+
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+
+		document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                event.target.value = event.target.checked ? "1" : "0";
+            });
+        }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
+
+        // ฟังก์ชัน toggleFemaleField() 
+        function toggleFemaleField() {
+            var genderSelect = document.getElementById("gender");
+            var selectedValue = genderSelect.options[genderSelect.selectedIndex].value;
+            var FemaleField = document.getElementById("FemaleField");
+            if (selectedValue == "1") {
+                FemaleField.style.display = "block";
+            } else {
+                FemaleField.style.display = "none";
+            }
+        }
+
+
+
+
+
+		const modal = document.querySelector('.modal');
+        const overlay = document.querySelector('.modal-overlay');
+        const openModalBtn = document.querySelector('.btn-open-modal');
+        const mainContent = document.querySelector('.main-content');
+
+		const modal2 = document.querySelector('.modal2');
+		const overlay2 = document.querySelector('.modal2-overlay');
+		const openModalBtn2 = document.querySelector('.btn-open-modal2');
+
+        // เมื่อคลิกปุ่มเปิด modal
+        openModalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('active');
+            overlay.classList.add('active');
+            mainContent.classList.add('blurred'); // เพิ่มเอฟเฟกต์เบลอให้กับเนื้อหาหลัก
+        });
+
+		// เมื่อคลิกปุ่มเปิด modal2
+        openModalBtn2.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal2.classList.add('active');
+            overlay2.classList.add('active');
+            mainContent.classList.add('blurred'); // เพิ่มเอฟเฟกต์เบลอให้กับเนื้อหาหลัก
+        });
+
+        // เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal
+        overlay.addEventListener('click', function() {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+            mainContent.classList.remove('blurred'); // เอาเอฟเฟกต์เบลอออก
+        });
+
+		// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal
+        overlay2.addEventListener('click', function() {
+            modal2.classList.remove('active');
+            overlay2.classList.remove('active');
+            mainContent.classList.remove('blurred'); // เอาเอฟเฟกต์เบลอออก
+        });
+
+
+
+
+
+		document.addEventListener('DOMContentLoaded', function () {
+			var tooltipIcon = document.querySelectorAll('.tooltip-icon');
+			tooltipIcon.forEach(function(icon) {
+				icon.addEventListener('click', function() {
+					var container = this.parentNode;
+					var isVisible = container.classList.contains('show-tooltip');
+					
+					// Hide all tooltips
+					document.querySelectorAll('.tooltip-container').forEach(function(c) {
+						c.classList.remove('show-tooltip');
+					});
+					
+					// Toggle the clicked tooltip
+					if (!isVisible) {
+						container.classList.add('show-tooltip');
+					}
+				});
+			});
+			
+			// Hide tooltip when clicking outside
+			document.addEventListener('click', function(event) {
+				if (!event.target.closest('.tooltip-container')) {
+					document.querySelectorAll('.tooltip-container').forEach(function(c) {
+						c.classList.remove('show-tooltip');
+					});
+				}
+			});
+		});
+
+
+
+
+
+
+
+		function validateForm() {
+
+			const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+			const symptomCheckboxes = Array.from(allCheckboxes).filter(checkbox => checkbox.name !== 'pregnant');
+			
+			const isSymptomChecked = symptomCheckboxes.some(checkbox => checkbox.checked);
+			
+			if (!isSymptomChecked) {
+			alert('กรุณาเลือกอย่างน้อย 1 อาการ');
+			return false;
+			}
+			
+			return true;
+		}
+
+
+
+
+
+
+		function addSelected() {
+            // จัดการการเพิ่มโรคประจำตัว
+            addSelectedItems('Chronics', 'selectedChronicsList', 'Chronics');
+
+            // จัดการการเพิ่มข้อมูลการแพ้
+            addSelectedItems('allergie', 'selectedallergiesList', 'allergies');
+
+            // จัดการการเพิ่มข้อมูลยาที่ใช้
+            addSelectedItems('medicine', 'selectedMedicsList', 'medicines');
+        }
+
+        function addSelectedItems(selectId, tableId, inputName) {
+            const select = document.getElementById(selectId);
+            const selectedTable = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+            const selectedOptions = Array.from(select.selectedOptions);
+
+            selectedOptions.forEach(option => {
+                // ตรวจสอบว่ามีรายการนี้อยู่แล้วในตารางที่เลือกหรือไม่
+                if (!Array.from(selectedTable.getElementsByTagName('tr')).some(tr => tr.dataset.value === option.value)) {
+                    const tr = document.createElement('tr');
+                    tr.dataset.value = option.value;
+
+                    // เพิ่มคอลัมน์ชื่อรายการ
+                    const tdName = document.createElement('td');
+                    tdName.textContent = option.textContent;
+                    tr.appendChild(tdName);
+
+                    // เพิ่มคอลัมน์ปุ่มลบ
+                    const tdRemove = document.createElement('td');
+                    const removeButton = document.createElement('button');
+                    removeButton.textContent = 'ลบ';
+                    removeButton.onclick = () => {
+                        selectedTable.removeChild(tr);
+                        document.querySelector(`input[name="${inputName}"][value="${option.value}"]`).remove();
+                    };
+                    tdRemove.appendChild(removeButton);
+                    tr.appendChild(tdRemove);
+
+                    selectedTable.appendChild(tr);
+
+                    // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = inputName;
+                    hiddenInput.value = option.value;
+                    document.querySelector('form').appendChild(hiddenInput);
+                }
+                option.selected = false; // Deselect the option after adding
+            });
+        }
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var genderName = "{{ gender_name }}";
+            var femaleFields = document.querySelectorAll('.FemaleField');
+
+            if (genderName === "หญิง") {
+                femaleFields.forEach(function(field) {
+                    field.style.display = "table-row";
+                });
+            } else {
+                femaleFields.forEach(function(field) {
+                    field.style.display = "none";
+                });
+            }
+        });
+
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remove the 'hidden' class to make the alert visible
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                alert.classList.remove('hidden');
+            });
+
+            // Set a timeout to hide the alert after a few seconds
+            setTimeout(function() {
+                alerts.forEach(function(alert) {
+                    alert.classList.add('hidden');
+                });
+            }, 3000); // Time before the alert starts fading out
+        });
+
+
+        const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
+
+		allSideMenu.forEach(item=> {
+			const li = item.parentElement;
+
+			item.addEventListener('click', function () {
+				allSideMenu.forEach(i=> {
+					i.parentElement.classList.remove('active');
+				})
+				li.classList.add('active');
+			})
+		});
+
+		// TOGGLE SIDEBAR
+		const menuBar = document.querySelector('#content nav .bx.bx-menu');
+		const sidebar = document.getElementById('sidebar');
+
+		menuBar.addEventListener('click', function () {
+			sidebar.classList.toggle('hide');
+		})
+
+		const searchButton = document.querySelector('#content nav form .form-input button');
+		const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
+		const searchForm = document.querySelector('#content nav form');
+
+		searchButton.addEventListener('click', function (e) {
+			if(window.innerWidth < 576) {
+				e.preventDefault();
+				searchForm.classList.toggle('show');
+				if(searchForm.classList.contains('show')) {
+					searchButtonIcon.classList.replace('bx-search', 'bx-x');
+				} else {
+					searchButtonIcon.classList.replace('bx-x', 'bx-search');
+				}
+			}
+		})
+
+		if(window.innerWidth < 768) {
+			sidebar.classList.add('hide');
+		} else if(window.innerWidth > 576) {
+			searchButtonIcon.classList.replace('bx-x', 'bx-search');
+			searchForm.classList.remove('show');
+		}
+
+		window.addEventListener('resize', function () {
+			if(this.innerWidth > 576) {
+				searchButtonIcon.classList.replace('bx-x', 'bx-search');
+				searchForm.classList.remove('show');
+			}
+		})
+
+		const switchMode = document.getElementById('switch-mode');
+
+		switchMode.addEventListener('change', function () {
+			if(this.checked) {
+				document.body.classList.add('dark');
+			} else {
+				document.body.classList.remove('dark');
+			}
+		})
+        
+    </script>       
+              
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

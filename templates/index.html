@@ -25,7 +25,13 @@
 		</a>
 		<ul class="side-menu top">
             <li  class="active">
-				<a href="">
+				<a href="{{ url_for('index') }}">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">Mongo test</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('general_pre') }}">
 					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">วิเคราะห์ยาสมุนไพร</span>
 				</a>
