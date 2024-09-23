@@ -72,7 +72,9 @@ def add_user():
     username = request.form['username']
     email = request.form['email']
     password = request.form['password']
-    hashed_password = {generate_password_hash(password, method='pbkdf2:sha256')}
+    
+    # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
     
     # เพิ่มข้อมูลใหม่ลงใน MongoDB
     users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member'})
