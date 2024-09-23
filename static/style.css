@@ -782,83 +782,12 @@ p {
 
 
 
-/* การแสดงผลบนหน้าจอขนาดเล็กกว่า 768px */
-@media screen and (max-width: 768px) {
-	#sidebar {
-		width: 150px; /* ลดขนาด Sidebar ให้เหมาะกับหน้าจอมือถือ */
-	}
-
-	#content {
-		width: calc(100% - 150px); /* ปรับความกว้างของเนื้อหา */
-		left: 150px;
-	}
-
-	#content nav .nav-link {
-		display: none;
-	}
-}
-
-/* การแสดงผลบนหน้าจอขนาดเล็กกว่า 576px */
-@media screen and (max-width: 576px) {
-	#sidebar {
-		width: 100px; /* ลดขนาด Sidebar ให้เล็กลงในหน้าจอมือถือ */
-	}
-
-	#content {
-		width: calc(100% - 100px);
-		left: 100px;
-	}
-
-	#content nav form .form-input input {
-		display: none;
-	}
-
-	#content nav form .form-input button {
-		width: auto;
-		height: auto;
-		background: transparent;
-		border-radius: none;
-		color: var(--dark);
-	}
-
-	#content nav form.show .form-input input {
-		display: block;
-		width: 100%;
-	}
-	#content nav form.show .form-input button {
-		width: 36px;
-		height: 100%;
-		border-radius: 0 36px 36px 0;
-		color: var(--light);
-		background: var(--red);
-	}
-
-	#content nav form.show ~ .notification,
-	#content nav form.show ~ .profile {
-		display: none;
-	}
-
-	/* ปรับขนาด layout ในจอเล็ก */
-	#content main .box-info {
-		grid-template-columns: 1fr;
-	}
-
-	/* ทำให้ตารางสามารถเลื่อนในแนวนอน */
-	#content main .table-data .head, 
-	#content main .table-data .order table, 
-	#content main .table-data .todo .todo-list {
-		width: 100%;
-		overflow-x: auto;
-		min-width: 420px;
-	}
-}
 
 
 
 
 
 
-/* 
 @media screen and (max-width: 768px) {
 	#sidebar {
 		width: 200px;
@@ -922,7 +851,7 @@ p {
 	#content main .table-data .todo .todo-list {
 		min-width: 420px;
 	}
-} */
+}
 
 .icon-mini {
 	width: 20px;
