@@ -56,13 +56,51 @@ def edit_user(user_id):
     user = users_collection.find_one({'_id': ObjectId(user_id)})
     return render_template('edit.html', user=user)
 
-@app.route('/general_pre')
-def general_pre():
+@app.route('/manage_chronics')
+def manage_chronics():
 
     # ดึงข้อมูลทั้งหมดจาก Collection
     chronics = chronics_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
 
-    return render_template('general_predict.html', chronics=chronics)
+    return render_template('manage_chronics.html', chronics=chronics)
+
+@app.route('/add_chronic', methods=['POST'])
+def add_chronic():
+
+    # หาจำนวนเอกสารที่มีอยู่ใน Collection เพื่อใช้สร้างรหัสโรคใหม่
+    chronic_count = chronics_data_collection.count_documents({})  # นับจำนวนเอกสารทั้งหมดใน Collection
+    cn_id = chronic_count + 1  # รหัสโรคใหม่จะเป็นจำนวนที่นับได้ +1
+    cn_n = request.form['cn_n']
+    
+    # เพิ่มข้อมูลใหม่ลงใน Collection chronic
+    chronics_data_collection.insert_one({'cn_id': cn_id, 'cn_n': cn_n})
+    
+    flash('เพิ่มข้อมูลสำเร็จ', 'success')
+    return redirect(url_for('manage_chronics'))
+
+@app.route('/delete_chronic/<chronic_id>', methods=['POST'])
+def delete_chronic(chronic_id):
+    # ลบข้อมูลโรคออกจาก MongoDB โดยใช้ ObjectId
+    chronics_data_collection.delete_one({'_id': ObjectId(chronic_id)})
+    
+    flash('ลบข้อมูลสำเร็จ!', 'success')
+    return redirect(url_for('manage_chronics'))
+
+@app.route('/edit_chronic/<chronic_id>', methods=['GET', 'POST'])
+def edit_chronic(chronic_id):
+    if request.method == 'POST':
+        cn_n = request.form['cn_n']
+        
+        # อัปเดตเฉพาะชื่อโรคใน MongoDB
+        chronics_data_collection.update_one({'_id': ObjectId(chronic_id)}, {'$set': {'cn_n': cn_n}})
+        
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_chronics'))
+    
+    # ดึงข้อมูลโรคที่ต้องการแก้ไข
+    chronic = chronics_data_collection.find_one({'_id': ObjectId(chronic_id)})
+    return render_template('edit_chronics.html', chronic=chronic)
+
 
 if __name__ == '__main__':
     # อ่านพอร์ตจาก environment variables ที่ Render กำหนดให้
