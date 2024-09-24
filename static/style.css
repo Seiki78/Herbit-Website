@@ -313,11 +313,8 @@ p {
 	overflow-x: hidden;
 	scrollbar-width: none;
 }
-#sidebar::--webkit-scrollbar {
-	display: none;
-}
-#sidebar.hide {
-	width: 60px;
+#sidebar:state(webkit-scrollbar) { /* แก้ไขไปแล้ว */
+    display: none;
 }
 #sidebar .brand {
 	font-size: 24px;
