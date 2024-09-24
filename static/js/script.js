@@ -13,13 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	}, 3000); // ปิด flash messages หลัง 3 วินาที
 });
 
-// ตรวจสอบว่ามี flash message ประเภท 'danger' หรือไม่ แล้วเปิด modal(pop login) อัตโนมัติ
-const hasFlashDanger = "{{ 'danger' in get_flashed_messages(with_categories=true) }}";
-	if (hasFlashDanger === 'True') {
-		modal.classList.add('active');
-		overlay.classList.add('active');
-	}
-
 //
 const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 allSideMenu.forEach(item=> {
@@ -41,7 +34,7 @@ menuBar.addEventListener('click', function () {
 	sidebar.classList.toggle('hide');
 })
 
-//
+//ค้นหา
 const searchButton = document.querySelector('#content nav form .form-input button');
 const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
 const searchForm = document.querySelector('#content nav form');
@@ -72,7 +65,7 @@ window.addEventListener('resize', function () {
 	}
 })
 
-//
+//โหมดสว่าง-มืด
 const switchMode = document.getElementById('switch-mode');
 switchMode.addEventListener('change', function () {
 	if(this.checked) {
@@ -81,8 +74,3 @@ switchMode.addEventListener('change', function () {
 		document.body.classList.remove('dark');
 	}
 })
-
-//
-src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
