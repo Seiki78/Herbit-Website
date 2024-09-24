@@ -30,24 +30,26 @@ def pop_login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        # ดึงข้อมูลผู้ใช้จาก MongoDB
-        users = users_collection.find_one({'username': username, 'password': password})
-        
-        if users:
-            print(f"ข้อมูลผู้ใช้: {users}")
+        # ดึงข้อมูลผู้ใช้จาก MongoDB โดยตรวจสอบเฉพาะ username
+        user = users_collection.find_one({'username': username})
+
+        if user:
+            print(f"ข้อมูลผู้ใช้: {user}")
             print(f"รหัสผ่านที่กรอกมา: {password}")
-            print(f"รหัสผ่านที่มีในระบบ Hashed: {users['password']}")  # MongoDB เก็บรหัสผ่านที่แฮชแล้ว
-            print(f"รหัสผ่านที่กรอกมา หลัง Hashed: {generate_password_hash(password, method='pbkdf2:sha256')}")
+            print(f"รหัสผ่านที่มีในระบบ Hashed: {user['password']}")  # MongoDB เก็บรหัสผ่านที่แฮชแล้ว
         
-        # ตรวจสอบว่าผู้ใช้มีอยู่และรหัสผ่านถูกต้อง
-        if users and check_password_hash(users['password'], password):
-            session['user_id'] = str(users['_id'])  # MongoDB ใช้ ObjectId จึงต้องแปลงเป็น string
-            session['user_role'] = users.get('role')  # เรียก role
+        # ตรวจสอบว่าผู้ใช้มีอยู่และรหัสผ่านที่กรอกถูกต้อง
+        if user and check_password_hash(user['password'], password):
+            session['user_id'] = str(user['_id'])  # MongoDB ใช้ ObjectId จึงต้องแปลงเป็น string
+            session['user_role'] = user.get('role')  # เรียก role ของผู้ใช้จากฐานข้อมูล
             flash('เข้าสู่ระบบสำเร็จ!', 'success')
             return redirect(url_for('dashboard'))
         else:
             flash('ข้อมูลไม่ถูกต้อง!', 'danger')
             return redirect(url_for('index'))
+
+    # ถ้าผู้ใช้เปิดหน้า login แต่ยังไม่ได้ส่งข้อมูล
+    return redirect(url_for('index'))
 
 @app.route('/logout', methods=['GET'])
 def logout():
