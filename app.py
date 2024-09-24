@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask_login import login_required
 from pymongo import MongoClient
 from bson.objectid import ObjectId  # ต้องใช้ ObjectId เพื่อจัดการกับ MongoDB IDs
 from bson import ObjectId  # สำหรับจัดการ ObjectId ของ MongoDB
@@ -54,17 +55,18 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
-    user_id = session.get('user_id', None)
-    if user_id is None:
+    user_role = session.get('user_role')  # ดึง role ของผู้ใช้จาก session
+
+    # ตรวจสอบบทบาทของผู้ใช้
+    if user_role == 'admin':
+        return render_template('admin_dashboard.html')
+    elif user_role == 'member':
+        return render_template('member_dashboard.html')
+    else:
         return redirect(url_for('index'))
     
-    # ตรวจสอบสิทธิ์
-    if 'user_role' in session and session['user_role'] == 'admin':
-        return render_template('admin_dashboard.html')
-    else:
-        return render_template('member_dashboard.html')
-
 @app.route('/add_user', methods=['POST'])
 def add_user():
     username = request.form['username']
