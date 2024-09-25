@@ -1,14 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Flash Messages
     var alerts = document.querySelectorAll('.alert');
-    alerts.forEach(function(alert) {
-        alert.classList.remove('hidden');
-    });
-    setTimeout(function() {
+    if (alerts.length > 0) {
         alerts.forEach(function(alert) {
-            alert.classList.add('hidden');
+            alert.classList.remove('hidden');
         });
-    }, 3000); 
+        setTimeout(function() {
+            alerts.forEach(function(alert) {
+                alert.classList.add('hidden');
+            });
+        }, 3000); 
+    }
 
     // Side menu
     const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
@@ -32,5 +34,4 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebar.classList.toggle('hide');
         });
     }
-    
 });
