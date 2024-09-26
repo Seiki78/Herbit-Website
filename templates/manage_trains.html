@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>วิเคราะห์ยาสมุนไพร</title>
+</head> 
+<body>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-overlay alert-{{ category }} hidden">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="sidebar">
+        <a href="" class="brand">
+            <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+			<span class="text">Mongo</span>
+		</a>
+		<ul class="side-menu top">
+            <li>
+				<a href="{{ url_for('index') }}">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">Mongo test</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="{{ url_for('manage_chronics') }}">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการโรคประจำตัว</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="" class="btn-open-modal btn-changepass" id="">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<p class="text">เข้าสู่ระบบ</p>
+				</a>
+			</li>
+			<li>
+				<a href="" class="btn-open-modal btn-changepass" id="">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<p class="text">สมัครสมาชิก</p>
+				</a>
+			</li>
+		</ul>
+
+    </section>
+
+
+    <section id="content">
+<!-- NAVBAR -->
+<nav>
+    <!-- เมนูไอคอนอยู่ชิดซ้าย -->
+    <i class='bx bx-menu'>
+        <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
+    </i>
+
+	<div class="marquee-container">
+        <div class="marquee">
+            <p style="color: rgb(161, 193, 226);">เป็นเพียงการให้ความรู้เกี่ยวกับยาสมุนไพร โดยอ้างอิงข้อมูลจาก NLEM:บัญชียาหลักแห่งชาติ (ฉบับที่ 2) พ.ศ. 2555 ประกาศ ณ วันที่ 21 สิงหาคม พ.ศ. 2555 เท่านั้น ไม่ใช่การรักษาโรคแต่อย่างใด หากป่วยควรพบแพทย์ผู้เชี่ยวชาญเพื่อรับการรักษาต่อไป</p>
+        </div>
+    </div>
+
+</nav>
+<!-- NAVBAR -->
+
+<!-- MAIN -->
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h2>ข้อมูล Trainning โมเดล</h2>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="{{ url_for('manage_chronics') }}" class="active">จัดการข้อมูล</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <h4>เพิ่มข้อมูล</h4>
+    <form action="{{ url_for('add_chronic') }}" method="POST">
+        <label for="cn_n">ชื่อโรค</label>
+        <input type="text" id="cn_n" name="cn_n" required>
+        <button type="submit">เพิ่ม</button>
+    </form><br>
+
+    <div class="table-data">
+        <div class="order">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ข้อมูลโรคประจำตัว</th>
+                        <th colspan="2"></th>
+                    </tr>
+                    <tr>
+                        <td>รหัส</td>
+                        <td>ชื่อโรค</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for train in trains %}
+                    <tr>
+                        <td>{{ chronic['cn_id'] }} - </td>
+                        <td>{{ chronic['cn_n'] }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_chronic', chronic_id=chronic['_id']) }}" method="POST" style="display:inline;">
+                                <button type="submit">ลบ</button>
+                            </form>
+                            <a href="{{ url_for('edit_chronic', chronic_id=chronic['_id']) }}">แก้ไข</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">ไม่พบข้อมูลโรคประจำตัว</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+      
+</main>
+<!-- MAIN -->
+
+    </section>
+
+    
+    <script>
+      
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+              
+</body>
+</html>
