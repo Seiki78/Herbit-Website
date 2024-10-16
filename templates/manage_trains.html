@@ -216,7 +216,7 @@
                         <td>{{ train['pregnant'] }}</td>
                         <td>{{ train['hm_id'] }}</td>
                         <td>
-                            <form action="{{ url_for('delete_trains ', train_id=train['_id']) }}" method="POST" style="display:inline;">
+                            <form action="{{ url_for('delete_trains', train_id=train['_id']) }}" method="POST" style="display:inline;">
                                 <button type="submit">ลบ</button>
                             </form>
                             <a href="{{ url_for('edit_trains', train_id=train['_id']) }}">แก้ไข</a>
