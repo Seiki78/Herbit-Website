@@ -188,7 +188,7 @@ def manage_trains():
     return render_template('manage_trains.html', trains=trains)
 
 @app.route('/add_trains', methods=['POST'])
-def add_chronic():
+def add_trains():
 
     date_of_birth = request.form.get('date_of_birth')
     Age = calculateAge(date_of_birth)
@@ -318,6 +318,29 @@ def add_chronic():
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_trains', herbals=herbals))
+
+@app.route('/delete_trains/<_id>', methods=['POST'])
+def delete_trains(_id):
+    # ลบข้อมูลโรคออกจาก MongoDB โดยใช้ ObjectId
+    trains_collection.delete_one({'_id': ObjectId(_id)})
+    
+    flash('ลบข้อมูลสำเร็จ!', 'success')
+    return redirect(url_for('manage_trains'))
+
+@app.route('/edit_trains/<chronic_id>', methods=['GET', 'POST'])
+def edit_trains(_id):
+    if request.method == 'POST':
+        pregnant = request.form['pregnant']
+        
+        # อัปเดตข้อมูลทุกอย่างใน MongoDB
+        trains_collection.update_one({'_id': ObjectId(_id)}, {'$set': {'Age': pregnant}})
+        
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_trains'))
+    
+    # ดึงข้อมูล trains ที่ต้องการแก้ไข
+    trains = trains_collection.find_one({'_id': ObjectId(_id)})
+    return render_template('edit_trains.html', trains=trains)
 
 if __name__ == '__main__':
 
