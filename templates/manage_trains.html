@@ -25,30 +25,54 @@
 			<span class="text">Mongo</span>
 		</a>
 		<ul class="side-menu top">
-            <li>
-				<a href="{{ url_for('index') }}">
-					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">Mongo test</span>
+			<li>
+				<a href="">
+					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">แดชบอร์ด</span>
 				</a>
 			</li>
-			<li class="active">
-				<a href="{{ url_for('manage_chronics') }}">
-					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">จัดการโรคประจำตัว</span>
+            <li>
+				<a href="">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='group.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการสมาชิก</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='leaf_01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการยาสมุนไพร</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='medicine.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูลยา</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='prevent.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูลโรคและอาการ</span>
+				</a>
+			</li>
+            <li>
+				<a href="">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='no-milk.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูลการแพ้</span>
+				</a>
+			</li>
+            <li class="active">
+				<a href="">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='database.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูล Training</span>
 				</a>
 			</li>
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="" class="btn-open-modal btn-changepass" id="">
-					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<p class="text">เข้าสู่ระบบ</p>
-				</a>
-			</li>
-			<li>
-				<a href="" class="btn-open-modal btn-changepass" id="">
-					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<p class="text">สมัครสมาชิก</p>
+				<a href="{{ url_for('logout') }}" class="logout">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='logout.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">ออกจากระบบ</span>
 				</a>
 			</li>
 		</ul>
@@ -77,10 +101,10 @@
 <main>
     <div class="head-title">
         <div class="left">
-            <h2>ข้อมูล Trainning โมเดล</h2>
+            <h2>ข้อมูล Trainning Model</h2>
             <ul class="breadcrumb">
                 <li>
-                    <a href="{{ url_for('manage_chronics') }}" class="active">จัดการข้อมูล</a>
+                    <a href="{{ url_for('manage_trains') }}" class="active">จัดการข้อมูล</a>
                 </li>
             </ul>
         </div>
@@ -88,9 +112,86 @@
     </div>
 
     <h4>เพิ่มข้อมูล</h4>
-    <form action="{{ url_for('add_chronic') }}" method="POST">
-        <label for="cn_n">ชื่อโรค</label>
-        <input type="text" id="cn_n" name="cn_n" required>
+    <form action="{{ url_for('add_trains') }}" method="POST">
+
+        <label for="Age">อายุ : {{ Age }}</label>
+        <input type="int" id="Age" name="Age" required>
+        <label for="pregnant">ตั้งครรภ์</label>
+        <input type="checkbox" id="pregnant" name="pregnant" value="1"><br>
+
+        <input type="checkbox" id="dizziness1" name="dizziness1" value="1">
+        <label for="dizziness1">เวียนหัว</label><br>
+        <input type="checkbox" id="Palpitations" name="Palpitations" value="1">
+        <label for="Palpitations">ใจสั่น ใจหวิว</label><br>
+        <input type="checkbox" id="squeamish" name="squeamish" value="1">
+        <label for="squeamish">คลื่นไส้</label><br>
+        <input type="checkbox" id="vomit" name="vomit" value="1">
+        <label for="vomit">อาเจียน</label><br>
+        <input type="checkbox" id="dizziness2" name="dizziness2" value="1">
+        <label for="dizziness2">หน้ามืด</label><br>
+        <input type="checkbox" id="dizziness3" name="dizziness3" value="1">
+        <label for="dizziness3">ตาลาย</label><br>
+        <input type="checkbox" id="dizziness4" name="dizziness4" value="1">
+        <label for="dizziness4">อาการหลังจากฟื้นไข้(เพิ่มคำอธิบายด้วย)</label><br>
+        <input type="checkbox" id="colic1" name="colic1" value="1">
+        <label for="colic1">จุกเสียด</label><br>
+        <input type="checkbox" id="tired" name="tired" value="1">
+        <label for="tired">อ่อนเพลีย</label><br>
+        <input type="checkbox" id="cannot_sleep" name="cannot_sleep" value="1">
+        <label for="cannot_sleep">นอนไม่หลับ</label><br>
+        <input type="checkbox" id="flatulence" name="flatulence" value="1">
+        <label for="flatulence">ท้องอืด ท้องเฟ้อ</label><br>
+        <input type="checkbox" id="stomach_ache" name="stomach_ache" value="1">
+        <label for="stomach_ache">ปวดท้อง</label><br>
+        <input type="checkbox" id="constipation1" name="constipation1" value="1">
+        <label for="constipation1">ท้องผูก</label><br>
+        <input type="checkbox" id="diarrhea1" name="diarrhea1" value="1">
+        <label for="diarrhea1">ท้องเสีย</label><br>
+        <input type="checkbox" id="hemorrhoids" name="hemorrhoids" value="1">
+        <label for="hemorrhoids">ริดสีดวงทวาร</label><br>
+        <input type="checkbox" id="menstruation" name="menstruation" value="1">
+        <label for="menstruation">ประจำเดือนมาไม่สม่ำเสมอ</label><br>
+        <input type="checkbox" id="Menstrual_cramps" name="Menstrual_cramps" value="1">
+        <label for="Menstrual_cramps">ปวดประจำเดือน</label><br>
+        <input type="checkbox" id="postpartum_woman" name="postpartum_woman" value="1">
+        <label for="postpartum_woman">หญิงหลังคลอด</label><br>
+        <input type="checkbox" id="Lochia" name="Lochia" value="1">
+        <label for="Lochia">น้ำคาวปลา</label><br>
+        <input type="checkbox" id="Vaginal_Discharge" name="Vaginal_Discharge" value="1">
+        <label for="Vaginal_Discharge">ตกขาว</label><br>
+        <input type="checkbox" id="Nourish_blood" name="Nourish_blood" value="1">
+        <label for="Nourish_blood">บำรุงเลือด</label><br>
+        <input type="checkbox" id="fever1" name="fever1" value="1">
+        <label for="fever1">ไข้</label><br>
+        <input type="checkbox" id="inner_heat" name="inner_heat" value="1">
+        <label for="inner_heat">ร้อนใน</label><br>
+        <input type="checkbox" id="Measles" name="Measles" value="1">
+        <label for="Measles">พิษหัด</label><br>
+        <input type="checkbox" id="Chickenpox" name="Chickenpox" value="1">
+        <label for="Chickenpox">พิษอีสุกอีใส</label><br>
+        <input type="checkbox" id="fever2" name="fever2" value="1">
+        <label for="fever2">ไข้ตานซาง(เพิ่มคำอธิบายด้วย)</label><br>
+        <input type="checkbox" id="fever3" name="fever3" value="1">
+        <label for="fever3">ไข้กาฬ</label><br>
+        <input type="checkbox" id="cough" name="cough" value="1">
+        <label for="cough">ไอ</label><br>
+        <input type="checkbox" id="phlegm" name="phlegm" value="1">
+        <label for="phlegm">เสมหะ</label><br>
+        <input type="checkbox" id="cold" name="cold" value="1">
+        <label for="cold">หวัด</label><br>
+        <input type="checkbox" id="Allergic_Rhinitis" name="Allergic_Rhinitis" value="1">
+        <label for="Allergic_Rhinitis">แพ้อากาศ</label><br>
+        <input type="checkbox" id="body_aches" name="body_aches" value="1">
+        <label for="body_aches">ปวดเมื่อยตามร่างกาย</label><br>
+        <input type="checkbox" id="tendon" name="tendon" value="1">
+        <label for="tendon">ปวดตามเส้นเอ็น</label><br>
+        <input type="checkbox" id="Tight_numb" name="Tight_numb" value="1">
+        <label for="Tight_numb">กล้ามเนื้อมือ เท้า ตึงหรือชา</label><br>
+        <input type="checkbox" id="muscles_tendons" name="muscles_tendons" value="1">
+        <label for="muscles_tendons">กษัยเส้น</label><br>
+        <input type="checkbox" id="dizziness5" name="dizziness5" value="1">
+        <label for="dizziness5">ลมกองหยาบ(เพิ่มคำอธิบายด้วย)</label>
+
         <button type="submit">เพิ่ม</button>
     </form><br>
 
@@ -100,30 +201,30 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ข้อมูลโรคประจำตัว</th>
-                        <th colspan="2"></th>
+                        <th></th>
                     </tr>
                     <tr>
-                        <td>รหัส</td>
-                        <td>ชื่อโรค</td>
-                        <td></td>
+                        <td>อายุ</td>
+                        <td>ตั้งครรภ์</td>
+                        <td>รหัสยาสมุนไพร</td>
                     </tr>
                 </thead>
                 <tbody>
                     {% for train in trains %}
                     <tr>
-                        <td>{{ chronic['cn_id'] }} - </td>
-                        <td>{{ chronic['cn_n'] }}</td>
+                        <td>{{ train['Age'] }} - </td>
+                        <td>{{ train['pregnant'] }}</td>
+                        <td>{{ train['hm_id'] }}</td>
                         <td>
-                            <form action="{{ url_for('delete_chronic', chronic_id=chronic['_id']) }}" method="POST" style="display:inline;">
+                            <form action="{{ url_for('delete_trains ', train_id=train['_id']) }}" method="POST" style="display:inline;">
                                 <button type="submit">ลบ</button>
                             </form>
-                            <a href="{{ url_for('edit_chronic', chronic_id=chronic['_id']) }}">แก้ไข</a>
+                            <a href="{{ url_for('edit_trains', train_id=train['_id']) }}">แก้ไข</a>
                         </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3">ไม่พบข้อมูลโรคประจำตัว</td>
+                        <td colspan="4">ไม่พบข้อมูล Training</td>
                     </tr>
                     {% endfor %}
                 </tbody>
