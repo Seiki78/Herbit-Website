@@ -115,7 +115,7 @@
     <form action="{{ url_for('add_trains') }}" method="POST">
 
         <label for="Age">อายุ : {{ Age }}</label>
-        <input type="int" id="Age" name="Age" required>
+        <input type="int" id="Age" name="Age" required><br>
         <label for="pregnant">ตั้งครรภ์</label>
         <input type="checkbox" id="pregnant" name="pregnant" value="1"><br>
 
@@ -205,14 +205,14 @@
                     </tr>
                     <tr>
                         <td>อายุ</td>
-                        <td>ตั้งครรภ์</td>
+                        <td>ตั้งครรภ์(เดี๋ยวเปลี่ยนเป็นปิ๊ปๆ)</td>
                         <td>รหัสยาสมุนไพร</td>
                     </tr>
                 </thead>
                 <tbody>
                     {% for train in trains %}
                     <tr>
-                        <td>{{ train['Age'] }} - </td>
+                        <td>{{ train['Age'] }}</td>
                         <td>{{ train['pregnant'] }}</td>
                         <td>{{ train['hm_id'] }}</td>
                         <td>
