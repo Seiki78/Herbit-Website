@@ -111,6 +111,49 @@
 
     </div>
 
+    <div class="symphony">
+        <div>
+            <label>
+                <input type="checkbox" name="dizziness1" id="" value="1">
+                <span>เวียนหัว</span>
+            </label>
+            <label>
+                <input type="checkbox" name="dizziness2" id="" value="1">
+                <span>หน้ามืด</span>
+            </label>
+            <label>
+                <input type="checkbox" name="dizziness3" id="" value="1">
+                <span>ตาลาย</span>
+            </label>
+            <label>
+                <input type="checkbox" name="tired" id="" value="1">
+                <span>อ่อนเพลีย</span>
+            </label>
+            <label>
+                <input type="checkbox" name="cannot_sleep" id="" value="1">
+                <span>นอนไม่หลับ</span>
+            </label><br>
+            <label>
+                <input type="checkbox" name="dizziness4" id="" value="1">
+                <span>ลมปลายไข้</span>
+                
+            </label>
+            <div class="tooltip-container">
+                <img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+                <span class="tooltip-text">หลังฟื้นไข้แล้วยังมีอาการ เช่น คลื่นไส้ วิงเวียน เบื่ออาหาร ท้องอืด และอ่อนเพลีย</span>
+            </div>
+            <label>
+                <input type="checkbox" name="dizziness5" id="" value="1">
+                <span>ลมกองหยาบ</span>
+            </label>
+            <div class="tooltip-container">
+                <img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+                <span class="tooltip-text">อาการท้องอืด แน่นท้อง แน่นหน้าอก หน้ามืด และเวียนศีรษะ เคลื่อนไปตามส่วนต่าง ๆ ของร่างกาย</span>
+            </div>
+        </div>
+
+    </div>
+
     <h4>เพิ่มข้อมูล</h4>
     <form action="{{ url_for('add_trains') }}" method="POST">
 
