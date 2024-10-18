@@ -114,35 +114,73 @@
     <h4>เพิ่มข้อมูล</h4>
     <form action="{{ url_for('add_trains') }}" method="POST">
 
-        <label for="Age">อายุ : {{ Age }}</label>
-        <input type="int" id="Age" name="Age" required><br>
-        <label for="pregnant">ตั้งครรภ์</label>
-        <input type="checkbox" id="pregnant" name="pregnant" value="1"><br>
+        <table>
+            <tr>
+                <td>
+                    <label for="Age">อายุ : {{ Age }}</label>
+                    <input type="int" id="Age" name="Age" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="pregnant" name="pregnant" value="1">
+                    <label for="pregnant">ตั้งครรภ์</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="dizziness1" name="dizziness1" value="1">
+                    <label for="dizziness1">เวียนหัว</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="Palpitations" name="Palpitations" value="1">
+                    <label for="Palpitations">ใจสั่น ใจหวิว</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="squeamish" name="squeamish" value="1">
+                    <label for="squeamish">คลื่นไส้</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="vomit" name="vomit" value="1">
+                    <label for="vomit">อาเจียน</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="dizziness2" name="dizziness2" value="1">
+                    <label for="dizziness2">หน้ามืด</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="dizziness3" name="dizziness3" value="1">
+                    <label for="dizziness3">ตาลาย</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="dizziness4" name="dizziness4" value="1">
+                    <label for="dizziness4">อาการหลังจากฟื้นไข้(เพิ่มคำอธิบายด้วย)</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="colic1" name="colic1" value="1">
+                    <label for="colic1">จุกเสียด</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="tired" name="tired" value="1">
+                    <label for="tired">อ่อนเพลีย</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="cannot_sleep" name="cannot_sleep" value="1">
+                    <label for="cannot_sleep">นอนไม่หลับ</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="flatulence" name="flatulence" value="1">
+                    <label for="flatulence">ท้องอืด ท้องเฟ้อ</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="stomach_ache" name="stomach_ache" value="1">
+                    <label for="stomach_ache">ปวดท้อง</label>
+                </td>
+            </tr>
+        </table> 
 
-        <input type="checkbox" id="dizziness1" name="dizziness1" value="1">
-        <label for="dizziness1">เวียนหัว</label><br>
-        <input type="checkbox" id="Palpitations" name="Palpitations" value="1">
-        <label for="Palpitations">ใจสั่น ใจหวิว</label><br>
-        <input type="checkbox" id="squeamish" name="squeamish" value="1">
-        <label for="squeamish">คลื่นไส้</label><br>
-        <input type="checkbox" id="vomit" name="vomit" value="1">
-        <label for="vomit">อาเจียน</label><br>
-        <input type="checkbox" id="dizziness2" name="dizziness2" value="1">
-        <label for="dizziness2">หน้ามืด</label><br>
-        <input type="checkbox" id="dizziness3" name="dizziness3" value="1">
-        <label for="dizziness3">ตาลาย</label><br>
-        <input type="checkbox" id="dizziness4" name="dizziness4" value="1">
-        <label for="dizziness4">อาการหลังจากฟื้นไข้(เพิ่มคำอธิบายด้วย)</label><br>
-        <input type="checkbox" id="colic1" name="colic1" value="1">
-        <label for="colic1">จุกเสียด</label><br>
-        <input type="checkbox" id="tired" name="tired" value="1">
-        <label for="tired">อ่อนเพลีย</label><br>
-        <input type="checkbox" id="cannot_sleep" name="cannot_sleep" value="1">
-        <label for="cannot_sleep">นอนไม่หลับ</label><br>
-        <input type="checkbox" id="flatulence" name="flatulence" value="1">
-        <label for="flatulence">ท้องอืด ท้องเฟ้อ</label><br>
-        <input type="checkbox" id="stomach_ache" name="stomach_ache" value="1">
-        <label for="stomach_ache">ปวดท้อง</label><br>
         <input type="checkbox" id="constipation1" name="constipation1" value="1">
         <label for="constipation1">ท้องผูก</label><br>
         <input type="checkbox" id="diarrhea1" name="diarrhea1" value="1">
