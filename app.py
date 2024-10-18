@@ -182,10 +182,16 @@ def edit_chronic(chronic_id):
 @app.route('/manage_trains')
 def manage_trains():
 
-    # ดึงข้อมูลทั้งหมดจาก Collection
-    trains = trains_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
+    page = request.args.get('page', 1, type=int)  # รับค่าหน้าจาก URL หรือกำหนดเป็นหน้า 1 ถ้าไม่มีการส่งมา
+    per_page = 25  # กำหนดจำนวนข้อมูลต่อหน้า
+    trains_count = trains_collection.count_documents({})  # นับจำนวนเอกสารทั้งหมด
+    total_pages = (trains_count + per_page - 1) // per_page  # คำนวณจำนวนหน้าทั้งหมด
 
-    return render_template('manage_trains.html', trains=trains)
+    # ดึงข้อมูลจาก MongoDB โดยใช้ skip และ limit เพื่อแบ่งข้อมูลตามหน้า
+    trains = trains_collection.find().skip((page - 1) * per_page).limit(per_page)
+
+
+    return render_template('manage_trains.html', trains=trains, page=page, total_pages=total_pages)
 
 @app.route('/add_trains', methods=['POST'])
 def add_trains():
