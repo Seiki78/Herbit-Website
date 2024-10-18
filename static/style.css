@@ -1554,7 +1554,7 @@ p {
 }
 
 .pagination a {
-    margin: 0 5px;
+    margin: 5px 5px;
     padding: 5px 10px;
     border: 1px solid #ddd;
     text-decoration: none;
