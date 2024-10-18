@@ -114,13 +114,10 @@
     <h4>เพิ่มข้อมูล</h4>
     <form action="{{ url_for('add_trains') }}" method="POST">
 
+        <label for="Age">อายุ : {{ Age }}</label>
+        <input type="int" id="Age" name="Age" required><br>
+
         <table>
-            <tr>
-                <td>
-                    <label for="Age">อายุ : {{ Age }}</label>
-                    <input type="int" id="Age" name="Age" required>
-                </td>
-            </tr>
             <tr>
                 <td>
                     <input type="checkbox" id="pregnant" name="pregnant" value="1">
@@ -154,7 +151,7 @@
                 </td>
                 <td>
                     <input type="checkbox" id="dizziness4" name="dizziness4" value="1">
-                    <label for="dizziness4">อาการหลังจากฟื้นไข้(เพิ่มคำอธิบายด้วย)</label>
+                    <label for="dizziness4">อาการหลังจากฟื้นไข้</label>
                 </td>
                 <td>
                     <input type="checkbox" id="colic1" name="colic1" value="1">
