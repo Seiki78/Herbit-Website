@@ -1554,11 +1554,12 @@ p {
 }
 
 .pagination a {
-    margin: 5px 5px;
-    padding: 5px 10px;
+    margin: 5px 5px; /* ระยะห่างบนล่าง 5px, ซ้ายขวา 5px */
+    padding: 10px 15px; /* ปรับ padding เพื่อให้ปุ่มใหญ่ขึ้น */
     border: 1px solid #ddd;
     text-decoration: none;
     color: #000;
+    display: inline-block; /* ทำให้ปุ่มเป็นบล็อก inline */
 }
 
 .pagination a.active {
