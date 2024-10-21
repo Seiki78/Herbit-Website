@@ -78,25 +78,38 @@
 
 	<div class="head-title">
         <div class="left">
-            <h2>จัดการข้อมูล Trainning Model</h2>
+            <h2>Trainning Model</h2>
             <ul class="breadcrumb">
                 <li>
-                    <a href="{{ url_for('manage_chronics') }}">จัดการข้อมูล</a>
+                    <a href="{{ url_for('manage_trains') }}">จัดการข้อมูล</a>
                 </li>
 				<li><i class='bx bx-chevron-right' ></i></li>
-                <li>
+                <!-- <li>
                     <a class="active" href="">แก้ไขข้อมูล</a>
-                </li>
+                </li> -->
             </ul>
         </div>
 
     </div>
+
+    <div>
+        <div class="content">
+            <div class="text-container">
+                <h2 style="align-items: center;">แก้ไขข้อมูล</h2>
+                <!-- <h4>หมวดหมู่: <span style="color: var(--blue);">หน้ามืด วิงเวียน</span></h4> -->
+            </div>
+        </div>
+
+    </div>
+
 	
-	<h4>แก้ไขข้อมูลโรคประจำตัว</h4>
 	<form action="{{ url_for('edit_chronic', chronic_id=chronic['_id']) }}" method="POST">
-		<label for="cn_n">ชื่อโรค</label>
-		<input type="text" id="cn_n" name="cn_n" value="{{ chronic['cn_n'] }}" required>
-		<br>
+		<label for="Age">อายุ</label>
+        <input type="int" id="Age" name="Age" value="{{ train['Age'] }}" required><br>
+
+        <label for="pregnant">ตั้งครรภ์</label>
+        <input type="checkbox" id="pregnant" name="pregnant" value="{{ train['pregnant'] }}">
+
 		<button type="submit">บันทึกการแก้ไข</button>
 	</form>
 	
