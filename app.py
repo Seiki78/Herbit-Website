@@ -335,10 +335,95 @@ def delete_trains(train_id):
 @app.route('/edit_trains/<train_id>', methods=['GET', 'POST'])
 def edit_trains(train_id):
     if request.method == 'POST':
+        Age = request.form['Age']
         pregnant = request.form['pregnant']
+        dizziness1 = request.form.get('dizziness1')
+        Palpitations = request.form.get('Palpitations')
+        squeamish = request.form.get('squeamish')
+        vomit = request.form.get('vomit')
+        dizziness2 = request.form.get('dizziness2')
+        dizziness3 = request.form.get('dizziness3')
+        dizziness4 = request.form.get('dizziness4')
+        colic1 = request.form.get('colic1')
+        tired = request.form.get('tired')
+        cannot_sleep = request.form.get('cannot_sleep')
+        flatulence = request.form.get('flatulence')
+        stomach_ache = request.form.get('stomach_ache')
+        constipation1 = request.form.get('constipation1')
+        diarrhea1 = request.form.get('diarrhea1')
+        hemorrhoids = request.form.get('hemorrhoids')
+        menstruation = request.form.get('menstruation')
+        Menstrual_cramps = request.form.get('Menstrual_cramps')
+        postpartum_woman = request.form.get('postpartum_woman')
+        Lochia = request.form.get('Lochia')
+        Vaginal_Discharge = request.form.get('Vaginal_Discharge')
+        Nourish_blood = request.form.get('Nourish_blood')
+        fever1 = request.form.get('fever1')
+        inner_heat = request.form.get('inner_heat')
+        Measles = request.form.get('Measles')
+        Chickenpox = request.form.get('Chickenpox')
+        fever2 = request.form.get('fever2')
+        fever3 = request.form.get('fever3')
+        cough = request.form.get('cough')
+        phlegm = request.form.get('phlegm')
+        cold = request.form.get('cold')
+        Allergic_Rhinitis = request.form.get('Allergic_Rhinitis')
+        body_aches = request.form.get('body_aches')
+        tendon = request.form.get('tendon')
+        Tight_numb = request.form.get('Tight_numb')
+        muscles_tendons = request.form.get('muscles_tendons')
+        dizziness5 = request.form.get('dizziness5')
+
+        pregnant = 0 if pregnant is None else 1
+        dizziness1 = 0 if dizziness1 is None else 1
+        Palpitations = 0 if Palpitations is None else 1
+        squeamish = 0 if squeamish is None else 1
+        vomit = 0 if vomit is None else 1
+        dizziness2 = 0 if dizziness2 is None else 1
+        dizziness3 = 0 if dizziness3 is None else 1
+        dizziness4 = 0 if dizziness4 is None else 1
+        colic1 = 0 if colic1 is None else 1
+        tired = 0 if tired is None else 1
+        cannot_sleep = 0 if cannot_sleep is None else 1
+        flatulence = 0 if flatulence is None else 1
+        stomach_ache = 0 if stomach_ache is None else 1
+        constipation1 = 0 if constipation1 is None else 1
+        diarrhea1 = 0 if diarrhea1 is None else 1
+        hemorrhoids = 0 if hemorrhoids is None else 1
+        menstruation = 0 if menstruation is None else 1
+        Menstrual_cramps = 0 if Menstrual_cramps is None else 1
+        postpartum_woman = 0 if postpartum_woman is None else 1
+        Lochia = 0 if Lochia is None else 1
+        Vaginal_Discharge = 0 if Vaginal_Discharge is None else 1
+        Nourish_blood = 0 if Nourish_blood is None else 1
+        fever1 = 0 if fever1 is None else 1
+        inner_heat = 0 if inner_heat is None else 1
+        Measles = 0 if Measles is None else 1
+        Chickenpox = 0 if Chickenpox is None else 1
+        fever2 = 0 if fever2 is None else 1
+        fever3 = 0 if fever3 is None else 1
+        cough = 0 if cough is None else 1
+        phlegm = 0 if phlegm is None else 1
+        cold = 0 if cold is None else 1
+        Allergic_Rhinitis = 0 if Allergic_Rhinitis is None else 1
+        body_aches = 0 if body_aches is None else 1
+        tendon = 0 if tendon is None else 1
+        Tight_numb = 0 if Tight_numb is None else 1
+        muscles_tendons = 0 if muscles_tendons is None else 1
+        dizziness5 = 0 if dizziness5 is None else 1
         
         # อัปเดตข้อมูลทุกอย่างใน MongoDB
-        trains_collection.update_one({'_id': ObjectId(train_id)}, {'$set': {'Age': pregnant}})
+        trains_collection.update_one({'_id': ObjectId(train_id)}, {'$set': {'Age': Age, 'pregnant': pregnant, 'dizziness1': dizziness1, 'Palpitations': Palpitations,
+                                                                            'squeamish': squeamish, 'vomit': vomit, 'dizziness2': dizziness2, 'dizziness3': dizziness3,
+                                                                            'dizziness4': dizziness4, 'colic1': colic1, 'tired': tired, 'cannot_sleep': cannot_sleep,
+                                                                            'flatulence': flatulence, 'stomach_ache': stomach_ache, 'constipation1': constipation1,
+                                                                            'diarrhea1': diarrhea1, 'hemorrhoids': hemorrhoids, 'menstruation': menstruation,
+                                                                            'Menstrual_cramps': Menstrual_cramps, 'postpartum_woman': postpartum_woman, 'Lochia': Lochia,
+                                                                            'Vaginal_Discharge': Vaginal_Discharge, 'Nourish_blood': Nourish_blood, 'fever1': fever1,
+                                                                            'inner_heat': inner_heat, 'Measles': Measles, 'Chickenpox': Chickenpox, 'fever2': fever2,
+                                                                            'fever3': fever3, 'cough': cough, 'phlegm': phlegm, 'cold': cold, 'Allergic_Rhinitis': Allergic_Rhinitis,
+                                                                            'body_aches': body_aches, 'tendon': tendon, 'Tight_numb': Tight_numb, 'muscles_tendons': muscles_tendons,
+                                                                             'dizziness5': dizziness5}})
         
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
         return redirect(url_for('manage_trains'))
