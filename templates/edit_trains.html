@@ -105,36 +105,36 @@
     <form action="{{ url_for('edit_trains', train_id=train['_id']) }}" method="POST">
 
         <label for="Age">อายุ&nbsp;</label>
-        <input type="int" id="Age" name="Age" value="{{ train['Age'] }}">
+        <input type="int" id="Age" name="Age" value="{{ trains['Age'] }}">
         &nbsp;&nbsp;&nbsp;
 
-        <input type="checkbox" id="pregnant" name="pregnant" value="1" value="{{ train['pregnant'] }}">
+        <input type="checkbox" id="pregnant" name="pregnant" value="1" value="{{ trains['pregnant'] }}">
         <label for="pregnant">ตั้งครรภ์</label>
         &nbsp;&nbsp;&nbsp;
 
-        <label for="hm_id">ยาสมุนไพร : {{ herbal['hm_id'] }} - {{ herbal['hm_name'] }}</label>
+        <label for="hm_id">ยาสมุนไพร : {{ herbals['hm_id'] }} - {{ herbals['hm_name'] }}</label>
         <br><br>
 
         <table>
             <tr>
                 <td>
-                    <input type="checkbox" id="dizziness1" name="dizziness1" value="{{ train['dizziness1'] }}">
+                    <input type="checkbox" id="dizziness1" name="dizziness1" value="{{ trains['dizziness1'] }}">
                     <label for="dizziness1">เวียนหัว</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="flatulence" name="flatulence" value="{{ train['flatulence'] }}">
+                    <input type="checkbox" id="flatulence" name="flatulence" value="{{ trains['flatulence'] }}">
                     <label for="flatulence">ท้องอืด ท้องเฟ้อ</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="menstruation" name="menstruation" value="{{ train['menstruation'] }}">
+                    <input type="checkbox" id="menstruation" name="menstruation" value="{{ trains['menstruation'] }}">
                     <label for="menstruation">ประจำเดือนมาไม่สม่ำเสมอ</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="fever1" name="fever1" value="{{ train['fever1'] }}">
+                    <input type="checkbox" id="fever1" name="fever1" value="{{ trains['fever1'] }}">
                     <label for="fever1">ไข้</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="body_aches" name="body_aches" value="{{ train['body_aches'] }}">
+                    <input type="checkbox" id="body_aches" name="body_aches" value="{{ trains['body_aches'] }}">
                     <label for="body_aches">ปวดเมื่อยตามร่างกาย</label>
                 </td>
             </tr>
