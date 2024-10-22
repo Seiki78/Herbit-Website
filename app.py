@@ -322,7 +322,7 @@ def add_trains():
     herbals = herbals_data_collection.find()
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
-    return redirect(url_for('manage_trains', herbals=herbals))
+    return render_template('manage_trains.html', herbals=herbals)
 
 @app.route('/delete_trains/<train_id>', methods=['POST'])
 def delete_trains(train_id):
