@@ -190,8 +190,10 @@ def manage_trains():
     # ดึงข้อมูลจาก MongoDB โดยใช้ skip และ limit เพื่อแบ่งข้อมูลตามหน้า
     trains = trains_collection.find().skip((page - 1) * per_page).limit(per_page)
 
+    # ดึงข้อมูล collection herbals_data
+    herbals = herbals_data_collection.find()
 
-    return render_template('manage_trains.html', trains=trains, page=page, total_pages=total_pages)
+    return render_template('manage_trains.html', trains=trains, page=page, total_pages=total_pages, herbals=herbals)
 
 @app.route('/add_trains', methods=['POST'])
 def add_trains():
