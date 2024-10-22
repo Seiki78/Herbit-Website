@@ -375,44 +375,6 @@ def edit_trains(train_id):
         Tight_numb = 1 if request.form.get('Tight_numb') else 0
         muscles_tendons = 1 if request.form.get('muscles_tendons') else 0
         dizziness5 = 1 if request.form.get('dizziness5') else 0
-
-        # pregnant = 0 if pregnant is None else 1
-        # dizziness1 = 0 if dizziness1 is None else 1
-        # Palpitations = 0 if Palpitations is None else 1
-        # squeamish = 0 if squeamish is None else 1
-        # vomit = 0 if vomit is None else 1
-        # dizziness2 = 0 if dizziness2 is None else 1
-        # dizziness3 = 0 if dizziness3 is None else 1
-        # dizziness4 = 0 if dizziness4 is None else 1
-        # colic1 = 0 if colic1 is None else 1
-        # tired = 0 if tired is None else 1
-        # cannot_sleep = 0 if cannot_sleep is None else 1
-        # flatulence = 0 if flatulence is None else 1
-        # stomach_ache = 0 if stomach_ache is None else 1
-        # constipation1 = 0 if constipation1 is None else 1
-        # diarrhea1 = 0 if diarrhea1 is None else 1
-        # hemorrhoids = 0 if hemorrhoids is None else 1
-        # menstruation = 0 if menstruation is None else 1
-        # Menstrual_cramps = 0 if Menstrual_cramps is None else 1
-        # postpartum_woman = 0 if postpartum_woman is None else 1
-        # Lochia = 0 if Lochia is None else 1
-        # Vaginal_Discharge = 0 if Vaginal_Discharge is None else 1
-        # Nourish_blood = 0 if Nourish_blood is None else 1
-        # fever1 = 0 if fever1 is None else 1
-        # inner_heat = 0 if inner_heat is None else 1
-        # Measles = 0 if Measles is None else 1
-        # Chickenpox = 0 if Chickenpox is None else 1
-        # fever2 = 0 if fever2 is None else 1
-        # fever3 = 0 if fever3 is None else 1
-        # cough = 0 if cough is None else 1
-        # phlegm = 0 if phlegm is None else 1
-        # cold = 0 if cold is None else 1
-        # Allergic_Rhinitis = 0 if Allergic_Rhinitis is None else 1
-        # body_aches = 0 if body_aches is None else 1
-        # tendon = 0 if tendon is None else 1
-        # Tight_numb = 0 if Tight_numb is None else 1
-        # muscles_tendons = 0 if muscles_tendons is None else 1
-        # dizziness5 = 0 if dizziness5 is None else 1
         
         # อัปเดตข้อมูลทุกอย่างใน MongoDB
         trains_collection.update_one({'_id': ObjectId(train_id)}, {'$set': {'Age': Age, 'pregnant': pregnant, 'dizziness1': dizziness1, 'Palpitations': Palpitations,
