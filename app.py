@@ -396,7 +396,7 @@ def edit_trains(train_id):
     train = trains_collection.find_one({'_id': ObjectId(train_id)})
 
     # ดึง hm_id จาก train นั้นๆ และหา herbal ที่เกี่ยวข้อง
-    selected_herbal = herbals_data_collection.find_one({'hm_id': train['hm_id']})
+    selected_herbal = herbals_data_collection.find_one({'hm_id': int(train['hm_id'])})
     
     return render_template('edit_trains.html', train=train, selected_herbal=selected_herbal)
 
