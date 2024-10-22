@@ -102,13 +102,13 @@
 
     </div>
 
-    <form action="{{ url_for('edit_trains', train_id=trains['_id']) }}" method="POST">
+    <form action="{{ url_for('edit_trains', train_id=train['_id']) }}" method="POST">
 
         <label for="Age">อายุ&nbsp;</label>
-        <input type="int" id="Age" name="Age" value="{{ trains['Age'] }}">
+        <input type="int" id="Age" name="Age" value="{{ train['Age'] }}">
         &nbsp;&nbsp;&nbsp;
 
-        <input type="checkbox" id="pregnant" name="pregnant" value="1" value="{{ trains['pregnant'] }}">
+        <input type="checkbox" id="pregnant" name="pregnant" value="1" value="{{ train['pregnant'] }}">
         <label for="pregnant">ตั้งครรภ์</label>
         &nbsp;&nbsp;&nbsp;
 
@@ -122,23 +122,23 @@
         <table>
             <tr>
                 <td>
-                    <input type="checkbox" id="dizziness1" name="dizziness1" value="1" {% if trains['dizziness1'] == 1 %}checked{% endif %}>
+                    <input type="checkbox" id="dizziness1" name="dizziness1" value="1" {% if train['dizziness1'] == 1 %}checked{% endif %}>
                     <label for="dizziness1">เวียนหัว</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="flatulence" name="flatulence" value="1" {% if trains['flatulence'] == 1 %}checked{% endif %}>
+                    <input type="checkbox" id="flatulence" name="flatulence" value="1" {% if train['flatulence'] == 1 %}checked{% endif %}>
                     <label for="flatulence">ท้องอืด ท้องเฟ้อ</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="menstruation" name="menstruation" value="1" {% if trains['menstruation'] == 1 %}checked{% endif %}>
+                    <input type="checkbox" id="menstruation" name="menstruation" value="1" {% if train['menstruation'] == 1 %}checked{% endif %}>
                     <label for="menstruation">ประจำเดือนมาไม่สม่ำเสมอ</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="fever1" name="fever1" value="1" {% if trains['fever1'] == 1 %}checked{% endif %}>
+                    <input type="checkbox" id="fever1" name="fever1" value="1" {% if train['fever1'] == 1 %}checked{% endif %}>
                     <label for="fever1">ไข้</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="body_aches" name="body_aches" value="1" {% if trains['body_aches'] == 1 %}checked{% endif %}>
+                    <input type="checkbox" id="body_aches" name="body_aches" value="1" {% if train['body_aches'] == 1 %}checked{% endif %}>
                     <label for="body_aches">ปวดเมื่อยตามร่างกาย</label>
                 </td>
             </tr>

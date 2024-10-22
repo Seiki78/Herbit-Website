@@ -393,12 +393,12 @@ def edit_trains(train_id):
         return redirect(url_for('manage_trains'))
     
     # ดึงข้อมูล trains ที่ต้องการแก้ไข
-    trains = trains_collection.find_one({'_id': ObjectId(train_id)})
+    train = trains_collection.find_one({'_id': ObjectId(train_id)})
 
     # ดึง hm_id จาก train นั้นๆ และหา herbal ที่เกี่ยวข้อง
-    selected_herbal = herbals_data_collection.find_one({'hm_id': trains['hm_id']})
+    selected_herbal = herbals_data_collection.find_one({'hm_id': train['hm_id']})
     
-    return render_template('edit_trains.html', trains=trains, selected_herbal=selected_herbal)
+    return render_template('edit_trains.html', train=train, selected_herbal=selected_herbal)
 
 if __name__ == '__main__':
 
