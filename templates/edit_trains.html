@@ -112,7 +112,9 @@
         <label for="pregnant">ตั้งครรภ์</label>
         &nbsp;&nbsp;&nbsp;
 
-        <label for="hm_id">ยาสมุนไพร : {{ selected_herbal['hm_id'] }} - {{ selected_herbal['hm_name'] }}</label>
+        {% if selected_herbal %}
+            <label for="hm_id">ยาสมุนไพร : {{ selected_herbal['hm_id'] }} - {{ selected_herbal['hm_name'] }}</label>
+        {% else %}
         <br><br>
 
         <table>
