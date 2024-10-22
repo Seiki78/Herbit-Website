@@ -102,7 +102,7 @@
 
     </div>
 
-    <form action="{{ url_for('edit_trains', train_id=train['_id']) }}" method="POST">
+    <form action="{{ url_for('edit_trains', train_id=trains['_id']) }}" method="POST">
 
         <label for="Age">อายุ&nbsp;</label>
         <input type="int" id="Age" name="Age" value="{{ trains['Age'] }}">
