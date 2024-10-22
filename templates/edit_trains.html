@@ -102,16 +102,192 @@
 
     </div>
 
-	
-	<form action="{{ url_for('edit_chronic', chronic_id=chronic['_id']) }}" method="POST">
-		<label for="Age">อายุ</label>
-        <input type="int" id="Age" name="Age" value="{{ train['Age'] }}" required><br>
+    <form action="{{ url_for('edit_trains', train_id=train['_id']) }}" method="POST">
 
+        <label for="Age">อายุ {{ Age }}</label>
+        <input type="int" id="Age" name="Age" value="{{ train['Age'] }}"  required>
+        &nbsp;&nbsp;&nbsp;
+
+        <input type="checkbox" id="pregnant" name="pregnant" value="1" value="{{ train['pregnant'] }}">
         <label for="pregnant">ตั้งครรภ์</label>
-        <input type="checkbox" id="pregnant" name="pregnant" value="{{ train['pregnant'] }}">
+        <br><br>
 
-		<button type="submit">บันทึกการแก้ไข</button>
-	</form>
+        <table>
+            <tr>
+                <td>
+                    <input type="checkbox" id="dizziness1" name="dizziness1" value="{{ train['dizziness1'] }}">
+                    <label for="dizziness1">เวียนหัว</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="flatulence" name="flatulence" value="{{ train['flatulence'] }}">
+                    <label for="flatulence">ท้องอืด ท้องเฟ้อ</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="menstruation" name="menstruation" value="{{ train['menstruation'] }}">
+                    <label for="menstruation">ประจำเดือนมาไม่สม่ำเสมอ</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="fever1" name="fever1" value="{{ train['fever1'] }}">
+                    <label for="fever1">ไข้</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="body_aches" name="body_aches" value="{{ train['body_aches'] }}">
+                    <label for="body_aches">ปวดเมื่อยตามร่างกาย</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="Palpitations" name="Palpitations" value="1">
+                    <label for="Palpitations">ใจสั่น ใจหวิว</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="stomach_ache" name="stomach_ache" value="1">
+                    <label for="stomach_ache">ปวดท้อง</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="Menstrual_cramps" name="Menstrual_cramps" value="1">
+                    <label for="Menstrual_cramps">ปวดประจำเดือน</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="inner_heat" name="inner_heat" value="1">
+                    <label for="inner_heat">ร้อนใน</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="tendon" name="tendon" value="1">
+                    <label for="tendon">ปวดตามเส้นเอ็น</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="squeamish" name="squeamish" value="1">
+                    <label for="squeamish">คลื่นไส้</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="constipation1" name="constipation1" value="1">
+                    <label for="constipation1">ท้องผูก</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="postpartum_woman" name="postpartum_woman" value="1">
+                    <label for="postpartum_woman">หญิงหลังคลอด</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="Measles" name="Measles" value="1">
+                    <label for="Measles">พิษหัด</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="Tight_numb" name="Tight_numb" value="1">
+                    <label for="Tight_numb">กล้ามเนื้อมือ เท้า ตึงหรือชา</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="vomit" name="vomit" value="1">
+                    <label for="vomit">อาเจียน</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="diarrhea1" name="diarrhea1" value="1">
+                    <label for="diarrhea1">ท้องเสีย</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="Lochia" name="Lochia" value="1">
+                    <label for="Lochia">น้ำคาวปลา</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="Chickenpox" name="Chickenpox" value="1">
+                    <label for="Chickenpox">พิษอีสุกอีใส</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="muscles_tendons" name="muscles_tendons" value="1">
+                    <label for="muscles_tendons">กษัยเส้น</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="dizziness2" name="dizziness2" value="1">
+                    <label for="dizziness2">หน้ามืด</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="hemorrhoids" name="hemorrhoids" value="1">
+                    <label for="hemorrhoids">ริดสีดวงทวาร</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="Vaginal_Discharge" name="Vaginal_Discharge" value="1">
+                    <label for="Vaginal_Discharge">ตกขาว</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="fever2" name="fever2" value="1">
+                    <label for="fever2">ไข้ตานซาง</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="dizziness5" name="dizziness5" value="1">
+                    <label for="dizziness5">ลมกองหยาบ</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="dizziness3" name="dizziness3" value="1">
+                    <label for="dizziness3">ตาลาย</label>
+                </td>
+                <td></td>
+                <td>
+                    <input type="checkbox" id="Nourish_blood" name="Nourish_blood" value="1">
+                    <label for="Nourish_blood">บำรุงเลือด</label>
+                </td>
+                <td>
+                    <input type="checkbox" id="fever3" name="fever3" value="1">
+                    <label for="fever3">ไข้กาฬ</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="dizziness4" name="dizziness4" value="1">
+                    <label for="dizziness4">อาการหลังจากฟื้นไข้</label>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="checkbox" id="cough" name="cough" value="1">
+                    <label for="cough">ไอ</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="colic1" name="colic1" value="1">
+                    <label for="colic1">จุกเสียด</label>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="checkbox" id="phlegm" name="phlegm" value="1">
+                    <label for="phlegm">เสมหะ</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="tired" name="tired" value="1">
+                    <label for="tired">อ่อนเพลีย</label>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    <input type="checkbox" id="Allergic_Rhinitis" name="Allergic_Rhinitis" value="1">
+                    <label for="Allergic_Rhinitis">แพ้อากาศ</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" id="cannot_sleep" name="cannot_sleep" value="1">
+                    <label for="cannot_sleep">นอนไม่หลับ</label>
+                </td>
+            </tr>
+
+        </table> 
+
+        
+        
+
+        <button type="submit">บันทึกการแก้ไข</button>
+    </form>
 	
 
 </main>
