@@ -432,7 +432,11 @@ def edit_trains(train_id):
     
     # ดึงข้อมูล trains ที่ต้องการแก้ไข
     trains = trains_collection.find_one({'_id': ObjectId(train_id)})
-    return render_template('edit_trains.html', trains=trains)
+
+    # ดึงข้อมูล collection herbals_data
+    herbals = herbals_data_collection.find()
+    
+    return render_template('edit_trains.html', trains=trains, herbals=herbals)
 
 if __name__ == '__main__':
 

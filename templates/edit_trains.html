@@ -104,7 +104,7 @@
 
     <form action="{{ url_for('edit_trains', train_id=train['_id']) }}" method="POST">
 
-        <label for="Age">อายุ {{ Age }}</label>
+        <label for="Age">อายุ&nbsp;</label>
         <input type="int" id="Age" name="Age" value="{{ train['Age'] }}">
         &nbsp;&nbsp;&nbsp;
 
@@ -112,7 +112,7 @@
         <label for="pregnant">ตั้งครรภ์</label>
         &nbsp;&nbsp;&nbsp;
 
-        <label for="pregnant">ยาสมุนไพร : {{ herbal[hm_id] }} - {{ herbal[hm_name] }}</label>
+        <label for="hm_id">ยาสมุนไพร : {{ herbal['hm_id'] }} - {{ herbal['hm_name'] }}</label>
         <br><br>
 
         <table>
