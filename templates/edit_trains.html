@@ -112,29 +112,29 @@
         <label for="pregnant">ตั้งครรภ์</label>
         &nbsp;&nbsp;&nbsp;
 
-        <label for="hm_id">ยาสมุนไพร : {{ herbals['hm_id'] }} - {{ herbals['hm_name'] }}</label>
+        <label for="hm_id">ยาสมุนไพร : {{ selected_herbal['hm_id'] }} - {{ selected_herbal['hm_name'] }}</label>
         <br><br>
 
         <table>
             <tr>
                 <td>
-                    <input type="checkbox" id="dizziness1" name="dizziness1" value="{{ trains['dizziness1'] }}">
+                    <input type="checkbox" id="dizziness1" name="dizziness1" value="1" {% if trains['dizziness1'] == 1 %}checked{% endif %}>
                     <label for="dizziness1">เวียนหัว</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="flatulence" name="flatulence" value="{{ trains['flatulence'] }}">
+                    <input type="checkbox" id="flatulence" name="flatulence" value="1" {% if trains['flatulence'] == 1 %}checked{% endif %}>
                     <label for="flatulence">ท้องอืด ท้องเฟ้อ</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="menstruation" name="menstruation" value="{{ trains['menstruation'] }}">
+                    <input type="checkbox" id="menstruation" name="menstruation" value="1" {% if trains['menstruation'] == 1 %}checked{% endif %}>
                     <label for="menstruation">ประจำเดือนมาไม่สม่ำเสมอ</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="fever1" name="fever1" value="{{ trains['fever1'] }}">
+                    <input type="checkbox" id="fever1" name="fever1" value="1" {% if trains['fever1'] == 1 %}checked{% endif %}>
                     <label for="fever1">ไข้</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="body_aches" name="body_aches" value="{{ trains['body_aches'] }}">
+                    <input type="checkbox" id="body_aches" name="body_aches" value="1" {% if trains['body_aches'] == 1 %}checked{% endif %}>
                     <label for="body_aches">ปวดเมื่อยตามร่างกาย</label>
                 </td>
             </tr>
