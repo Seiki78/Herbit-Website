@@ -167,7 +167,7 @@
     <!-- <h4>เพิ่มข้อมูล</h4> -->
     <form action="{{ url_for('add_trains') }}" method="POST">
 
-        <label for="Age">อายุ {{ Age }}</label>
+        <label for="Age">อายุ&nbsp;</label>
         <input type="int" id="Age" name="Age" required>
         &nbsp;&nbsp;&nbsp;
 
@@ -344,10 +344,18 @@
                 </td>
             </tr>
 
-        </table> 
+        </table>
+        <br><br>
 
-        
-        
+        <label for="hm_id">ยาสมุนไพร&nbsp;</label>
+        <select name="hm_id" id="hm_id" required>
+            <option value="">--เลือก--</option>
+
+            {% for herbal in herbals %}
+            <option value="{{ herbal['hm_id'] }}">{{ herbal['hm_id'] }} - {{ herbal['hm_name'] }}</option>
+            {% endfor %}
+
+        </select>
 
         <button type="submit">เพิ่ม</button>
     </form><br>
