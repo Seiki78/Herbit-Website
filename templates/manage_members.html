@@ -133,14 +133,14 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    {% if user_count == 0 %}
-                    <tr>
-                        <td>ไม่มีข้อมูลผู้ดูแลระบบ</td>
-                    </tr> 
+                    {% set admin_users = users | selectattr('role', 'equalto', 'admin') | list %}
+                
+                    {% if admin_users | length == 0 %}
+                        <tr>
+                            <td colspan="6">ไม่มีข้อมูลผู้ดูแลระบบ</td>
+                        </tr>
                     {% else %}
-                        {% for user in users %}
-                        {% if user['role'] == 'admin' %}
+                        {% for user in admin_users %}
                         <tr>
                             <td>{{ user['username'] }}</td>
                             <td>{{ user['email'] }}</td>
@@ -154,8 +154,8 @@
                         </tr>
                         {% endfor %}
                     {% endif %}
-
                 </tbody>
+                
             </table>
             <br>
         
@@ -183,13 +183,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% if user_count == 0 %}
-                    <tr>
-                        <td>ไม่มีข้อมูลสมาชิก</td>
-                    </tr> 
+                    {% set member_users = users | selectattr('role', 'equalto', 'member') | list %}
+                
+                    {% if member_users | length == 0 %}
+                        <tr>
+                            <td colspan="6">ไม่มีข้อมูลสมาชิก</td>
+                        </tr>
                     {% else %}
-                        {% for user in users %}
-                        {% if user['role'] == 'member' %}
+                        {% for user in admin_users %}
                         <tr>
                             <td>{{ user['username'] }}</td>
                             <td>{{ user['email'] }}</td>
@@ -203,8 +204,8 @@
                         </tr>
                         {% endfor %}
                     {% endif %}
-
                 </tbody>
+                
             </table>
             <br>
         
