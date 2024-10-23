@@ -107,6 +107,11 @@
                     <a class="active" href="">หน้าหลัก</a>
                 </li>
             </ul> -->
+            <ul>
+                {% for user in users %}
+                <li>{{ user['username'] }} - {{ user['role'] }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 
@@ -168,13 +173,7 @@
             </a>
             <div class="head">
                 <h1>สมาชิก</h1>
-                <ul>
-                    {% for user in users %}
-                    <li>{{ user['username'] }} - {{ user['role'] }}</li>
-                    {% endfor %}
-                </ul>
-                
-                
+              
             </div>
             
             <table>
