@@ -108,10 +108,11 @@
                 </li>
             </ul> -->
             <ul>
-                {% for user in users %}
-                <li>{{ user['username'] }} - {{ user['role'] }}</li>
+                <li>จำนวนสมาชิก: {{ member_users | length }}</li>
+                {% for user in member_users %}
+                    <li>{{ user['username'] }} - {{ user['role'] }}</li>
                 {% endfor %}
-            </ul>
+            </ul>            
         </div>
     </div>
 
