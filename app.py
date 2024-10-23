@@ -400,6 +400,15 @@ def edit_trains(train_id):
     
     return render_template('edit_trains.html', train=train, selected_herbal=selected_herbal)
 
+@app.route('/manage_members')
+def manage_members():
+
+    # ดึงข้อมูลผู้ใช้ทั้งหมดจาก Collection
+    users = users_collection.find()
+    user_count = users_collection.count_documents({})
+
+    return render_template('manage_members.html', users=users, user_count=user_count)
+
 if __name__ == '__main__':
 
     port = int(os.environ.get("PORT", 5000))

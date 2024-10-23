@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <title>จัดการข้อมูล Trainning Model</title>
+    <title>Trainning Model</title>
 </head> 
 <body>
     
@@ -25,30 +25,54 @@
 			<span class="text">Mongo</span>
 		</a>
 		<ul class="side-menu top">
-            <li>
-				<a href="{{ url_for('index') }}">
-					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">Mongo test</span>
+			<li>
+				<a href="">
+					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">แดชบอร์ด</span>
 				</a>
 			</li>
-			<li class="active">
-				<a href="{{ url_for('manage_chronics') }}">
-					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">จัดการโรคประจำตัว</span>
+            <li>
+				<a href="">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='group.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการสมาชิก</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='leaf_01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการยาสมุนไพร</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='medicine.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูลยา</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='prevent.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูลโรคและอาการ</span>
+				</a>
+			</li>
+            <li>
+				<a href="">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='no-milk.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูลการแพ้</span>
+				</a>
+			</li>
+            <li class="active">
+				<a href="{{ url_for('manage_trains') }}">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='database.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูล Training</span>
 				</a>
 			</li>
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="" class="btn-open-modal btn-changepass" id="">
-					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<p class="text">เข้าสู่ระบบ</p>
-				</a>
-			</li>
-			<li>
-				<a href="" class="btn-open-modal btn-changepass" id="">
-					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<p class="text">สมัครสมาชิก</p>
+				<a href="{{ url_for('logout') }}" class="logout">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='logout.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">ออกจากระบบ</span>
 				</a>
 			</li>
 		</ul>
