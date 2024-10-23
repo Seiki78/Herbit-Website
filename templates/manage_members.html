@@ -118,7 +118,7 @@
             </a>
             <div class="head">
                 <h1>ผู้ดูแลระบบ</h1>
-                <img src="" class="icon-mini" alt="Menu Icon">
+                <img src="{{ url_for('static', filename='crown.png') }}" class="icon-mini" alt="Menu Icon">
             </div>
 
             <table>
@@ -190,7 +190,7 @@
                             <td colspan="6">ไม่มีข้อมูลสมาชิก</td>
                         </tr>
                     {% else %}
-                        {% for user in admin_users %}
+                        {% for user in member_users %}
                         <tr>
                             <td>{{ user['username'] }}</td>
                             <td>{{ user['email'] }}</td>
