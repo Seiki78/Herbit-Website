@@ -404,7 +404,7 @@ def edit_trains(train_id):
 def manage_members():
 
     # ดึงข้อมูลทั้งหมดจาก Collection
-    users = users_collection.find()
+    users = list(users_collection.find())
 
     return render_template('manage_members.html', users=users)
 
