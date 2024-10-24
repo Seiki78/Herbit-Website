@@ -136,22 +136,20 @@
                 </thead>
                 <tbody>
                     {% set admin_users = users | selectattr('role', 'equalto', 'admin') | list %}
-                
                     {% if admin_users | length == 0 %}
                         <tr>
-                            <td colspan="6">ไม่มีข้อมูลผู้ดูแลระบบ</td>
+                            <td colspan="5">ไม่มีข้อมูลผู้ดูแลระบบ</td>
                         </tr>
                     {% else %}
                         {% for user in admin_users %}
                         <tr>
                             <td>{{ user['username'] }}</td>
                             <td>{{ user['email'] }}</td>
-                            <td>--&nbsp;&nbsp;--</td>
                             <td>{{ user['role'] }}</td>
-                            <td><a href="">คลิกเพื่อดู</a></td>
+                            <td><a href="#">คลิกเพื่อดู</a></td>
                             <td>
-                                <a href="">แก้ไข</a>
-                                <a href="">ลบ</a>
+                                <a href="#">แก้ไข</a> |
+                                <a href="#">ลบ</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -186,7 +184,6 @@
                 </thead>
                 <tbody>
                     {% set member_users = users | selectattr('role', 'equalto', 'member') | list %}
-                
                     {% if member_users | length == 0 %}
                         <tr>
                             <td colspan="6">ไม่มีข้อมูลสมาชิก</td>
@@ -196,12 +193,11 @@
                         <tr>
                             <td>{{ user['username'] }}</td>
                             <td>{{ user['email'] }}</td>
-                            <td>--&nbsp;&nbsp;--</td>
                             <td>{{ user['role'] }}</td>
-                            <td><a href="">คลิกเพื่อดู</a></td>
+                            <td><a href="#">คลิกเพื่อดู</a></td>
                             <td>
-                                <a href="">แก้ไข</a>
-                                <a href="">ลบ</a>
+                                <a href="#">แก้ไข</a> |
+                                <a href="#">ลบ</a>
                             </td>
                         </tr>
                         {% endfor %}

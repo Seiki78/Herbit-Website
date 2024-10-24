@@ -403,11 +403,10 @@ def edit_trains(train_id):
 @app.route('/manage_members')
 def manage_members():
 
-    # ดึงข้อมูลผู้ใช้ทั้งหมดจาก Collection
+    # ดึงข้อมูลทั้งหมดจาก Collection
     users = users_collection.find()
-    user_count = users_collection.count_documents({})
 
-    return render_template('manage_members.html', users=users, user_count=user_count)
+    return render_template('manage_members.html', users=users)
 
 if __name__ == '__main__':
 
