@@ -408,6 +408,14 @@ def manage_members():
 
     return render_template('manage_members.html', users=users)
 
+@app.route('/manage_herbals')
+def manage_herbals():
+
+    # ดึงข้อมูลทั้งหมดจาก Collection
+    herbals = herbals_data_collection.find()
+
+    return render_template('manage_herbals.html', herbals=herbals)
+
 if __name__ == '__main__':
 
     port = int(os.environ.get("PORT", 5000))
