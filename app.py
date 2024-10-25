@@ -408,6 +408,14 @@ def manage_members():
 
     return render_template('manage_members.html', users=users)
 
+@app.route('/delete_member/<user_id>', methods=['POST'])
+def delete_member(user_id):
+    # ลบข้อมูลยาสมุนไพรออกจาก MongoDB โดยใช้ ObjectId
+    users_collection.delete_one({'_id': ObjectId(user_id)})
+    
+    flash('ลบข้อมูลสำเร็จ!', 'success')
+    return redirect(url_for('manage_members'))
+
 @app.route('/manage_herbals')
 def manage_herbals():
 
