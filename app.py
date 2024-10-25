@@ -411,10 +411,16 @@ def manage_members():
 @app.route('/manage_herbals')
 def manage_herbals():
 
-    # ดึงข้อมูลทั้งหมดจาก Collection
-    herbals = herbals_data_collection.find()
+    page = request.args.get('page', 1, type=int)  # รับค่าหน้าจาก URL หรือกำหนดเป็นหน้า 1 ถ้าไม่มีการส่งมา
+    per_page = 25  # กำหนดจำนวนข้อมูลต่อหน้า
+    herbals_count = herbals_data_collection.count_documents({})  # นับจำนวนเอกสารทั้งหมด
+    total_pages = (herbals_count + per_page - 1) // per_page  # คำนวณจำนวนหน้าทั้งหมด
 
-    return render_template('manage_herbals.html', herbals=herbals)
+    # ดึงข้อมูลจาก MongoDB โดยใช้ skip และ limit เพื่อแบ่งข้อมูลตามหน้า
+    herbals = herbals_data_collection.find().skip((page - 1) * per_page).limit(per_page)
+
+
+    return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages)
 
 @app.route('/add_herbal', methods=['POST'])
 def add_herbal():
@@ -434,6 +440,14 @@ def add_herbal():
     herbals_data_collection.insert_one({'hm_id': hm_id, 'hm_name': hm_name, 'hm_dosage': hm_dosage})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
+    return redirect(url_for('manage_herbals'))
+
+@app.route('/delete_herbal/<herbal_id>', methods=['POST'])
+def delete_herbal(herbal_id):
+    # ลบข้อมูลยาสมุนไพรออกจาก MongoDB โดยใช้ ObjectId
+    herbals_data_collection.delete_one({'_id': ObjectId(herbal_id)})
+    
+    flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_herbals'))
 
 if __name__ == '__main__':

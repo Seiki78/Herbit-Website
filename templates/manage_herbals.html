@@ -101,12 +101,12 @@
 <main>
     <div class="head-title">
         <div class="left">
-            <h2>ยาสมุนไพร</h2>
-            <ul class="breadcrumb">
+            <h2>ข้อมูลยาสมุนไพร</h2>
+            <!-- <ul class="breadcrumb">
                 <li>
                     <a href="{{ url_for('manage_herbals') }}" class="active">จัดการข้อมูล</a>
                 </li>
-            </ul>
+            </ul> -->
         </div>
 
     </div>
@@ -116,7 +116,7 @@
         <label for="hm_name">ชื่อยาสมุนไพร</label>
         <input type="text" id="hm_name" name="hm_name" required>
         <label for="hm_dosage">วิธีใช้</label>
-        <input type="text" id="hm_dosage" name="hm_dosage" required><br>
+        <input type="text" id="hm_dosage" name="hm_dosage" required>
         <button type="submit">เพิ่ม</button>
     </form><br>
 
@@ -125,9 +125,6 @@
 
             <table>
                 <thead>
-                    <tr>
-                        <th colspan="2">ข้อมูลยาสมุนไพร</th>
-                    </tr>
                     <tr>
                         <th>รหัส</th>
                         <th>ชื่อยาสมุนไพร</th>
@@ -157,6 +154,20 @@
             </table>
 
         </div>
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('manage_herbals', page=page-1) }}">ก่อนหน้า</a>
+        {% endif %}
+        
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('manage_herbals', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+        {% endfor %}
+    
+        {% if page < total_pages %}
+            <a href="{{ url_for('manage_herbals', page=page+1) }}">ถัดไป</a>
+        {% endif %}
     </div>
 
       
