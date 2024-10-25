@@ -416,6 +416,26 @@ def manage_herbals():
 
     return render_template('manage_herbals.html', herbals=herbals)
 
+@app.route('/add_herbal', methods=['POST'])
+def add_herbal():
+
+    # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี cn_id มากที่สุด
+    last_herbal = herbals_data_collection.find_one(sort=[("hm_id", -1)])
+    
+    # ถ้ามีเอกสารอยู่ ให้เอา hm_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 301
+    if last_herbal:
+        hm_id = last_herbal['hm_id'] + 1
+    else:
+        hm_id = 301  # กำหนดค่าเริ่มต้นเป็น 301 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
+    hm_name = request.form['hm_name']
+    hm_dosage = request.form['hm_dosage']
+    
+    # เพิ่มข้อมูลใหม่ลงใน Collection chronic
+    herbals_data_collection.insert_one({'hm_id': hm_id, 'hm_name': hm_name, 'hm_dosage': hm_dosage})
+    
+    flash('เพิ่มข้อมูลสำเร็จ', 'success')
+    return redirect(url_for('manage_herbals'))
+
 if __name__ == '__main__':
 
     port = int(os.environ.get("PORT", 5000))

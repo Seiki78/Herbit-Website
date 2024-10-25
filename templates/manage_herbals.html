@@ -112,11 +112,11 @@
     </div>
 
     <h4>เพิ่มข้อมูล</h4>
-    <form action="{{ url_for('add_chronic') }}" method="POST">
+    <form action="{{ url_for('add_herbal') }}" method="POST">
         <label for="hm_name">ชื่อยาสมุนไพร</label>
-        <input type="text" id="hm_name" name="hm_name" required><br>
+        <input type="text" id="hm_name" name="hm_name" required>
         <label for="hm_dosage">วิธีใช้</label>
-        <input type="text" id="hm_dosage" name="hm_dosage" required>
+        <input type="text" id="hm_dosage" name="hm_dosage" required><br>
         <button type="submit">เพิ่ม</button>
     </form><br>
 
@@ -126,14 +126,13 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ข้อมูลยาสมุนไพร</th>
-                        <th colspan="2"></th>
+                        <th colspan="2">ข้อมูลยาสมุนไพร</th>
                     </tr>
                     <tr>
-                        <td>รหัส</td>
-                        <td>ชื่อยาสมุนไพร</td>
+                        <th>รหัส</th>
+                        <th>ชื่อยาสมุนไพร</th>
                         <th>วิธีใช้</th>
-                        <td></td>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
