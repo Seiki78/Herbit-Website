@@ -139,7 +139,7 @@
                         <td>{{ herbal['hm_name'] }}</td>
                         <td>{{ herbal['hm_dosage'] }}</td>
                         <td>
-                            <form action="" method="POST" style="display:inline;">
+                            <form action="{{ url_for('delete_herbal', herbal_id=herbal['_id']) }}" method="POST" style="display:inline;">
                                 <button type="submit">ลบ</button>
                             </form>
                             <a href="">แก้ไข</a>
