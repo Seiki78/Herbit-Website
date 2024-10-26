@@ -514,7 +514,7 @@ def manage_chronics():
     # ดึงข้อมูลทั้งหมดจาก Collection
     chronics = chronics_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
 
-    return render_template('manage_chronics.html', chronics=chronics)
+    return render_template('manage_symptoms.html', chronics=chronics)
 
 @app.route('/add_chronic', methods=['POST'])
 def add_chronic():
@@ -533,7 +533,7 @@ def add_chronic():
     chronics_data_collection.insert_one({'cn_id': cn_id, 'cn_n': cn_n})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
-    return redirect(url_for('manage_chronics'))
+    return redirect(url_for('manage_symptoms'))
 
 @app.route('/delete_chronic/<chronic_id>', methods=['POST'])
 def delete_chronic(chronic_id):
@@ -541,7 +541,7 @@ def delete_chronic(chronic_id):
     chronics_data_collection.delete_one({'_id': ObjectId(chronic_id)})
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
-    return redirect(url_for('manage_chronics'))
+    return redirect(url_for('manage_symptoms'))
 
 @app.route('/manage_symptoms')
 def manage_symptoms():

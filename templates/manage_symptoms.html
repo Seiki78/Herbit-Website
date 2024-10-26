@@ -141,6 +141,17 @@
                     </tr>
                     {% endfor %}
                 </tbody>
+
+                <tr>
+                    <td colspan="3">
+                        <form action="{{ url_for('add_chronic') }}" method="POST">
+                            <label for="cn_n">ชื่อโรค/อาการ</label>
+                            <input type="text" id="cn_n" name="cn_n" required>
+                            <button type="submit">เพิ่ม</button>
+                        </form>
+                    </td>
+                    
+                </tr>
                 
             </table>
             <br>
@@ -183,6 +194,16 @@
                     </tr>
                     {% endfor %}
                 </tbody>
+                <tr>
+                    <td colspan="3">
+                        <form action="{{ url_for('add_symptom') }}" method="POST">
+                            <label for="st_name">ชื่อโรค/อาการ</label>
+                            <input type="text" id="st_name" name="st_name" required>
+                            <button type="submit">เพิ่ม</button>
+                        </form>
+                    </td>
+                    
+                </tr>
                 
             </table>
             <br>
