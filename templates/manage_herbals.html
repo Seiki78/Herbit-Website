@@ -111,14 +111,23 @@
 
     </div>
 
-    <h4>เพิ่มข้อมูล</h4>
-    <form action="{{ url_for('add_herbal') }}" method="POST">
-        <label for="hm_name">ชื่อยาสมุนไพร</label>
-        <input type="text" id="hm_name" name="hm_name" required>
-        <label for="hm_dosage">วิธีใช้</label>
-        <input type="text" id="hm_dosage" name="hm_dosage" required>
-        <button type="submit">เพิ่ม</button>
-    </form><br>
+    <div>
+        <div class="content">
+            <div class="text-container">
+                <h2 style="align-items: center;">เพิ่มข้อมูล</h2>
+
+                <form action="{{ url_for('add_herbal') }}" method="POST">
+                    <label for="hm_name">ชื่อยาสมุนไพร</label>
+                    <input type="text" id="hm_name" name="hm_name" required>
+                    <label for="hm_dosage">วิธีใช้</label>
+                    <input type="text" id="hm_dosage" name="hm_dosage" required>
+                    <button type="submit">เพิ่ม</button>
+                </form>
+
+            </div>
+        </div>
+    </div><br>
+    
 
     <div class="table-data">
         <div class="order">

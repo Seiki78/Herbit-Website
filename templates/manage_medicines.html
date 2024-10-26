@@ -112,7 +112,11 @@
     </div>
 
     <div>
-            <h4>เพิ่มข้อมูล</h4>
+        <div class="content">
+            <div class="text-container">
+                <h2 style="align-items: center;">เพิ่มข้อมูล</h2>
+            </div>
+        </div>
         <form action="{{ url_for('add_medicine') }}" method="POST">
             <label for="md_nameEN">ชื่อยา(ภาษาอังกฤษ)</label>
             <input type="text" id="md_nameEN" name="md_nameEN" required>&nbsp;&nbsp;
@@ -120,6 +124,7 @@
             <input type="text" id="md_nameTH" name="md_nameTH" required>
             <button type="submit">เพิ่ม</button>
         </form>
+
     </div><br>
     
 
