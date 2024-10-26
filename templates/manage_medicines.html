@@ -37,13 +37,13 @@
 					<span class="text">จัดการสมาชิก</span>
 				</a>
 			</li>
-			<li class="active">
+			<li>
 				<a href="{{ url_for('manage_herbals') }}">
 					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='leaf_01.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">จัดการยาสมุนไพร</span>
 				</a>
 			</li>
-			<li>
+			<li class="active">
 				<a href="{{ url_for('manage_medicines') }}">
 					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='medicine.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">จัดการข้อมูลยา</span>
@@ -101,7 +101,7 @@
 <main>
     <div class="head-title">
         <div class="left">
-            <h2>ข้อมูลยาสมุนไพร</h2>
+            <h2>ข้อมูลยา</h2>
             <!-- <ul class="breadcrumb">
                 <li>
                     <a href="{{ url_for('manage_herbals') }}" class="active">จัดการข้อมูล</a>
@@ -111,14 +111,17 @@
 
     </div>
 
-    <h4>เพิ่มข้อมูล</h4>
-    <form action="{{ url_for('add_herbal') }}" method="POST">
-        <label for="hm_name">ชื่อยาสมุนไพร</label>
-        <input type="text" id="hm_name" name="hm_name" required>
-        <label for="hm_dosage">วิธีใช้</label>
-        <input type="text" id="hm_dosage" name="hm_dosage" required>
-        <button type="submit">เพิ่ม</button>
-    </form><br>
+    <div>
+            <h4>เพิ่มข้อมูล</h4>
+        <form action="{{ url_for('add_medicine') }}" method="POST">
+            <label for="md_nameEN">ชื่อยา(ภาษาอังกฤษ)</label>
+            <input type="text" id="md_nameEN" name="md_nameEN" required>&nbsp;&nbsp;
+            <label for="md_nameTH">ชื่อยา(ภาษาไทย)</label>
+            <input type="text" id="md_nameTH" name="md_nameTH" required>
+            <button type="submit">เพิ่ม</button>
+        </form>
+    </div><br>
+    
 
     <div class="table-data">
         <div class="order">
@@ -127,27 +130,27 @@
                 <thead>
                     <tr>
                         <th>รหัส</th>
-                        <th>ชื่อยาสมุนไพร</th>
-                        <th>วิธีใช้</th>
+                        <th>ชื่อยา(ภาษาอังกฤษ)</th>
+                        <th>ชื่อยา(ภาษาไทย)</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for herbal in herbals %}
+                    {% for medicine in medicines %}
                     <tr>
-                        <td>{{ herbal['hm_id'] }}</td>
-                        <td>{{ herbal['hm_name'] }}</td>
-                        <td>{{ herbal['hm_dosage'] }}</td>
+                        <td>{{ herbal['md_id'] }}</td>
+                        <td>{{ herbal['md_nameEN'] }}</td>
+                        <td>{{ herbal['md_nameTH'] }}</td>
                         <td>
                             <a href="">แก้ไข</a>
-                            <form action="{{ url_for('delete_herbal', herbal_id=herbal['_id']) }}" method="POST" style="display:inline;">
+                            <form action="{{ url_for('delete_medicine', medicine_id=medicine['_id']) }}" method="POST" style="display:inline;">
                                 <button type="submit">ลบ</button>
                             </form> 
                         </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3">ไม่พบข้อมูลยาสมุนไพร</td>
+                        <td colspan="3">ไม่พบข้อมูลยา</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -158,15 +161,15 @@
 
     <div class="pagination">
         {% if page > 1 %}
-            <a href="{{ url_for('manage_herbals', page=page-1) }}">ก่อนหน้า</a>
+            <a href="{{ url_for('manage_medicines', page=page-1) }}">ก่อนหน้า</a>
         {% endif %}
         
         {% for p in range(1, total_pages + 1) %}
-            <a href="{{ url_for('manage_herbals', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+            <a href="{{ url_for('manage_medicines', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
         {% endfor %}
     
         {% if page < total_pages %}
-            <a href="{{ url_for('manage_herbals', page=page+1) }}">ถัดไป</a>
+            <a href="{{ url_for('manage_medicines', page=page+1) }}">ถัดไป</a>
         {% endif %}
     </div>
 
