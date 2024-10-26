@@ -132,21 +132,6 @@ def edit_user(user_id):
     user = users_collection.find_one({'_id': ObjectId(user_id)})
     return render_template('edit.html', user=user)
 
-@app.route('/edit_chronic/<chronic_id>', methods=['GET', 'POST'])
-def edit_chronic(chronic_id):
-    if request.method == 'POST':
-        cn_n = request.form['cn_n']
-        
-        # อัปเดตเฉพาะชื่อโรคใน MongoDB
-        chronics_data_collection.update_one({'_id': ObjectId(chronic_id)}, {'$set': {'cn_n': cn_n}})
-        
-        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
-        return redirect(url_for('manage_chronics'))
-    
-    # ดึงข้อมูลโรคที่ต้องการแก้ไข
-    chronic = chronics_data_collection.find_one({'_id': ObjectId(chronic_id)})
-    return render_template('edit_chronics.html', chronic=chronic)
-
 @app.route('/manage_trains')
 def manage_trains():
 
@@ -527,10 +512,10 @@ def add_chronic():
         cn_id = last_chronic['cn_id'] + 1
     else:
         cn_id = 101  # กำหนดค่าเริ่มต้นเป็น 101 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
-    cn_n = request.form['cn_n']
+    cn_name = request.form['cn_name']
     
     # เพิ่มข้อมูลใหม่ลงใน Collection chronic
-    chronics_data_collection.insert_one({'cn_id': cn_id, 'cn_n': cn_n})
+    chronics_data_collection.insert_one({'cn_id': cn_id, 'cn_name': cn_name})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_symptoms'))
@@ -542,6 +527,21 @@ def delete_chronic(chronic_id):
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_symptoms'))
+
+# @app.route('/edit_chronic/<chronic_id>', methods=['GET', 'POST'])
+# def edit_chronic(chronic_id):
+#     if request.method == 'POST':
+#         cn_n = request.form['cn_n']
+        
+#         # อัปเดตเฉพาะชื่อโรคใน MongoDB
+#         chronics_data_collection.update_one({'_id': ObjectId(chronic_id)}, {'$set': {'cn_n': cn_n}})
+        
+#         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+#         return redirect(url_for('manage_chronics'))
+    
+#     # ดึงข้อมูลโรคที่ต้องการแก้ไข
+#     chronic = chronics_data_collection.find_one({'_id': ObjectId(chronic_id)})
+#     return render_template('edit_chronics.html', chronic=chronic)
 
 @app.route('/manage_symptoms')
 def manage_symptoms():

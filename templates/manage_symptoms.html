@@ -31,7 +31,7 @@
 					<span class="text">แดชบอร์ด</span>
 				</a>
 			</li>
-            <li class="active">
+            <li>
 				<a href="{{ url_for('manage_members') }}">
 					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='group.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">จัดการสมาชิก</span>
@@ -49,7 +49,7 @@
 					<span class="text">จัดการข้อมูลยา</span>
 				</a>
 			</li>
-			<li>
+			<li class="active">
 				<a href="{{ url_for('manage_symptoms') }}">
 					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='prevent.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">จัดการข้อมูลโรคและอาการ</span>
@@ -137,13 +137,13 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="2">ไม่พบข้อมูล</td>
+                        <td colspan="3">ไม่พบข้อมูล</td>
                     </tr>
                     {% endfor %}
                 </tbody>
 
                 <tr>
-                    <td colspan="3">
+                    <td colspan="2">
                         <form action="{{ url_for('add_chronic') }}" method="POST">
                             <label for="cn_n">ชื่อโรค/อาการ</label>
                             <input type="text" id="cn_n" name="cn_n" required>
@@ -190,12 +190,12 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="2">ไม่พบข้อมูล</td>
+                        <td colspan="3">ไม่พบข้อมูล</td>
                     </tr>
                     {% endfor %}
                 </tbody>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="2">
                         <form action="{{ url_for('add_symptom') }}" method="POST">
                             <label for="st_name">ชื่อโรค/อาการ</label>
                             <input type="text" id="st_name" name="st_name" required>
