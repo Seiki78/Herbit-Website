@@ -493,13 +493,22 @@ def delete_allergy(allergy_id):
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_allergys'))
 
-@app.route('/manage_chronics')
-def manage_chronics():
+@app.route('/manage_chrosymps')
+def manage_chrosymps():
 
     # ดึงข้อมูลทั้งหมดจาก Collection
-    chronics = chronics_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
+    chronics = chronics_data_collection.find()
+    symptoms = symptoms_data_collection.find()
 
-    return render_template('manage_chrosymps.html', chronics=chronics)
+    return render_template('manage_chrosymps.html', chronics=chronics, symptoms=symptoms)
+
+# @app.route('/manage_chronics')
+# def manage_chronics():
+
+#     # ดึงข้อมูลทั้งหมดจาก Collection
+#     chronics = chronics_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
+
+#     return render_template('manage_chrosymps.html', chronics=chronics)
 
 @app.route('/add_chronic', methods=['POST'])
 def add_chronic():
@@ -518,7 +527,7 @@ def add_chronic():
     chronics_data_collection.insert_one({'cn_id': cn_id, 'cn_name': cn_name})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
-    return redirect(url_for('manage_chronics'))
+    return redirect(url_for('manage_chrosymps'))
 
 @app.route('/delete_chronic/<chronic_id>', methods=['POST'])
 def delete_chronic(chronic_id):
@@ -526,7 +535,7 @@ def delete_chronic(chronic_id):
     chronics_data_collection.delete_one({'_id': ObjectId(chronic_id)})
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
-    return redirect(url_for('manage_chronics'))
+    return redirect(url_for('manage_chrosymps'))
 
 # @app.route('/edit_chronic/<chronic_id>', methods=['GET', 'POST'])
 # def edit_chronic(chronic_id):
@@ -543,13 +552,13 @@ def delete_chronic(chronic_id):
 #     chronic = chronics_data_collection.find_one({'_id': ObjectId(chronic_id)})
 #     return render_template('edit_chronics.html', chronic=chronic)
 
-@app.route('/manage_symptoms')
-def manage_symptoms():
+# @app.route('/manage_symptoms')
+# def manage_symptoms():
 
-    # ดึงข้อมูลทั้งหมดจาก Collection
-    symptoms = symptoms_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
+#     # ดึงข้อมูลทั้งหมดจาก Collection
+#     symptoms = symptoms_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
 
-    return render_template('manage_chrosymps.html', symptoms=symptoms)
+#     return render_template('manage_chrosymps.html', symptoms=symptoms)
 
 @app.route('/add_symptom', methods=['POST'])
 def add_symptom():
@@ -568,7 +577,7 @@ def add_symptom():
     symptoms_data_collection.insert_one({'st_id': st_id, 'st_name': st_name})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
-    return redirect(url_for('manage_symptoms'))
+    return redirect(url_for('manage_chrosymps'))
 
 @app.route('/delete_symptom/<symptom_id>', methods=['POST'])
 def delete_symptom(symptom_id):
@@ -576,7 +585,7 @@ def delete_symptom(symptom_id):
     symptoms_data_collection.delete_one({'_id': ObjectId(symptom_id)})
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
-    return redirect(url_for('manage_symptoms'))
+    return redirect(url_for('manage_chrosymps'))
 
 if __name__ == '__main__':
 
