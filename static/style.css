@@ -1563,9 +1563,9 @@ p {
 }
 
 .pagination a.active {
-    background-color: #4CAF50;
+    background-color: var(--blue);
     color: white;
-    border: 1px solid #4CAF50;
+    border: 1px solid var(--blue);
 }
 
 .pagination a:hover:not(.active) {
