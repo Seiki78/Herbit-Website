@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <title>แดชบอร์ดแอดมิน</title>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>ข้อมูลยาสมุนไพร</title>
 </head> 
 <body>
     
@@ -25,13 +25,13 @@
 			<span class="text">Mongo</span>
 		</a>
 		<ul class="side-menu top">
-			<li class="active">
+			<li>
 				<a href="">
 					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">แดชบอร์ด</span>
 				</a>
 			</li>
-            <li>
+            <li class="active">
 				<a href="{{ url_for('manage_members') }}">
 					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='group.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">จัดการสมาชิก</span>
@@ -94,36 +94,115 @@
     <a href="" class="profile">
         <img src="{{ url_for('static', filename='user_admin.png') }}">
     </a>
-</nav>
+  </nav>
 <!-- NAVBAR -->
 
 <!-- MAIN -->
 <main>
     <div class="head-title">
         <div class="left">
-            <h1>แดชบอร์ดแอดมิน (ทดสอบ)</h1>
-            <ul class="breadcrumb">
-                <li>
-                    <a href="{{ url_for('dashboard') }}" class="active">หน้าหลัก</a>
-                </li>
-            </ul>
+            <h1>ข้อมูลโรคและอาการ</h1>          
         </div>
     </div>
 
 
+    <div class="table-data">
+        <div class="order">
+            <a href="" class="back" style="display: flex; align-items: center; justify-content: right;">
+                <img src="{{ url_for('static', filename='add-friend.png') }}">
+            </a>
+            <div class="head">
+                <h1>โรค(ประจำตัว)</h1>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>ชื่อโรค/อาการ</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chronic in chronics %}
+                    <tr>
+                        <td>{{ chronic['cn_id'] }}</td>
+                        <td>{{ chronic['cn_name'] }}</td>
+                        <td>
+                            <a href="">แก้ไข</a>
+                            <form action="{{ url_for('delete_chronic', chronic_id=chronic['_id']) }}" method="POST" style="display:inline;">
+                                <button type="submit">ลบ</button>
+                            </form> 
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2">ไม่พบข้อมูล</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+            <br>
+        
+    </div>
+
+    <div class="table-data">
+        <div class="order">
+            <a href="" class="back" style="display: flex; align-items: center; justify-content: right;">
+                <img src="{{ url_for('static', filename='add-user.png') }}">
+            </a>
+            <div class="head">
+                <h1>โรคและอาการต่าง ๆ</h1>
+              
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>รหัส</th>
+                        <th>ชื่อโรค/อาการ</th>
+                        <th></th>   
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for symptom in symptoms %}
+                    <tr>
+                        <td>{{ symptom['st_id'] }}</td>
+                        <td>{{ symptom['st_name'] }}</td>
+                        <td>
+                            <a href="">แก้ไข</a>
+                            <form action="{{ url_for('delete_symptom', symptom_id=symptom['_id']) }}" method="POST" style="display:inline;">
+                                <button type="submit">ลบ</button>
+                            </form> 
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2">ไม่พบข้อมูล</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+            <br>
+        
+    </div>
+
+
+
 </main>
 <!-- MAIN -->
- 
-	</section>
+
+    </section>
 
 
     <script>
         
-    </script>
-
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </script>       
               
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

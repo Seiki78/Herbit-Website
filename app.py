@@ -14,11 +14,12 @@ app.secret_key = os.urandom(24)
 client = MongoClient("mongodb+srv://mongodb:mg12345678@cluster0.fvpxm.mongodb.net/nobita_database?retryWrites=true&w=majority")
 db = client['nobita_database']
 users_collection = db['users']
-chronics_data_collection = db['chronics_data']
 trains_collection = db['trains']
 herbals_data_collection = db['herbals_data']
 medicines_data_collection = db['medicines_data']
 allergys_data_collection = db['allergys_data']
+chronics_data_collection = db['chronics_data']
+symptoms_data_collection = db['symptoms_data']
 
 # ตั้งค่า Flask-Login
 login_manager = LoginManager()
@@ -130,41 +131,6 @@ def edit_user(user_id):
     # ดึงข้อมูลผู้ใช้ที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
     user = users_collection.find_one({'_id': ObjectId(user_id)})
     return render_template('edit.html', user=user)
-
-@app.route('/manage_chronics')
-def manage_chronics():
-
-    # ดึงข้อมูลทั้งหมดจาก Collection
-    chronics = chronics_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
-
-    return render_template('manage_chronics.html', chronics=chronics)
-
-@app.route('/add_chronic', methods=['POST'])
-def add_chronic():
-
-    # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี cn_id มากที่สุด
-    last_chronic = chronics_data_collection.find_one(sort=[("cn_id", -1)])
-    
-    # ถ้ามีเอกสารอยู่ ให้เอา cn_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 101
-    if last_chronic:
-        cn_id = last_chronic['cn_id'] + 1
-    else:
-        cn_id = 101  # กำหนดค่าเริ่มต้นเป็น 101 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
-    cn_n = request.form['cn_n']
-    
-    # เพิ่มข้อมูลใหม่ลงใน Collection chronic
-    chronics_data_collection.insert_one({'cn_id': cn_id, 'cn_n': cn_n})
-    
-    flash('เพิ่มข้อมูลสำเร็จ', 'success')
-    return redirect(url_for('manage_chronics'))
-
-@app.route('/delete_chronic/<chronic_id>', methods=['POST'])
-def delete_chronic(chronic_id):
-    # ลบข้อมูลโรคออกจาก MongoDB โดยใช้ ObjectId
-    chronics_data_collection.delete_one({'_id': ObjectId(chronic_id)})
-    
-    flash('ลบข้อมูลสำเร็จ!', 'success')
-    return redirect(url_for('manage_chronics'))
 
 @app.route('/edit_chronic/<chronic_id>', methods=['GET', 'POST'])
 def edit_chronic(chronic_id):
@@ -541,6 +507,76 @@ def delete_allergy(allergy_id):
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_allergys'))
+
+@app.route('/manage_chronics')
+def manage_chronics():
+
+    # ดึงข้อมูลทั้งหมดจาก Collection
+    chronics = chronics_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
+
+    return render_template('manage_chronics.html', chronics=chronics)
+
+@app.route('/add_chronic', methods=['POST'])
+def add_chronic():
+
+    # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี cn_id มากที่สุด
+    last_chronic = chronics_data_collection.find_one(sort=[("cn_id", -1)])
+    
+    # ถ้ามีเอกสารอยู่ ให้เอา cn_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 101
+    if last_chronic:
+        cn_id = last_chronic['cn_id'] + 1
+    else:
+        cn_id = 101  # กำหนดค่าเริ่มต้นเป็น 101 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
+    cn_n = request.form['cn_n']
+    
+    # เพิ่มข้อมูลใหม่ลงใน Collection chronic
+    chronics_data_collection.insert_one({'cn_id': cn_id, 'cn_n': cn_n})
+    
+    flash('เพิ่มข้อมูลสำเร็จ', 'success')
+    return redirect(url_for('manage_chronics'))
+
+@app.route('/delete_chronic/<chronic_id>', methods=['POST'])
+def delete_chronic(chronic_id):
+    # ลบข้อมูลโรคออกจาก MongoDB โดยใช้ ObjectId
+    chronics_data_collection.delete_one({'_id': ObjectId(chronic_id)})
+    
+    flash('ลบข้อมูลสำเร็จ!', 'success')
+    return redirect(url_for('manage_chronics'))
+
+@app.route('/manage_symptoms')
+def manage_symptoms():
+
+    # ดึงข้อมูลทั้งหมดจาก Collection
+    symptoms = symptoms_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
+
+    return render_template('manage_symptoms.html', symptoms=symptoms)
+
+@app.route('/add_symptom', methods=['POST'])
+def add_symptom():
+
+    # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี st_id มากที่สุด
+    last_symptom = symptoms_data_collection.find_one(sort=[("st_id", -1)])
+    
+    # ถ้ามีเอกสารอยู่ ให้เอา st_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 501
+    if last_symptom:
+        st_id = last_symptom['st_id'] + 1
+    else:
+        st_id = 501  # กำหนดค่าเริ่มต้นเป็น 501 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
+    st_name = request.form['st_name']
+    
+    # เพิ่มข้อมูลใหม่ลงใน Collection chronic
+    symptoms_data_collection.insert_one({'st_id': st_id, 'st_name': st_name})
+    
+    flash('เพิ่มข้อมูลสำเร็จ', 'success')
+    return redirect(url_for('manage_symptoms'))
+
+@app.route('/delete_symptom/<symptom_id>', methods=['POST'])
+def delete_symptom(symptom_id):
+    # ลบข้อมูลโรคออกจาก MongoDB โดยใช้ ObjectId
+    symptoms_data_collection.delete_one({'_id': ObjectId(symptom_id)})
+    
+    flash('ลบข้อมูลสำเร็จ!', 'success')
+    return redirect(url_for('manage_symptoms'))
 
 if __name__ == '__main__':
 
