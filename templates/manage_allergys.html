@@ -43,7 +43,7 @@
 					<span class="text">จัดการยาสมุนไพร</span>
 				</a>
 			</li>
-			<li class="active">
+			<li>
 				<a href="{{ url_for('manage_medicines') }}">
 					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='medicine.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">จัดการข้อมูลยา</span>
@@ -55,7 +55,7 @@
 					<span class="text">จัดการข้อมูลโรคและอาการ</span>
 				</a>
 			</li>
-            <li>
+            <li class="active">
 				<a href="{{ url_for('manage_allergys') }}">
 					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='no-milk.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">จัดการข้อมูลการแพ้</span>
@@ -118,11 +118,11 @@
             </div>
         </div>
 
-        <form action="{{ url_for('add_medicine') }}" method="POST">
-            <label for="md_nameEN">ชื่อยา(ภาษาอังกฤษ)</label>
-            <input type="text" id="md_nameEN" name="md_nameEN" required>&nbsp;&nbsp;
-            <label for="md_nameTH">ชื่อยา(ภาษาไทย)</label>
-            <input type="text" id="md_nameTH" name="md_nameTH" required>
+        <form action="{{ url_for('add_allergy') }}" method="POST">
+            <label for="ag_name">ชื่อข้อมูลการแพ้</label>
+            <input type="text" id="ag_name" name="ag_name" required>&nbsp;&nbsp;
+            <label for="ag_detail">รายละเอียด</label>
+            <input type="text" id="ag_detail" name="ag_detail">
             <button type="submit">เพิ่ม</button>
         </form>
         
@@ -136,27 +136,27 @@
                 <thead>
                     <tr>
                         <th>รหัส</th>
-                        <th>ชื่อยา(ภาษาอังกฤษ)</th>
-                        <th>ชื่อยา(ภาษาไทย)</th>
+                        <th>ชื่อการแพ้</th>
+                        <th>รายละเอียด</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for medicine in medicines %}
+                    {% for allergy in allergys %}
                     <tr>
-                        <td>{{ medicine['md_id'] }}</td>
-                        <td>{{ medicine['md_nameEN'] }}</td>
-                        <td>{{ medicine['md_nameTH'] }}</td>
+                        <td>{{ allergy['md_id'] }}</td>
+                        <td>{{ allergy['ag_name'] }}</td>
+                        <td>{{ allergy['ag_detail'] }}</td>
                         <td>
                             <a href="">แก้ไข</a>
-                            <form action="{{ url_for('delete_medicine', medicine_id=medicine['_id']) }}" method="POST" style="display:inline;">
+                            <form action="{{ url_for('delete_allergy', allergy_id=allergy['_id']) }}" method="POST" style="display:inline;">
                                 <button type="submit">ลบ</button>
                             </form> 
                         </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3">ไม่พบข้อมูลยา</td>
+                        <td colspan="3">ไม่พบข้อมูลการแพ้</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -167,15 +167,15 @@
 
     <div class="pagination">
         {% if page > 1 %}
-            <a href="{{ url_for('manage_medicines', page=page-1) }}">ก่อนหน้า</a>
+            <a href="{{ url_for('manage_allergys', page=page-1) }}">ก่อนหน้า</a>
         {% endif %}
         
         {% for p in range(1, total_pages + 1) %}
-            <a href="{{ url_for('manage_medicines', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+            <a href="{{ url_for('manage_allergys', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
         {% endfor %}
     
         {% if page < total_pages %}
-            <a href="{{ url_for('manage_medicines', page=page+1) }}">ถัดไป</a>
+            <a href="{{ url_for('manage_allergys', page=page+1) }}">ถัดไป</a>
         {% endif %}
     </div>
 

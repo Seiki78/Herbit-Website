@@ -18,6 +18,7 @@ chronics_data_collection = db['chronics_data']
 trains_collection = db['trains']
 herbals_data_collection = db['herbals_data']
 medicines_data_collection = db['medicines_data']
+allergys_data_collection = db['allergys_data']
 
 # ตั้งค่า Flask-Login
 login_manager = LoginManager()
@@ -499,6 +500,47 @@ def delete_medicine(medicine_id):
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_medicines'))
+
+@app.route('/manage_allergys')
+def manage_allergys():
+
+    page = request.args.get('page', 1, type=int)  # รับค่าหน้าจาก URL หรือกำหนดเป็นหน้า 1 ถ้าไม่มีการส่งมา
+    per_page = 25  # กำหนดจำนวนข้อมูลต่อหน้า
+    allergys_count = allergys_data_collection.count_documents({})  # นับจำนวนเอกสารทั้งหมด
+    total_pages = (allergys_count + per_page - 1) // per_page  # คำนวณจำนวนหน้าทั้งหมด
+
+    # ดึงข้อมูลจาก MongoDB โดยใช้ skip และ limit เพื่อแบ่งข้อมูลตามหน้า
+    allergys = allergys_data_collection.find().skip((page - 1) * per_page).limit(per_page)
+
+    return render_template('manage_allergys.html', allergys=allergys, page=page, total_pages=total_pages)
+
+@app.route('/add_allergy', methods=['POST'])
+def add_allergy():
+
+    # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี cn_id มากที่สุด
+    last_allergy = allergys_data_collection.find_one(sort=[("ag_id", -1)])
+    
+    # ถ้ามีเอกสารอยู่ ให้เอา ag_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 601
+    if last_allergy:
+        ag_id = last_allergy['ag_id'] + 1
+    else:
+        ag_id = 601  # กำหนดค่าเริ่มต้นเป็น 601 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
+    ag_name = request.form['ag_name']
+    ag_detail = request.form['ag_detail']
+    
+    # เพิ่มข้อมูลใหม่ลงใน Collection allergy
+    allergys_data_collection.insert_one({'ag_id': ag_id, 'ag_name': ag_name, 'ag_detail': ag_detail})
+
+    flash('เพิ่มข้อมูลสำเร็จ', 'success')
+    return redirect(url_for('manage_allergys'))
+
+@app.route('/delete_allergy/<allergy_id>', methods=['POST'])
+def delete_allergy(allergy_id):
+    # ลบข้อมูลยาสมุนไพรออกจาก MongoDB โดยใช้ ObjectId
+    allergys_data_collection.delete_one({'_id': ObjectId(allergy_id)})
+    
+    flash('ลบข้อมูลสำเร็จ!', 'success')
+    return redirect(url_for('manage_allergys'))
 
 if __name__ == '__main__':
 
