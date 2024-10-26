@@ -502,14 +502,6 @@ def manage_chrosymps():
 
     return render_template('manage_chrosymps.html', chronics=chronics, symptoms=symptoms)
 
-# @app.route('/manage_chronics')
-# def manage_chronics():
-
-#     # ดึงข้อมูลทั้งหมดจาก Collection
-#     chronics = chronics_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
-
-#     return render_template('manage_chrosymps.html', chronics=chronics)
-
 @app.route('/add_chronic', methods=['POST'])
 def add_chronic():
 
