@@ -138,9 +138,9 @@
                 <tbody>
                     {% for medicine in medicines %}
                     <tr>
-                        <td>{{ herbal['md_id'] }}</td>
-                        <td>{{ herbal['md_nameEN'] }}</td>
-                        <td>{{ herbal['md_nameTH'] }}</td>
+                        <td>{{ medicine['md_id'] }}</td>
+                        <td>{{ medicine['md_nameEN'] }}</td>
+                        <td>{{ medicine['md_nameTH'] }}</td>
                         <td>
                             <a href="">แก้ไข</a>
                             <form action="{{ url_for('delete_medicine', medicine_id=medicine['_id']) }}" method="POST" style="display:inline;">
