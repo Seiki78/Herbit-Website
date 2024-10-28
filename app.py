@@ -411,6 +411,24 @@ def delete_herbal(herbal_id):
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_herbals'))
 
+@app.route('/edit_herbal/<herbal_id>', methods=['GET', 'POST'])
+def edit_herbal(herbal_id):
+    if request.method == 'POST':
+        # รับข้อมูลใหม่จากฟอร์ม
+        hm_name = request.form['hm_name']
+        hm_dosage = request.form['hm_dosage']
+        
+        # อัปเดตข้อมูลใน MongoDB
+        herbals_data_collection.update_one({'_id': ObjectId(herbal_id)}, {'$set': {'hm_name': hm_name, 'hm_dosage': hm_dosage}})
+        
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_herbals'))
+    
+    # ดึงข้อมูลที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
+    herbal = herbals_data_collection.find_one({'_id': ObjectId(herbal_id)})
+
+    return render_template('edit_herbals.html', herbal=herbal)
+
 @app.route('/manage_medicines')
 def manage_medicines():
 
