@@ -163,58 +163,97 @@
 
 
     <script>
+		const modal = document.querySelector('.modal');
+        const overlay = document.querySelector('.modal-overlay');
+        const openModalBtn = document.querySelector('.btn-open-modal');
+        const mainContent = document.querySelector('.main-content');
 
-		document.addEventListener('DOMContentLoaded', function() {
-			// Flash Messages
-			var alerts = document.querySelectorAll('.alert');
-			alerts.forEach(function(alert) {
-				alert.classList.remove('hidden');
-			});
-			setTimeout(function() {
-				alerts.forEach(function(alert) {
-					alert.classList.add('hidden');
-				});
-			}, 3000); 
+		const modal2 = document.querySelector('.modal2');
+		const overlay2 = document.querySelector('.modal2-overlay');
+		const openModalBtn2 = document.querySelector('.btn-open-modal2');
 
-			// Modal
-			const modal = document.querySelector('.modal');
-			const overlay = document.querySelector('.modal-overlay');
-			const openModalBtn = document.querySelector('.btn-open-modal');
+        // เมื่อคลิกปุ่มเปิด modal
+        openModalBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('active');
+            overlay.classList.add('active');
+            mainContent.classList.add('blurred'); // เพิ่มเอฟเฟกต์เบลอให้กับเนื้อหาหลัก
+        });
 
-			const modal2 = document.querySelector('.modal2');
-			const overlay2 = document.querySelector('.modal2-overlay');
-			const openModalBtn2 = document.querySelector('.btn-open-modal2');
+		// เมื่อคลิกปุ่มเปิด modal2
+        openModalBtn2.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal2.classList.add('active');
+            overlay2.classList.add('active');
+            mainContent.classList.add('blurred'); // เพิ่มเอฟเฟกต์เบลอให้กับเนื้อหาหลัก
+        });
 
-			if (modal && overlay && openModalBtn) {
-				// เมื่อคลิกปุ่มเปิด modal
-				openModalBtn.addEventListener('click', function(e) {
-					e.preventDefault();
-					modal.classList.add('active');
-					overlay.classList.add('active');
-				});
+        // เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal
+        overlay.addEventListener('click', function() {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+            mainContent.classList.remove('blurred'); // เอาเอฟเฟกต์เบลอออก
+        });
 
-				// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal
-				overlay.addEventListener('click', function() {
-					modal.classList.remove('active');
-					overlay.classList.remove('active');
-				});
-			}
+		// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal2
+        overlay2.addEventListener('click', function() {
+            modal2.classList.remove('active');
+            overlay2.classList.remove('active');
+            mainContent.classList.remove('blurred'); // เอาเอฟเฟกต์เบลอออก
+        });
+		
 
-			if (modal2 && overlay2 && openModalBtn2) {
-				// เมื่อคลิกปุ่มเปิด modal2
-				openModalBtn2.addEventListener('click', function(e) {
-					e.preventDefault();
-					modal2.classList.add('active');
-					overlay2.classList.add('active');
-				});
+		// document.addEventListener('DOMContentLoaded', function() {
+		// 	// Flash Messages
+		// 	var alerts = document.querySelectorAll('.alert');
+		// 	alerts.forEach(function(alert) {
+		// 		alert.classList.remove('hidden');
+		// 	});
+		// 	setTimeout(function() {
+		// 		alerts.forEach(function(alert) {
+		// 			alert.classList.add('hidden');
+		// 		});
+		// 	}, 3000); 
 
-				// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal2
-				overlay2.addEventListener('click', function() {
-					modal2.classList.remove('active');
-					overlay2.classList.remove('active');
-				});
-			}
-		});
+		// 	// Modal
+		// 	const modal = document.querySelector('.modal');
+		// 	const overlay = document.querySelector('.modal-overlay');
+		// 	const openModalBtn = document.querySelector('.btn-open-modal');
+
+		// 	const modal2 = document.querySelector('.modal2');
+		// 	const overlay2 = document.querySelector('.modal2-overlay');
+		// 	const openModalBtn2 = document.querySelector('.btn-open-modal2');
+
+		// 	if (modal && overlay && openModalBtn) {
+		// 		// เมื่อคลิกปุ่มเปิด modal
+		// 		openModalBtn.addEventListener('click', function(e) {
+		// 			e.preventDefault();
+		// 			modal.classList.add('active');
+		// 			overlay.classList.add('active');
+		// 		});
+
+		// 		// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal
+		// 		overlay.addEventListener('click', function() {
+		// 			modal.classList.remove('active');
+		// 			overlay.classList.remove('active');
+		// 		});
+		// 	}
+
+		// 	if (modal2 && overlay2 && openModalBtn2) {
+		// 		// เมื่อคลิกปุ่มเปิด modal2
+		// 		openModalBtn2.addEventListener('click', function(e) {
+		// 			e.preventDefault();
+		// 			modal2.classList.add('active');
+		// 			overlay2.classList.add('active');
+		// 		});
+
+		// 		// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal2
+		// 		overlay2.addEventListener('click', function() {
+		// 			modal2.classList.remove('active');
+		// 			overlay2.classList.remove('active');
+		// 		});
+		// 	}
+		// });
 
 
     </script>
