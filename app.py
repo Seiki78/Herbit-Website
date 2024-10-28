@@ -55,8 +55,8 @@ def index():
     user_count = users_collection.count_documents({})  # ใช้ count_documents เพื่อนับจำนวนเอกสารใน Collection
     return render_template('index.html', users=users, user_count=user_count)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
