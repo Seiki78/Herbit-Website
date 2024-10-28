@@ -93,19 +93,36 @@ def logout():
     flash('ออกจากระบบสำเร็จ', 'success')
     return redirect(url_for('index'))
 
-@app.route('/add_user', methods=['POST'])
-def add_user():
-    username = request.form['username']
-    email = request.form['email']
-    password = request.form['password']
+# @app.route('/add_user', methods=['POST'])
+# def add_user():
+#     username = request.form['username']
+#     email = request.form['email']
+#     password = request.form['password']
 
-    # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
-    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+#     # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
+#     hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
     
-    # เพิ่มข้อมูลใหม่ลงใน MongoDB
-    users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member'})
+#     # เพิ่มข้อมูลใหม่ลงใน MongoDB
+#     users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member'})
     
-    flash('เพิ่มผู้ใช้สำเร็จ!', 'success')
+#     flash('เพิ่มผู้ใช้สำเร็จ!', 'success')
+#     return redirect(url_for('index'))
+
+@app.route('/signup', methods=['POST','GET'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+        # เพิ่มข้อมูลใหม่ลงใน MongoDB
+        users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member'})
+    
+
+    flash('สมัครสมาชิกสำเร็จ!', 'success')
     return redirect(url_for('index'))
 
 @app.route('/delete/<user_id>', methods=['POST'])
