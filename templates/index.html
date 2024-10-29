@@ -32,17 +32,23 @@
 					<span class="text">Mongo test</span>
 				</a>
 			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการโรคประจำตัว</span>
+				</a>
+			</li>
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="" class="btn-open-modal btn-changepass" id="">
+				<a href="{{ url_for('signin') }}" class="btn-open-modal btn-changepass" id="">
 					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<p class="text">เข้าสู่ระบบ</p>
 				</a>
 			</li>
 			<li>
-				<a href="" class="btn-open-modal btn-changepass" id="">
-					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='add-user.png') }}" class="icon-mini" alt="Menu Icon"></i>
+				<a href="{{ url_for('signup') }}" class="btn-open-modal btn-changepass" id="">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<p class="text">สมัครสมาชิก</p>
 				</a>
 			</li>
@@ -74,12 +80,11 @@
 <main>
 	<!-- พื้นหลังโปร่งแสง -->
 	<div class="modal-overlay"></div>
-	<div class="modal2-overlay"></div>
 
 	<!-- Modal เข้าสู่ระบบ -->
 	<div class="modal">
 		<h2>เข้าสู่ระบบ</h2>
-			<form action="{{ url_for('signin') }}" method="POST">
+			<form action="{{ url_for('login') }}" method="POST">
 			<div class="form-group">
 				<div class="form-group-horizontal2">
 					<label for="username">ชื่อผู้ใช้</label>
@@ -99,7 +104,7 @@
 	</div>
 
 	<!-- Modal สมัครสมาชิก -->
-	<div class="modal2">
+	<div class="modal">
 		<h2>สมัครสมาชิก</h2>
 			<form action="{{ url_for('signup') }}" method="POST">
 			<div class="form-group">
@@ -124,7 +129,15 @@
 
 		</form>
 	</div>
-	
+
+
+	<div class="head-title"></div>
+        <div class="left">
+            <h1>ระบบจัดการสมาชิก (ทดสอบ)</h1>
+        </div>
+    </div>
+
+	<br>
 
 	<!-- <h2>เพิ่มสมาชิก</h2>
     <form action="/add_user" method="POST">
@@ -139,8 +152,8 @@
 		<br>
         <button type="submit">เพิ่ม</button>
     </form> -->
-
-	<!-- {% if user_count == 0 %}
+<!-- 
+	{% if user_count == 0 %}
         <p>No users found in the database.</p>
     {% else %}
 		<ul>
@@ -155,6 +168,8 @@
 		</ul>
     {% endif %} -->
 
+	
+	
 
 </main>
 <!-- MAIN -->
@@ -164,97 +179,25 @@
 
     <script>
 
-		const modal = document.querySelector('.modal');
-        const overlay = document.querySelector('.modal-overlay');
-        const openModalBtn = document.querySelector('.btn-open-modal');
-        const mainContent = document.querySelector('.main-content');
+			// Modal
+			const modal = document.querySelector('.modal');
+			const overlay = document.querySelector('.modal-overlay');
+			const openModalBtn = document.querySelector('.btn-open-modal');
 
-		const modal2 = document.querySelector('.modal2');
-		const overlay2 = document.querySelector('.modal2-overlay');
-		const openModalBtn2 = document.querySelector('.btn-open-modal2');
+			if (modal && overlay && openModalBtn) {
+				// เปิด modal เมื่อคลิกปุ่ม
+				openModalBtn.addEventListener('click', function(e) {
+					e.preventDefault();
+					modal.classList.add('active');
+					overlay.classList.add('active');
+				});
 
-        // เมื่อคลิกปุ่มเปิด modal
-        openModalBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            modal.classList.add('active');
-            overlay.classList.add('active');
-            mainContent.classList.add('blurred'); // เพิ่มเอฟเฟกต์เบลอให้กับเนื้อหาหลัก
-        });
-
-		// เมื่อคลิกปุ่มเปิด modal2
-        openModalBtn2.addEventListener('click', function(e) {
-            e.preventDefault();
-            modal2.classList.add('active');
-            overlay2.classList.add('active');
-            mainContent.classList.add('blurred'); // เพิ่มเอฟเฟกต์เบลอให้กับเนื้อหาหลัก
-        });
-
-        // เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal
-        overlay.addEventListener('click', function() {
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
-            mainContent.classList.remove('blurred'); // เอาเอฟเฟกต์เบลอออก
-        });
-
-		// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal2
-        overlay2.addEventListener('click', function() {
-            modal2.classList.remove('active');
-            overlay2.classList.remove('active');
-            mainContent.classList.remove('blurred'); // เอาเอฟเฟกต์เบลอออก
-        });
-
-		// document.addEventListener('DOMContentLoaded', function() {
-		// 	// Flash Messages
-		// 	var alerts = document.querySelectorAll('.alert');
-		// 	alerts.forEach(function(alert) {
-		// 		alert.classList.remove('hidden');
-		// 	});
-		// 	setTimeout(function() {
-		// 		alerts.forEach(function(alert) {
-		// 			alert.classList.add('hidden');
-		// 		});
-		// 	}, 3000); 
-
-		// 	// Modal
-		// 	const modal = document.querySelector('.modal');
-		// 	const overlay = document.querySelector('.modal-overlay');
-		// 	const openModalBtn = document.querySelector('.btn-open-modal');
-
-		// 	const modal2 = document.querySelector('.modal2');
-		// 	const overlay2 = document.querySelector('.modal2-overlay');
-		// 	const openModalBtn2 = document.querySelector('.btn-open-modal2');
-
-		// 	if (modal && overlay && openModalBtn) {
-		// 		// เมื่อคลิกปุ่มเปิด modal
-		// 		openModalBtn.addEventListener('click', function(e) {
-		// 			e.preventDefault();
-		// 			modal.classList.add('active');
-		// 			overlay.classList.add('active');
-		// 		});
-
-		// 		// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal
-		// 		overlay.addEventListener('click', function() {
-		// 			modal.classList.remove('active');
-		// 			overlay.classList.remove('active');
-		// 		});
-		// 	}
-
-		// 	if (modal2 && overlay2 && openModalBtn2) {
-		// 		// เมื่อคลิกปุ่มเปิด modal2
-		// 		openModalBtn2.addEventListener('click', function(e) {
-		// 			e.preventDefault();
-		// 			modal2.classList.add('active');
-		// 			overlay2.classList.add('active');
-		// 		});
-
-		// 		// เมื่อคลิกที่พื้นหลังโปร่งแสงเพื่อปิด modal2
-		// 		overlay2.addEventListener('click', function() {
-		// 			modal2.classList.remove('active');
-		// 			overlay2.classList.remove('active');
-		// 		});
-		// 	}
-		// });
-
+				// ปิด modal เมื่อคลิกที่พื้นหลังโปร่งแสง overlay
+				overlay.addEventListener('click', function() {
+					modal.classList.remove('active');
+					overlay.classList.remove('active');
+				});
+			}
 
     </script>
 	  

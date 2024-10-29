@@ -120,10 +120,9 @@ def signup():
 
         # เพิ่มข้อมูลใหม่ลงใน MongoDB
         users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member'})
-    
 
-    flash('สมัครสมาชิกสำเร็จ!', 'success')
-    return redirect(url_for('index'))
+        flash('สมัครสมาชิกสำเร็จ!', 'success')
+        return redirect(url_for('index'))
 
 @app.route('/delete/<user_id>', methods=['POST'])
 def delete_user(user_id):
