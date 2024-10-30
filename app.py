@@ -640,6 +640,25 @@ def delete_warning(warning_id):
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_warnings'))
 
+@app.route('/add_warning', methods=['POST'])
+def add_warning():
+
+    # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี cn_id มากที่สุด
+    last_warning = warnings_data_collection.find_one(sort=[("wn_id", -1)])
+    
+    # ถ้ามีเอกสารอยู่ ให้เอา cn_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 701
+    if last_warning:
+        wn_id = last_warning['wn_id'] + 1
+    else:
+        wn_id = 701  # กำหนดค่าเริ่มต้นเป็น 701 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
+    wn_name = request.form['wn_name']
+    
+    # เพิ่มข้อมูลใหม่ลงใน Collection warnings
+    warnings_data_collection.insert_one({'wn_id': wn_id, 'wn_name': wn_name})
+    
+    flash('เพิ่มข้อมูลสำเร็จ', 'success')
+    return redirect(url_for('manage_chrosymps'))
+
 # @app.route('/general_predict', methods=['POST'])
 # def general_predict():
 
