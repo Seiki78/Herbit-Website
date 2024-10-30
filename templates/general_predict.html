@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="icon" href="{{ url_for('static', filename='leafe_oo.png') }}" type="image/png">
+	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>หน้าหลัก</title>
+</head> 
+<body>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-overlay alert-{{ category }} hidden">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="sidebar">
+        <a href="" class="brand">
+            <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+			<span class="text">Mongo</span>
+		</a>
+		<ul class="side-menu top">
+            <li  class="active">
+				<a href="{{ url_for('index') }}">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">Mongo test</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการโรคประจำตัว</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="{{ url_for('signin') }}" class="btn-open-modal btn-changepass" id="">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<p class="text">เข้าสู่ระบบ</p>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('signup') }}" class="btn-open-modal btn-changepass" id="">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<p class="text">สมัครสมาชิก</p>
+				</a>
+			</li>
+		</ul>
+
+    </section>
+
+
+
+
+    <section id="content">
+<!-- NAVBAR -->
+<nav>
+    <!-- เมนูไอคอนอยู่ชิดซ้าย -->
+    <i class='bx bx-menu'>
+        <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
+    </i>
+
+	<div class="marquee-container">
+        <div class="marquee">
+            <p style="color: rgb(161, 193, 226);">เป็นเพียงการให้ความรู้เกี่ยวกับยาสมุนไพร โดยอ้างอิงข้อมูลจาก NLEM:บัญชียาหลักแห่งชาติ (ฉบับที่ 2) พ.ศ. 2555 ประกาศ ณ วันที่ 21 สิงหาคม พ.ศ. 2555 เท่านั้น ไม่ใช่การรักษาโรคแต่อย่างใด หากป่วยควรพบแพทย์ผู้เชี่ยวชาญเพื่อรับการรักษาต่อไป</p>
+        </div>
+    </div>
+
+</nav>
+<!-- NAVBAR -->
+
+<!-- MAIN -->
+<main>
+	<!-- พื้นหลังโปร่งแสง -->
+	<div class="modal-overlay"></div>
+
+	<!-- Modal เข้าสู่ระบบ -->
+	<div class="modal">
+		<h2>เข้าสู่ระบบ</h2>
+			<form action="{{ url_for('signin') }}" method="POST">
+			<div class="form-group">
+				<div class="form-group-horizontal2">
+					<label for="username">ชื่อผู้ใช้</label>
+					<input type="text" id="username" name="username" required>
+				</div>
+
+				<div class="form-group-horizontal2">
+					<label for="password">รหัสผ่าน</label>
+					<input type="password" id="password" name="password" required>
+				</div>
+
+			</div>
+
+			<button type="submit" class="btn-submit">ยืนยัน</button><br>
+
+		</form>
+	</div>
+
+	<!-- Modal สมัครสมาชิก -->
+	<div class="modal">
+		<h2>สมัครสมาชิก</h2>
+			<form action="{{ url_for('signup') }}" method="POST">
+			<div class="form-group">
+				<div class="form-group-horizontal2">
+					<label for="username">ชื่อผู้ใช้</label>
+					<input type="text" id="username" name="username" required>
+				</div>
+
+				<div class="form-group-horizontal2">
+					<label for="email">อีเมล</label>
+					<input type="email" id="email" name="email" required>
+				</div>
+
+				<div class="form-group-horizontal2">
+					<label for="password">รหัสผ่าน</label>
+					<input type="password" id="password" name="password" required>
+				</div>
+
+			</div>
+
+			<button type="submit" class="btn-submit">ยืนยัน</button><br>
+
+		</form>
+	</div>
+
+
+	<div class="head-title"></div>
+        <div class="left">
+            <h1>general_predict</h1>
+        </div>
+    </div>
+
+	<br>
+	
+
+</main>
+<!-- MAIN -->
+
+    </section>
+
+
+    <script>
+
+			// Modal
+			const modal = document.querySelector('.modal');
+			const overlay = document.querySelector('.modal-overlay');
+			const openModalBtn = document.querySelector('.btn-open-modal');
+
+			if (modal && overlay && openModalBtn) {
+				// เปิด modal เมื่อคลิกปุ่ม
+				openModalBtn.addEventListener('click', function(e) {
+					e.preventDefault();
+					modal.classList.add('active');
+					overlay.classList.add('active');
+				});
+
+				// ปิด modal เมื่อคลิกที่พื้นหลังโปร่งแสง overlay
+				overlay.addEventListener('click', function() {
+					modal.classList.remove('active');
+					overlay.classList.remove('active');
+				});
+			}
+
+    </script>
+	  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -101,14 +101,13 @@
 <main>
     <div class="head-title">
         <div class="left">
-            <h2>ข้อมูลยาสมุนไพร</h2>
+            <h2>รายการคำเตือน</h2>
             <!-- <ul class="breadcrumb">
                 <li>
                     <a href="{{ url_for('manage_herbals') }}" class="active">จัดการข้อมูล</a>
                 </li>
             </ul> -->
         </div>
-        <a href="{{ url_for('manage_warnings') }}" class="btn-download">รายการคำเตือน</a>
 
     </div><br>
 
@@ -119,25 +118,14 @@
             </div>
         </div>
 
-    </div>
-
-    <form action="{{ url_for('add_herbal') }}" method="POST">
-        <label for="hm_name">ชื่อยาสมุนไพร</label>
-        <input type="text" id="hm_name" name="hm_name" required><br>
-        <label for="hm_dosage">วิธีใช้</label>
-        <input type="text" id="hm_dosage" name="hm_dosage" required><br>
-        <label for="wn_id">คำเตือน</label>
-        <select name="wn_id" id="wn_id">
-            <option value="">--เลือก--</option>
-
-            {% for warning in warnings %}
-            <option value="{{ warning['wn_id'] }}">{{ warning['wn_name'] }}</option>
-            {% endfor %}
-
-        </select>
-        <br>
-        <button type="submit">เพิ่ม</button>
-    </form><br>
+        <form action="{{ url_for('add_allergy') }}" method="POST">
+            <label for="wn_name">คำเตือน(รายละเอียด)</label>
+            <input type="text" id="wn_name" name="wn_name" required>&nbsp;&nbsp;
+            <button type="submit">เพิ่ม</button>
+        </form>
+        
+    </div><br>
+    
 
     <div class="table-data">
         <div class="order">
@@ -146,27 +134,25 @@
                 <thead>
                     <tr>
                         <th>รหัส</th>
-                        <th>ชื่อยาสมุนไพร</th>
-                        <th>วิธีใช้</th>
+                        <th>คำเตือน</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for herbal in herbals %}
+                    {% for warning in warnings %}
                     <tr>
-                        <td>{{ herbal['hm_id'] }}</td>
-                        <td>{{ herbal['hm_name'] }}</td>
-                        <td>{{ herbal['hm_dosage'] }}</td>
+                        <td>{{ warning['wn_id'] }}</td>
+                        <td>{{ warning['ag_name'] }}</td>
                         <td>
-                            <a href="{{ url_for('edit_herbal', herbal_id=herbal['_id']) }}">แก้ไข</a>
-                            <form action="{{ url_for('delete_herbal', herbal_id=herbal['_id']) }}" method="POST" style="display:inline;">
+                            <a href="">แก้ไข</a>
+                            <form action="{{ url_for('delete_warning', warning_id=warning['_id']) }}" method="POST" style="display:inline;">
                                 <button type="submit">ลบ</button>
                             </form> 
                         </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3">ไม่พบข้อมูลยาสมุนไพร</td>
+                        <td colspan="3">ไม่พบข้อมูลคำเตือน</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -177,15 +163,15 @@
 
     <div class="pagination">
         {% if page > 1 %}
-            <a href="{{ url_for('manage_herbals', page=page-1) }}">ก่อนหน้า</a>
+            <a href="{{ url_for('manage_warnings', page=page-1) }}">ก่อนหน้า</a>
         {% endif %}
         
         {% for p in range(1, total_pages + 1) %}
-            <a href="{{ url_for('manage_herbals', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+            <a href="{{ url_for('manage_warnings', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
         {% endfor %}
     
         {% if page < total_pages %}
-            <a href="{{ url_for('manage_herbals', page=page+1) }}">ถัดไป</a>
+            <a href="{{ url_for('manage_warnings', page=page+1) }}">ถัดไป</a>
         {% endif %}
     </div>
 
