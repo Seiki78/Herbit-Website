@@ -657,7 +657,7 @@ def add_warning():
     warnings_data_collection.insert_one({'wn_id': wn_id, 'wn_name': wn_name})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
-    return redirect(url_for('manage_chrosymps'))
+    return redirect(url_for('manage_warnings'))
 
 # @app.route('/general_predict', methods=['POST'])
 # def general_predict():
