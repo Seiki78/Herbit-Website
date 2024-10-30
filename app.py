@@ -416,9 +416,10 @@ def add_herbal():
         hm_id = 301  # กำหนดค่าเริ่มต้นเป็น 301 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
     hm_name = request.form['hm_name']
     hm_dosage = request.form['hm_dosage']
+    hm_recipe  = request.form['hm_recipe']
     
     # เพิ่มข้อมูลใหม่ลงใน Collection chronic
-    herbals_data_collection.insert_one({'hm_id': hm_id, 'hm_name': hm_name, 'hm_dosage': hm_dosage})
+    herbals_data_collection.insert_one({'hm_id': hm_id, 'hm_name': hm_name, 'hm_dosage': hm_dosage, 'hm_recipe': hm_recipe})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_herbals'))
@@ -437,9 +438,10 @@ def edit_herbal(herbal_id):
         # รับข้อมูลใหม่จากฟอร์ม
         hm_name = request.form['hm_name']
         hm_dosage = request.form['hm_dosage']
+        hm_recipe  = request.form['hm_recipe']
         
         # อัปเดตข้อมูลใน MongoDB
-        herbals_data_collection.update_one({'_id': ObjectId(herbal_id)}, {'$set': {'hm_name': hm_name, 'hm_dosage': hm_dosage}})
+        herbals_data_collection.update_one({'_id': ObjectId(herbal_id)}, {'$set': {'hm_name': hm_name, 'hm_dosage': hm_dosage, 'hm_recipe': hm_recipe}})
         
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
         return redirect(url_for('manage_herbals'))
