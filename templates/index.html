@@ -41,13 +41,13 @@
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="{{ url_for('signin') }}" class="btn-open-modal btn-changepass" id="">
+				<a href="" class="btn-open-modal btn-changepass" id="" data-modal="login-modal">
 					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<p class="text">เข้าสู่ระบบ</p>
 				</a>
 			</li>
 			<li>
-				<a href="{{ url_for('signup') }}" class="btn-open-modal btn-changepass" id="">
+				<a href="" class="btn-open-modal btn-changepass" id="" data-modal="register-modal">
 					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<p class="text">สมัครสมาชิก</p>
 				</a>
@@ -82,7 +82,7 @@
 	<div class="modal-overlay"></div>
 
 	<!-- Modal เข้าสู่ระบบ -->
-	<div class="modal">
+	<div class="modal" id="login-modal">
 		<h2>เข้าสู่ระบบ</h2>
 			<form action="{{ url_for('signin') }}" method="POST">
 			<div class="form-group">
@@ -104,7 +104,7 @@
 	</div>
 
 	<!-- Modal สมัครสมาชิก -->
-	<div class="modal">
+	<div class="modal" id="register-modal">
 		<h2>สมัครสมาชิก</h2>
 			<form action="{{ url_for('signup') }}" method="POST">
 			<div class="form-group">
@@ -130,7 +130,6 @@
 		</form>
 	</div>
 
-
 	<div class="head-title"></div>
         <div class="left">
             <h1>ระบบจัดการสมาชิก (ทดสอบ)</h1>
@@ -138,38 +137,6 @@
     </div>
 
 	<br>
-
-	<!-- <h2>เพิ่มสมาชิก</h2>
-    <form action="/add_user" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br>
-		<label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-		<br>
-        <button type="submit">เพิ่ม</button>
-    </form> -->
-<!-- 
-	{% if user_count == 0 %}
-        <p>No users found in the database.</p>
-    {% else %}
-		<ul>
-			{% for user in users %}
-				<li>{{ user['username'] }} - {{ user['email'] }} - Role : {{ user['role'] }}
-					<form action="{{ url_for('delete_user', user_id=user['_id']) }}" method="POST" style="display:inline;">
-						<button type="submit">ลบ</button>
-					</form>
-					<a href="{{ url_for('edit_user', user_id=user['_id']) }}">แก้ไข</a>
-				</li>
-			{% endfor %}
-		</ul>
-    {% endif %} -->
-
-	
-	
 
 </main>
 <!-- MAIN -->
@@ -179,25 +146,33 @@
 
     <script>
 
-			// Modal
-			const modal = document.querySelector('.modal');
+		document.addEventListener('DOMContentLoaded', () => {
+			const modals = document.querySelectorAll('.modal');
 			const overlay = document.querySelector('.modal-overlay');
-			const openModalBtn = document.querySelector('.btn-open-modal');
+			const openModalBtns = document.querySelectorAll('.btn-open-modal');
 
-			if (modal && overlay && openModalBtn) {
-				// เปิด modal เมื่อคลิกปุ่ม
-				openModalBtn.addEventListener('click', function(e) {
-					e.preventDefault();
-					modal.classList.add('active');
-					overlay.classList.add('active');
-				});
+			// ฟังก์ชันเปิด Modal
+			openModalBtns.forEach(btn => {
+				btn.addEventListener('click', event => {
+					event.preventDefault();
+					const modalId = btn.getAttribute('data-modal');
+					const modal = document.getElementById(modalId);
 
-				// ปิด modal เมื่อคลิกที่พื้นหลังโปร่งแสง overlay
-				overlay.addEventListener('click', function() {
-					modal.classList.remove('active');
-					overlay.classList.remove('active');
+					if (modal) {
+						modal.classList.add('active');
+						overlay.classList.add('active');
+					}
 				});
-			}
+			});
+
+			// ฟังก์ชันปิด Modal เมื่อคลิกที่ overlay
+			overlay.addEventListener('click', () => {
+				modals.forEach(modal => modal.classList.remove('active'));
+				overlay.classList.remove('active');
+			});
+		});
+
+		
 
     </script>
 	  
