@@ -123,7 +123,7 @@
 
     <form action="{{ url_for('add_herbal') }}" method="POST">
         <label for="hm_name">ชื่อยาสมุนไพร</label>
-        <input type="text" id="hm_name" name="hm_name" required><br>
+        <input type="text" id="hm_name" name="hm_name" required>
         <label for="hm_dosage">วิธีใช้</label>
         <input type="text" id="hm_dosage" name="hm_dosage" required><br>
         <label for="wn_id">คำเตือน</label>
@@ -135,7 +135,7 @@
             {% endfor %}
 
         </select>
-        <br>
+        
         <button type="submit">เพิ่ม</button>
     </form><br>
 
