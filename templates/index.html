@@ -117,6 +117,41 @@
 					<input type="password" id="password" name="password" required>
 				</div>
 
+				<div class="form-group-horizontal2">
+					<label>ชื่อ-นามสกุล</label>
+					<input type="fname" id="fname" name="fname" placeholder="ชื่อ" required>
+					<input type="text" id="lname" name="lname" placeholder="นามสกุล" required>
+				</div>
+				<div class="form-group-horizontal2">
+					<label for="dob">วัน/เดือน/ปีเกิด</label>
+					<input type="date" name="dob" id="" required>
+				</div>
+				<div class="form-group-horizontal2">
+					<label for="gender">เพศ</label>
+					<select name="gender" id="gender" onchange="toggleFemaleField()" required>
+						<option value="">--เลือก--</option>
+						<option value="0">ชาย</option>
+						<option value="1">หญิง</option>
+					</select>
+				</div>
+				<div id="FemaleField" style="display: none;">
+					<div class="form-group-horizontal2">
+						<label for="pregnant">การตั้งครรภ์</label>
+						<input type="checkbox" id="pregnant" name="pregnant" value="1"/>
+
+						<label for="breastfeeding">การให้นมบุตร</label>
+						<input type="checkbox" id="breastfeeding" name="breastfeeding" value="1"/>
+					</div>
+				</div>
+				
+				<div class="form-group-horizontal2">
+					<label for="weight">น้ำหนัก</label>
+					<input type="int" name="weight" id="" placeholder="กก." required>
+					<label for="height">&nbsp;&nbsp;ส่วนสูง</label>
+					<input type="int" name="height" id="" placeholder="ซม." required>
+				</div>
+
+
 			</div>
 
 			<button type="submit" class="btn-submit">ยืนยัน</button><br>
@@ -139,6 +174,24 @@
 
 
     <script>
+		document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                event.target.value = event.target.checked ? "1" : "0";
+            });
+        }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
+
+        // ฟังก์ชัน toggleFemaleField() 
+        function toggleFemaleField() {
+            var genderSelect = document.getElementById("gender");
+            var selectedValue = genderSelect.options[genderSelect.selectedIndex].value;
+            var FemaleField = document.getElementById("FemaleField");
+            if (selectedValue == "1") {
+                FemaleField.style.display = "block";
+            } else {
+                FemaleField.style.display = "none";
+            }
+        }
+
 
 		document.addEventListener('DOMContentLoaded', () => {
 			const modals = document.querySelectorAll('.modal');
