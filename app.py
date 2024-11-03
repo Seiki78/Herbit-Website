@@ -119,14 +119,10 @@ def signup():
         lname = request.form['lname']
         dob = request.form['dob']
         gender = request.form['gender']
-        pregnant = request.form['pregnant']
-        breastfeeding = request.form['breastfeeding']
+        pregnant = request.form.get('pregnant', 0) # ถ้าไม่ส่งค่ามา กำหนดค่าเริ่มต้นเป็น 0
+        breastfeeding = request.form.get('breastfeeding', 0)
         weight = request.form['weight']
         height = request.form['height']
-
-        # ถ้าไม่เลือก checkbox ให้ตั้งค่าเป็น 0
-        pregnant = 0 if pregnant is None else 1
-        breastfeeding = 0 if breastfeeding is None else 1
 
         # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
@@ -134,7 +130,7 @@ def signup():
         # เพิ่มข้อมูลใหม่ลงใน MongoDB / role member
         users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member',
                                      'fname': fname, 'lname': lname, 'dob': dob, 'gender': gender, 'pregnant': pregnant,
-                                     'lnambreastfeedinge': breastfeeding, 'weight': weight, 'height': height})
+                                     'breastfeeding': breastfeeding, 'weight': weight, 'height': height})
 
         flash('สมัครสมาชิกสำเร็จ!', 'success')
         return redirect(url_for('index'))
