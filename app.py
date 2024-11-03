@@ -117,12 +117,16 @@ def signup():
         password = request.form['password']
         fname = request.form['fname']
         lname = request.form['lname']
-        dob = request.form['dob']
-        gender = request.form['gender']
-        pregnant = request.form.get('pregnant', 0) # ถ้าไม่ส่งค่ามา กำหนดค่าเริ่มต้นเป็น 0
-        breastfeeding = request.form.get('breastfeeding', 0)
-        weight = request.form['weight']
-        height = request.form['height']
+
+        # แปลงวันเกิดเป็น datetime object
+        dob_str = request.form['dob']
+        dob = datetime.strptime(dob_str, '%Y-%m-%d')
+
+        gender = int(request.form['gender'])
+        pregnant = int(request.form.get('pregnant', 0)) # ถ้าไม่ส่งค่ามา กำหนดค่าเริ่มต้นเป็น 0
+        breastfeeding = int(request.form.get('breastfeeding', 0))
+        weight = int(request.form['weight'])
+        height = int(request.form['height'])
 
         # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
