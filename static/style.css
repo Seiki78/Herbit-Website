@@ -1571,12 +1571,3 @@ p {
 .pagination a:hover:not(.active) {
     background-color: #ddd;
 }
-
-select {
-    width: 300px; /* ใช้ความกว้างที่ต้องการ เช่น 300px */
-    box-sizing: border-box; /* ทำให้ padding ภายในไม่ขยายความกว้างของ select */
-}
-
-option {
-    width: 100%; /* ทำให้ option แต่ละตัวพอดีกับ select */
-}
