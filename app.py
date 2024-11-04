@@ -42,14 +42,10 @@ def load_user(user_id):
         return User(user_id=users['_id'], username=users['username'], role=users['role'])
     return None
 
-def calculateAge(user_id):
-    dob = users_collection.find_one({'dob': ObjectId(user_id)})
-
-    # แปลงวันที่เกิดจาก string เป็น object ของ datetime
-    dob = datetime.strptime(dob, '%Y-%m-%d')
+def calculate_age(dob):
     today = datetime.today()
-    Age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-    return Age
+    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+    return age
 
 def get_breastfeeding_name(user_id):
     user_breastfeeding = users_collection.find_one({'breastfeeding': ObjectId(user_id)})
@@ -378,12 +374,14 @@ def detail_users(user_id):
     users = list(users_collection.find())
 
     # เรียกใช้ฟังก์ชัน
+    dob = users['dob']
+    age = calculate_age(dob)
+    
     gender_name = get_gender_name(user_id)
-    Age = calculateAge(user_id)
     pregnant_name = get_pregnant_name(user_id)
     breastfeeding_name = get_breastfeeding_name(user_id)
 
-    return render_template('view_users.html', users=users, gender_name=gender_name, Age=Age, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
+    return render_template('view_users.html', users=users, gender_name=gender_name, age=age, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
 
 @app.route('/delete_user/<user_id>', methods=['POST'])
 def delete_user(user_id):
