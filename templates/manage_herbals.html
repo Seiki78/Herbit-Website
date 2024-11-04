@@ -129,39 +129,41 @@
         <label for="hm_recipe">ตำรับยา</label>
         <input type="text" id="hm_recipe" name="hm_recipe" required><br>
 
-        <div class="order">
-                
-            <div class="head">
-                <div class="selected-list">
+        <div class="table-data">
+            <div class="order">
+                <div class="head">
+                    <div class="selected-list">
 
-                    <table class="warningsTable" id="selectedWarningsList">
-                    <thead>
-                        <tr>
-                            <th>คำเตือน</th>
+                        <table class="warningsTable" id="selectedWarningsList">
+                        <thead>
+                            <tr>
+                                <th>คำเตือน</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                         <!-- Selected items will be displayed here -->
-                    </tbody>
-                </table>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Selected items will be displayed here -->
+                        </tbody>
+                    </table>
+                    </div>
+                    
                 </div>
-                
-            </div>
 
-            <div class="head">
-                <select id="wn_id" name="wn_id" multiple>
-                    <option value="">-- เลือก --</option>
-                    {% for warning in warnings %}
-                        <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
-                    {% endfor %}
-                </select>
-                <button type="button" onclick="addSelected()">เพิ่มคำเตือน</button>
+                <div class="head">
+                    <select id="wn_id" name="wn_id" multiple>
+                        <option value="">-- เลือก --</option>
+                        {% for warning in warnings %}
+                            <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" onclick="addSelected()">เพิ่มคำเตือน</button>
+                </div>
+
             </div>
         </div><br>
         
         
-        <button type="submit" class="btn-download">เพิ่มยาสมุนไพร</button>
+        <button type="submit" class="btn1">เพิ่มยาสมุนไพร</button>
     </form><br>
 
     <div class="table-data">
@@ -226,7 +228,7 @@
 
     
     <script>
-        
+
         function addSelected(type) {
             const select = document.getElementById(type);
             const selectedList = document.getElementById(`selected${type.charAt(0).toUpperCase() + type.slice(1)}List`);
