@@ -236,24 +236,22 @@
 
 
     <script>
-        document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
-            checkbox.addEventListener('change', (event) => {
-                event.target.value = event.target.checked ? "1" : "0";
-            });
-        }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
+        document.addEventListener('DOMContentLoaded', function() {
+            var genderName = "{{ gender_name }}";
+            var femaleFields = document.querySelectorAll('.FemaleField');
 
-        // ฟังก์ชัน toggleFemaleField() 
-        function toggleFemaleField() {
-            var genderSelect = document.getElementById("gender");
-            var selectedValue = genderSelect.options[genderSelect.selectedIndex].value;
-            var FemaleField = document.getElementById("FemaleField");
-            if (selectedValue == "1") {
-                FemaleField.style.display = "block";
+            if (genderName === "หญิง") {
+                femaleFields.forEach(function(field) {
+                    field.style.display = "table-row";
+                });
             } else {
-                FemaleField.style.display = "none";
+                femaleFields.forEach(function(field) {
+                    field.style.display = "none";
+                });
             }
-        }
+        });
         
+
     </script>       
               
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
