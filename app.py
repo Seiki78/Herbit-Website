@@ -139,29 +139,42 @@ def signup():
         flash('สมัครสมาชิกสำเร็จ!', 'success')
         return redirect(url_for('index'))
 
-@app.route('/delete/<user_id>', methods=['POST'])
+@app.route('/delete_user/<user_id>', methods=['POST'])
 def delete_user(user_id):
+
     # ลบผู้ใช้จาก MongoDB โดยใช้ ObjectId
     users_collection.delete_one({'_id': ObjectId(user_id)})
-    flash('User deleted successfully!', 'success')
-    return redirect(url_for('index'))
 
-@app.route('/edit/<user_id>', methods=['GET', 'POST'])
+    flash('ลบข้อมูลสำเร็จ!', 'success')
+    return redirect(url_for('manage_members'))
+
+@app.route('/edit_user/<user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
     if request.method == 'POST':
-        # รับข้อมูลใหม่จากฟอร์ม
+
         username = request.form['username']
         email = request.form['email']
+
+        new_password = request.form['new_password']
+        hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
+
+        fname = request.form['fname']
+        lname = request.form['lname']
+        gender = request.form['gender']
+        pregnant = request.form['pregnant']
+        breastfeeding = request.form['breastfeeding']
         
         # อัปเดตข้อมูลผู้ใช้ใน MongoDB
-        users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email}})
+        users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname, 
+                                                                          'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}})
         
-        flash('User updated successfully!', 'success')
-        return redirect(url_for('index'))
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_members'))
     
-    # ดึงข้อมูลผู้ใช้ที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
+    # ดึงข้อมูลผู้ใช้ ที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
     user = users_collection.find_one({'_id': ObjectId(user_id)})
-    return render_template('edit.html', user=user)
+
+    return render_template('edit_users.html', user=user)
 
 @app.route('/manage_trains')
 def manage_trains():
@@ -282,7 +295,7 @@ def delete_trains(train_id):
 @app.route('/edit_trains/<train_id>', methods=['GET', 'POST'])
 def edit_trains(train_id):
     if request.method == 'POST':
-        
+
         Age = int(request.form.get('Age'))
         pregnant = int(request.form.get('pregnant', 0))
         dizziness1 = int(request.form.get('dizziness1', 0))
