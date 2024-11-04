@@ -42,12 +42,53 @@ def load_user(user_id):
         return User(user_id=users['_id'], username=users['username'], role=users['role'])
     return None
 
-def calculateAge(date_of_birth):
+def calculateAge(user_id):
+    dob = users_collection.find_one({'dob': ObjectId(user_id)})
+
     # แปลงวันที่เกิดจาก string เป็น object ของ datetime
-    date_of_birth = datetime.strptime(date_of_birth, '%Y-%m-%d')
+    dob = datetime.strptime(dob, '%Y-%m-%d')
     today = datetime.today()
-    age = today.year - date_of_birth.year - ((today.month, today.day) < (date_of_birth.month, date_of_birth.day))
-    return age
+    Age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+    return Age
+
+def get_breastfeeding_name(user_id):
+    user_breastfeeding = users_collection.find_one({'breastfeeding': ObjectId(user_id)})
+
+    if user_breastfeeding is not None:
+        user_breastfeeding = user_breastfeeding[0]
+
+        if user_breastfeeding == 0:
+            return '-'
+        elif user_breastfeeding == 1:
+            return 'ให้นมบุตร'
+    
+    return "Unknown"
+
+def get_pregnant_name(user_id):
+    user_pregnant = users_collection.find_one({'pregnant': ObjectId(user_id)})
+
+    if user_pregnant is not None:
+        user_pregnant = user_pregnant[0]
+
+        if user_pregnant == 0:
+            return '-'
+        elif user_pregnant == 1:
+            return 'ตั้งครรภ์'
+    
+    return "Unknown"
+
+def get_gender_name(user_id):
+    user_gender = users_collection.find_one({'gender': ObjectId(user_id)})
+
+    if user_gender is not None:
+        user_gender = user_gender[0]
+
+        if user_gender == 0:
+            return 'ชาย'
+        elif user_gender == 1:
+            return 'หญิง'
+    
+    return "Unknown"
 
 @app.route('/')
 def index():
@@ -138,43 +179,6 @@ def signup():
 
         flash('สมัครสมาชิกสำเร็จ!', 'success')
         return redirect(url_for('index'))
-
-@app.route('/delete_user/<user_id>', methods=['POST'])
-def delete_user(user_id):
-
-    # ลบผู้ใช้จาก MongoDB โดยใช้ ObjectId
-    users_collection.delete_one({'_id': ObjectId(user_id)})
-
-    flash('ลบข้อมูลสำเร็จ!', 'success')
-    return redirect(url_for('manage_members'))
-
-@app.route('/edit_user/<user_id>', methods=['GET', 'POST'])
-def edit_user(user_id):
-    if request.method == 'POST':
-
-        username = request.form['username']
-        email = request.form['email']
-
-        new_password = request.form['new_password']
-        hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
-
-        fname = request.form['fname']
-        lname = request.form['lname']
-        gender = request.form['gender']
-        pregnant = request.form['pregnant']
-        breastfeeding = request.form['breastfeeding']
-        
-        # อัปเดตข้อมูลผู้ใช้ใน MongoDB
-        users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname, 
-                                                                          'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}})
-        
-        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
-        return redirect(url_for('manage_members'))
-    
-    # ดึงข้อมูลผู้ใช้ ที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
-    user = users_collection.find_one({'_id': ObjectId(user_id)})
-
-    return render_template('edit_users.html', user=user)
 
 @app.route('/manage_trains')
 def manage_trains():
@@ -367,13 +371,55 @@ def manage_members():
 
     return render_template('manage_members.html', users=users)
 
-@app.route('/delete_member/<user_id>', methods=['POST'])
-def delete_member(user_id):
+@app.route('/detail_users/<user_id>')
+def detail_users(user_id):
+
+    # ดึงข้อมูลทั้งหมดจาก Collection
+    users = list(users_collection.find())
+
+    # เรียกใช้ฟังก์ชัน
+    gender_name = get_gender_name(user_id)
+    Age = calculateAge(user_id)
+    pregnant_name = get_pregnant_name(user_id)
+    breastfeeding_name = get_breastfeeding_name(user_id)
+
+    return render_template('view_users.html', users=users, gender_name=gender_name, Age=Age, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
+
+@app.route('/delete_user/<user_id>', methods=['POST'])
+def delete_user(user_id):
     # ลบข้อมูลยาสมุนไพรออกจาก MongoDB โดยใช้ ObjectId
     users_collection.delete_one({'_id': ObjectId(user_id)})
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_members'))
+
+@app.route('/edit_user/<user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    if request.method == 'POST':
+
+        username = request.form['username']
+        email = request.form['email']
+
+        new_password = request.form['new_password']
+        hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
+
+        fname = request.form['fname']
+        lname = request.form['lname']
+        gender = request.form['gender']
+        pregnant = request.form['pregnant']
+        breastfeeding = request.form['breastfeeding']
+        
+        # อัปเดตข้อมูลผู้ใช้ใน MongoDB
+        users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname, 
+                                                                          'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}})
+        
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_members'))
+    
+    # ดึงข้อมูลผู้ใช้ ที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
+
+    return render_template('edit_users.html', user=user)
 
 @app.route('/manage_herbals')
 def manage_herbals():

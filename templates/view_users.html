@@ -105,106 +105,127 @@
         </div>
     </div>
 
-
     <div class="table-data">
-        <div class="order">
-            <a href="" class="back" style="display: flex; align-items: center; justify-content: right;">
-                <img src="{{ url_for('static', filename='add-friend.png') }}">
-            </a>
-            <div class="head">
-                <h1>ผู้ดูแลระบบ</h1>
-                <img src="{{ url_for('static', filename='crown.png') }}" class="icon-mini" alt="Menu Icon">
-            </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>รายละเอียด</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% set admin_users = users | selectattr('role', 'equalto', 'admin') | list %}
-                    {% if admin_users | length == 0 %}
-                        <tr>
-                            <td colspan="5">ไม่มีข้อมูลผู้ดูแลระบบ</td>
-                        </tr>
-                    {% else %}
-                        {% for user in admin_users %}
-                        <tr>
-                            <td>{{ user['username'] }}</td>
-                            <td>{{ user['email'] }}</td>
-                            <td>{{ user['role'] }}</td>
-                            <td><a href="{{ url_for('detail_users', user_id=user['_id']) }}">คลิกเพื่อดู</a></td>
-                            <td>
-                                <a href="{{ url_for('edit_user', user_id=user['_id']) }}">แก้ไข</a>
-                                <form action="{{ url_for('delete_user', user_id=user['_id']) }}" method="POST" style="display:inline;">
-                                    <button type="submit">ลบ</button>
-                                </form> 
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% endif %}
-                </tbody>
-                
-            </table>
-            <br>
-        
-    </div>
-
-    <div class="table-data">
         <div class="order">
-            <a href="" class="back" style="display: flex; align-items: center; justify-content: right;">
-                <img src="{{ url_for('static', filename='add-user.png') }}">
-            </a>
-            <div class="head">
-                <h1>สมาชิก</h1>
-              
-            </div>
             
-            <table>
+                <table>
+                    <tr>
+                        <td>
+                            <label>ชื่อผู้ใช้</label>
+                        </td>
+                        <td>
+                            {{ user['username'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>อีเมล</label>
+                        </td>
+                        <td>
+                            {{ user['email'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>ชื่อ-นามสกุล</label>
+                        </td>
+                        <td>
+                            {{ member.fname }} {{ user['lname'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>เพศ</label>
+                        </td>
+                        <td>
+                            {{ gender_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>อายุ</label>
+                        </td>
+                        <td>
+                            {{ Age }}
+                        </td>
+                    </tr>
+                 
+                    <tr class="FemaleField" style="display: none;">
+                        <td>
+                            <img src="{{ url_for('static', filename='pregnant_4370507.png') }}" class="icon-mini" alt="Menu Icon">
+                        </td>
+                        <td>
+                            {{ pregnant_name }}
+                        </td>
+                    </tr>
+                    <tr class="FemaleField" style="display: none;">
+                        <td>
+                            <img src="{{ url_for('static', filename='breastfeeding.png') }}" class="icon-mini" alt="Menu Icon">
+                        </td>
+                        <td>
+                            {{ breastfeeding_name }}
+                        </td>
+                    </tr>
+                
+                </table><br>
+
+            
+            <br>
+        </div>
+
+        <div class="order">
+            <!-- <table class="chronicsTable" id="selectedChronicsList">
                 <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>ชื่อ-นามสกุล</th>
-                        <th>Role</th>
-                        <th>รายละเอียด</th>
-                        <th></th>   
+                        <th>โรคประจำตัว</th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    {% set member_users = users | selectattr('role', 'equalto', 'member') | list %}
-                    {% if member_users | length == 0 %}
-                        <tr>
-                            <td colspan="6">ไม่มีข้อมูลสมาชิก</td>
-                        </tr>
-                    {% else %}
-                        {% for user in member_users %}
-                        <tr>
-                            <td>{{ user['username'] }}</td>
-                            <td>{{ user['email'] }}</td>
-                            <td>{{ user['fname'] }}  {{ user['lname'] }}</td>
-                            <td>{{ user['role'] }}</td>
-                            <td><a href="{{ url_for('detail_users', user_id=user['_id']) }}">คลิกเพื่อดู</a></td>
-                            <td>
-                                <a href="{{ url_for('edit_user', user_id=user['_id']) }}">แก้ไข</a>
-                                <form action="{{ url_for('delete_user', user_id=user['_id']) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete()">
-                                    <button type="submit">ลบ</button>
-                                </form> 
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% endif %}
+                    {% for chronic in chronic_diseases %}
+                    <tr>
+                        <td>&nbsp;&nbsp;{{ chronic[0] }}</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
-                
-            </table>
-            <br>
-        
+            </table><br>
+
+            <table class="allergiesTable" id="selectedallergiesList">
+                <thead>
+                    <tr>
+                        <th>ข้อมูลการแพ้</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for allergy in allergies %}
+                    <tr>
+                        <td>&nbsp;&nbsp;{{ allergy[0] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table><br>
+
+            <table class="medicinesTable" id="selectedMedicinesList">
+                <thead>
+                    <tr>
+                        <th>ข้อมูลการใช้ยา</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for medicine in medicines %}
+                    <tr>
+                        <td>&nbsp;&nbsp;{{ medicine[0] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table><br> -->
+        </div>
+
     </div>
+    
 
 
 
@@ -215,8 +236,22 @@
 
 
     <script>
-        function confirmDelete() {
-            return confirm("คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?");
+        document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                event.target.value = event.target.checked ? "1" : "0";
+            });
+        }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
+
+        // ฟังก์ชัน toggleFemaleField() 
+        function toggleFemaleField() {
+            var genderSelect = document.getElementById("gender");
+            var selectedValue = genderSelect.options[genderSelect.selectedIndex].value;
+            var FemaleField = document.getElementById("FemaleField");
+            if (selectedValue == "1") {
+                FemaleField.style.display = "block";
+            } else {
+                FemaleField.style.display = "none";
+            }
         }
         
     </script>       
