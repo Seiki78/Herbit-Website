@@ -72,7 +72,6 @@ def get_gender_name(user_id):
     user_gender = users_collection.find_one({'gender': ObjectId(user_id)})
 
     if user_gender is not None:
-        user_gender = user_gender[0]
 
         if user_gender == 0:
             return 'ชาย'
