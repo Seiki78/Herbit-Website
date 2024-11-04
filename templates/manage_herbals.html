@@ -130,7 +130,7 @@
         <input type="text" id="hm_recipe" name="hm_recipe" required><br>
         <label for="wn_id">คำเตือน</label>
         <select name="wn_id" id="wn_id" style="width: 300px;">
-            <option value="" style="width: 300px;">--เลือก--</option>
+            <option value="">--เลือก--</option>
 
             {% for warning in warnings %}
             <option value="{{ warning['wn_id'] }}" >{{ warning['wn_name'] }}</option>
