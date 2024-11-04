@@ -111,61 +111,77 @@
         <a href="{{ url_for('manage_warnings') }}" class="btn-download">รายการคำเตือน</a>
 
     </div><br>
-    <div class="table-data">
-        <div>
-            <div class="content">
-                <div class="text-container">
-                    <h3 style="align-items: center;">เพิ่มข้อมูล</h3>
+    
+    <form action="{{ url_for('add_herbal') }}" method="POST">
+
+        <div class="table-data">
+        
+            <div class="order">
+                <table>
+                    <tr>
+                        <th>
+                            <label for="hm_name">ชื่อยาสมุนไพร</label>
+                        </th>
+                        <td>
+                            <input type="text" name="hm_name" placeholder="กรอกชื่อยาสมุนไพร" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="hm_recipe">ตำรับยา</label>
+                        </th>
+                        <td>
+                            <input type="text" name="hm_recipe" placeholder="กรอกรายละเอียด" >
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="hm_dosage">วิธีใช้</label>
+                        </th>
+                        <td>
+                            <input type="text" name="hm_dosage" placeholder="กรอกวิธีใช้ยาใหม่(ถ้ามี)" >
+                        </td>
+                    </tr>
+
+                </table><br>
+
+                <div class="head">
+                    <div class="selected-list">
+
+                        <table class="warningTable" id="selectedWarningsList">
+                        <thead>
+                            <tr>
+                                <th>คำเตือน</th>
+ 
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <!-- Selected items will be displayed here -->
+                        </tbody>
+                    </table>
+                    </div>
+                    
                 </div>
+                <div class="head">
+                    <select id="wn_id" name="wn_id" multiple>
+                        <option value="">-- เลือก --</option>
+                        {% for warning in warnings %}
+                            <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" onclick="addSelected('warnings')">เพิ่มคำเตือน</button>
+                </div>
+
+
+                <button type="submit" class="submit-btn">
+                    <img src="{{ url_for('static', filename='add_herb.png') }}" alt="Submit">
+                </button>
             </div>
-
-        </div>
-        <form action="{{ url_for('add_herbal') }}" method="POST">
-            <div class="order">
-                <label for="hm_name">ชื่อยาสมุนไพร</label>
-                <input type="text" id="hm_name" name="hm_name" required>
-                <label for="hm_dosage">วิธีใช้</label>
-                <input type="text" id="hm_dosage" name="hm_dosage" required><br>
-                <label for="hm_recipe">ตำรับยา</label>
-                <input type="text" id="hm_recipe" name="hm_recipe" required><br>
-            </div>
-
-            <div class="order">
-                    <div class="head">
-                        <div class="selected-list">
-
-                            <table class="warningsTable" id="selectedWarningsList">
-                            <thead>
-                                <tr>
-                                    <th>คำเตือน</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Selected items will be displayed here -->
-                            </tbody>
-                        </table>
-                        </div>
-                        
-                    </div>
-
-                    <div class="head">
-                        <select id="wn_id" name="wn_id" multiple>
-                            <option value="">-- เลือก --</option>
-                            {% for warning in warnings %}
-                                <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="button" onclick="addSelected()">เพิ่มคำเตือน</button>
-                    </div>
-
-            </div><br>
-            
+    
             <button type="submit" class="btn1">เพิ่มยาสมุนไพร</button>
-
-        </form>
-    </div><br>
-
+        </div>
+    </form>
+    <br>
 
     <div class="table-data">
         <div class="order">
