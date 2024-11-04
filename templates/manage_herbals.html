@@ -205,7 +205,7 @@
                         <td>{{ herbal['hm_name'] }}</td>
                         <td>{{ herbal['hm_dosage'] }}</td>
                         <td>{{ herbal['hm_recipe'] }}</td>
-                        <td></td>
+                        <td>{{ herbal['warnings_text'] }}</td>
                         <td>
                             <a href="{{ url_for('edit_herbal', herbal_id=herbal['_id']) }}">แก้ไข</a>
                             <form action="{{ url_for('delete_herbal', herbal_id=herbal['_id']) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete()">

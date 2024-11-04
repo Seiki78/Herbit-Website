@@ -434,6 +434,23 @@ def manage_herbals():
     # ดึงข้อมูล collection herbals_data
     warnings = warnings_data_collection.find()
 
+    # ดึงคำเตือนที่เกี่ยวข้องกับแต่ละสมุนไพร
+    for herbal in herbals:
+        hm_id = herbal['hm_id']
+        
+        # ค้นหาเอกสารใน hm_wn ที่เชื่อมโยงกับ hm_id ปัจจุบัน
+        related_warnings = list(hm_wn_collection.find({'hm_id': hm_id}))
+        
+        # ดึงคำเตือนจาก warnings_data_collection ตาม wn_id ที่พบ
+        warning_texts = []
+        for rel in related_warnings:
+            wn_id = rel['wn_id']
+            warning = warnings_data_collection.find_one({'wn_id': wn_id})
+            if warning:
+                warning_texts.append(warning['wn_name'])
+        
+        # เก็บคำเตือนเป็นสตริงในฟิลด์ warnings_text ของ herbal
+        herbal['warnings_text'] = ", ".join(warning_texts) if warning_texts else "ไม่มีคำเตือน"
 
     return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages, warnings=warnings)
 
