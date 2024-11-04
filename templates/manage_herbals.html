@@ -111,7 +111,7 @@
         <a href="{{ url_for('manage_warnings') }}" class="btn-download">รายการคำเตือน</a>
 
     </div><br>
-    
+
     <form action="{{ url_for('add_herbal') }}" method="POST">
 
         <div class="table-data">
@@ -149,21 +149,21 @@
                     <div class="selected-list">
 
                         <table class="warningTable" id="selectedWarningsList">
-                        <thead>
-                            <tr>
-                                <th>คำเตือน</th>
- 
-                            </tr>
-                        </thead>
-                        <tbody>
-                             <!-- Selected items will be displayed here -->
-                        </tbody>
-                    </table>
+                            <thead>
+                                <tr>
+                                    <th>คำเตือน</th>
+    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Selected items will be displayed here -->
+                            </tbody>
+                        </table>
                     </div>
                     
                 </div>
                 <div class="head">
-                    <select id="wn_id" name="wn_id" multiple>
+                    <select id="warnings" name="wn_ids" multiple>
                         <option value="">-- เลือก --</option>
                         {% for warning in warnings %}
                             <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
@@ -176,9 +176,10 @@
                 <button type="submit" class="submit-btn">
                     <img src="{{ url_for('static', filename='add_herb.png') }}" alt="Submit">
                 </button>
+
             </div>
     
-            <button type="submit" class="btn1">เพิ่มยาสมุนไพร</button>
+            
         </div>
     </form>
     <br>
