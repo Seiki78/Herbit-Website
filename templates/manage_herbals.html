@@ -111,60 +111,61 @@
         <a href="{{ url_for('manage_warnings') }}" class="btn-download">รายการคำเตือน</a>
 
     </div><br>
-
-    <div>
-        <div class="content">
-            <div class="text-container">
-                <h3 style="align-items: center;">เพิ่มข้อมูล</h3>
+    <div class="table-data">
+        <div>
+            <div class="content">
+                <div class="text-container">
+                    <h3 style="align-items: center;">เพิ่มข้อมูล</h3>
+                </div>
             </div>
+
         </div>
-
-    </div>
-
-    <form action="{{ url_for('add_herbal') }}" method="POST">
-        <label for="hm_name">ชื่อยาสมุนไพร</label>
-        <input type="text" id="hm_name" name="hm_name" required>
-        <label for="hm_dosage">วิธีใช้</label>
-        <input type="text" id="hm_dosage" name="hm_dosage" required><br>
-        <label for="hm_recipe">ตำรับยา</label>
-        <input type="text" id="hm_recipe" name="hm_recipe" required><br>
-
-        <div class="table-data">
+        <form action="{{ url_for('add_herbal') }}" method="POST">
             <div class="order">
-                <div class="head">
-                    <div class="selected-list">
-
-                        <table class="warningsTable" id="selectedWarningsList">
-                        <thead>
-                            <tr>
-                                <th>คำเตือน</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Selected items will be displayed here -->
-                        </tbody>
-                    </table>
-                    </div>
-                    
-                </div>
-
-                <div class="head">
-                    <select id="wn_id" name="wn_id" multiple>
-                        <option value="">-- เลือก --</option>
-                        {% for warning in warnings %}
-                            <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
-                        {% endfor %}
-                    </select>
-                    <button type="button" onclick="addSelected()">เพิ่มคำเตือน</button>
-                </div>
-
+                <label for="hm_name">ชื่อยาสมุนไพร</label>
+                <input type="text" id="hm_name" name="hm_name" required>
+                <label for="hm_dosage">วิธีใช้</label>
+                <input type="text" id="hm_dosage" name="hm_dosage" required><br>
+                <label for="hm_recipe">ตำรับยา</label>
+                <input type="text" id="hm_recipe" name="hm_recipe" required><br>
             </div>
-        </div><br>
-        
-        
-        <button type="submit" class="btn1">เพิ่มยาสมุนไพร</button>
-    </form><br>
+
+            <div class="order">
+                    <div class="head">
+                        <div class="selected-list">
+
+                            <table class="warningsTable" id="selectedWarningsList">
+                            <thead>
+                                <tr>
+                                    <th>คำเตือน</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Selected items will be displayed here -->
+                            </tbody>
+                        </table>
+                        </div>
+                        
+                    </div>
+
+                    <div class="head">
+                        <select id="wn_id" name="wn_id" multiple>
+                            <option value="">-- เลือก --</option>
+                            {% for warning in warnings %}
+                                <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="button" onclick="addSelected()">เพิ่มคำเตือน</button>
+                    </div>
+
+            </div><br>
+            
+            <button type="submit" class="btn1">เพิ่มยาสมุนไพร</button>
+
+        </form>
+    </div><br>
+
 
     <div class="table-data">
         <div class="order">
