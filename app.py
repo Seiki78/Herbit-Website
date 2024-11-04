@@ -45,9 +45,8 @@ def load_user(user_id):
 def get_breastfeeding_name(user_id):
     user = users_collection.find_one({'_id': ObjectId(user_id)})
 
-    if breastfeeding is not None:
-        breastfeeding = user.get('breastfeeding')
-
+    if user is not None:
+        breastfeeding = user.get('breastfeeding')  # ดึงค่า breastfeeding จาก user
         if breastfeeding == 0:
             return '-'
         elif breastfeeding == 1:
@@ -58,9 +57,8 @@ def get_breastfeeding_name(user_id):
 def get_pregnant_name(user_id):
     user = users_collection.find_one({'_id': ObjectId(user_id)})
 
-    if pregnant is not None:
-        pregnant = user.get('pregnant')
-
+    if user is not None:
+        pregnant = user.get('pregnant')  # ดึงค่า pregnant จาก user
         if pregnant == 0:
             return '-'
         elif pregnant == 1:
