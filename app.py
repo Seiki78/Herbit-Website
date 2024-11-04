@@ -370,18 +370,20 @@ def manage_members():
 @app.route('/detail_users/<user_id>')
 def detail_users(user_id):
 
-    # ดึงข้อมูลทั้งหมดจาก Collection
-    users = list(users_collection.find())
+    users = users_collection.find_one({'_id': ObjectId(user_id)})
 
-    # เรียกใช้ฟังก์ชัน
-    dob = users['dob']
-    age = calculate_age(dob)
-    
-    gender_name = get_gender_name(user_id)
-    pregnant_name = get_pregnant_name(user_id)
-    breastfeeding_name = get_breastfeeding_name(user_id)
+    if users:
+        dob = users.get('dob')
+        age = calculate_age(dob)
 
-    return render_template('view_users.html', users=users, gender_name=gender_name, age=age, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
+        gender_name = get_gender_name(user_id)
+        pregnant_name = get_pregnant_name(user_id)
+        breastfeeding_name = get_breastfeeding_name(user_id)
+        
+        return render_template('view_users.html', users=users, gender_name=gender_name, age=age, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
+    else:
+        flash("ไม่พบข้อมูล", "danger")
+        return redirect(url_for('manage_members'))
 
 @app.route('/delete_user/<user_id>', methods=['POST'])
 def delete_user(user_id):
