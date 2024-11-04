@@ -1573,6 +1573,7 @@ p {
 }
 
 select {
+    width: 300px; /* ใช้ความกว้างที่ต้องการ เช่น 300px */
     box-sizing: border-box; /* ทำให้ padding ภายในไม่ขยายความกว้างของ select */
 }
 
