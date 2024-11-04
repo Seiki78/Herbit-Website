@@ -371,8 +371,8 @@ def manage_members():
 def detail_users(user_id):
 
     # ดึงข้อมูลทั้งหมดจาก Collection
-    users = list(users_collection.find())
-    dob = users_collection.find_one({'dob': ObjectId(dob)})
+    users = users_collection.find_one({'_id': ObjectId(user_id)})
+    dob = users_collection.find_one({'dob': ObjectId(user_id)})
 
     # เรียกใช้ฟังก์ชัน
     gender_name = get_gender_name(user_id)
