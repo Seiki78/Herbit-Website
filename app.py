@@ -43,39 +43,39 @@ def load_user(user_id):
     return None
 
 def get_breastfeeding_name(user_id):
-    user_breastfeeding = users_collection.find_one({'breastfeeding': ObjectId(user_id)})
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
 
-    if user_breastfeeding is not None:
-        user_breastfeeding = user_breastfeeding[0]
+    if breastfeeding is not None:
+        breastfeeding = user.get('breastfeeding')
 
-        if user_breastfeeding == 0:
+        if breastfeeding == 0:
             return '-'
-        elif user_breastfeeding == 1:
+        elif breastfeeding == 1:
             return 'ให้นมบุตร'
     
     return "Unknown"
 
 def get_pregnant_name(user_id):
-    user_pregnant = users_collection.find_one({'pregnant': ObjectId(user_id)})
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
 
-    if user_pregnant is not None:
-        user_pregnant = user_pregnant[0]
+    if pregnant is not None:
+        pregnant = user.get('pregnant')
 
-        if user_pregnant == 0:
+        if pregnant == 0:
             return '-'
-        elif user_pregnant == 1:
+        elif pregnant == 1:
             return 'ตั้งครรภ์'
     
     return "Unknown"
 
 def get_gender_name(user_id):
-    user_gender = users_collection.find_one({'gender': ObjectId(user_id)})
+    user = users_collection.find_one({'_id': ObjectId(user_id)})  # ค้นหาจาก _id
 
-    if user_gender is not None:
-
-        if user_gender == 0:
+    if user is not None:
+        gender = user.get('gender')  # ดึงค่า gender จาก user ที่ได้มา
+        if gender == 0:
             return 'ชาย'
-        elif user_gender == 1:
+        elif gender == 1:
             return 'หญิง'
     
     return "Unknown"
