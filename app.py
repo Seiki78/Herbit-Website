@@ -42,11 +42,6 @@ def load_user(user_id):
         return User(user_id=users['_id'], username=users['username'], role=users['role'])
     return None
 
-def calculate_age(dob):
-    today = datetime.today()
-    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-    return age
-
 def get_breastfeeding_name(user_id):
     user_breastfeeding = users_collection.find_one({'breastfeeding': ObjectId(user_id)})
 
@@ -369,18 +364,27 @@ def manage_members():
 
 @app.route('/detail_users/<user_id>')
 def detail_users(user_id):
+    # ดึงข้อมูลสมาชิกตาม user_id
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
 
-    # ดึงข้อมูลทั้งหมดจาก Collection
-    users = users_collection.find_one({'_id': ObjectId(user_id)})
-    dob = users_collection.find_one({'dob': ObjectId(user_id)})
+    if user:
+        gender_name = get_gender_name(user_id)
+        pregnant_name = get_pregnant_name(user_id)
+        breastfeeding_name = get_breastfeeding_name(user_id)
 
-    # เรียกใช้ฟังก์ชัน
-    gender_name = get_gender_name(user_id)
-    age = calculate_age(dob)
-    pregnant_name = get_pregnant_name(user_id)
-    breastfeeding_name = get_breastfeeding_name(user_id)
+        dob = user.get('dob')
+        if dob:
+            # คำนวณอายุโดยเปรียบเทียบกับวันที่ปัจจุบัน
+            today = datetime.today()
+            age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+        else:
+            age = None  # กรณีที่ dob ไม่มีข้อมูล
 
-    return render_template('view_users.html', users=users, gender_name=gender_name, age=age, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
+        return render_template('detail_users.html', user=user, age=age, gender_name=gender_name, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
+    else:
+        # กรณีที่ไม่พบข้อมูลผู้ใช้
+        flash('ไม่พบข้อมูลสมาชิก', 'danger')
+        return redirect(url_for('manage_members'))
 
 @app.route('/delete_user/<user_id>', methods=['POST'])
 def delete_user(user_id):
