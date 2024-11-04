@@ -21,6 +21,7 @@ allergys_data_collection = db['allergys_data']
 chronics_data_collection = db['chronics_data']
 symptoms_data_collection = db['symptoms_data']
 warnings_data_collection = db['warnings_data']
+hm_wn_collection = db['hm_wn']
 
 # ตั้งค่า Flask-Login
 login_manager = LoginManager()
@@ -453,6 +454,13 @@ def add_herbal():
     
     # เพิ่มข้อมูลใหม่ลงใน Collection chronic
     herbals_data_collection.insert_one({'hm_id': hm_id, 'hm_name': hm_name, 'hm_dosage': hm_dosage, 'hm_recipe': hm_recipe})
+
+    # ดึงคำเตือนที่เลือกมา
+    wn_ids = request.form.getlist('wn_ids')
+    
+    # สร้างเอกสารความสัมพันธ์ระหว่าง hm_id และ wn_id แต่ละรายการใน collection hm_wn
+    for wn_id in wn_ids:
+        hm_wn_collection.insert_one({'hm_id': int(hm_id), 'wn_id': int(wn_id)})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_herbals'))
