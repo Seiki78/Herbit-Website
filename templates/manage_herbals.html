@@ -129,11 +129,11 @@
         <label for="hm_recipe">ตำรับยา</label>
         <input type="text" id="hm_recipe" name="hm_recipe" required><br>
         <label for="wn_id">คำเตือน</label>
-        <select name="wn_id" id="wn_id" style="width: 50px;">
-            <option value="">--เลือก--</option>
+        <select name="wn_id" id="wn_id" style="width: 300px;">
+            <option value="" style="width: 300px;">--เลือก--</option>
 
             {% for warning in warnings %}
-            <option value="{{ warning['wn_id'] }}">{{ warning['wn_name'] }}</option>
+            <option value="{{ warning['wn_id'] }}" style="width: 300px;">{{ warning['wn_name'] }}</option>
             {% endfor %}
 
         </select>
