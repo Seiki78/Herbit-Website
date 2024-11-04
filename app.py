@@ -380,7 +380,7 @@ def detail_users(user_id):
         else:
             age = None  # กรณีที่ dob ไม่มีข้อมูล
 
-        return render_template('detail_users.html', user=user, age=age, gender_name=gender_name, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
+        return render_template('view_users.html', user=user, age=age, gender_name=gender_name, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
     else:
         # กรณีที่ไม่พบข้อมูลผู้ใช้
         flash('ไม่พบข้อมูลสมาชิก', 'danger')
