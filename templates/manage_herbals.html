@@ -246,6 +246,11 @@
 
     
     <script>
+        function formatRecipeText(text) {
+            var formattedText = text.replace(/,/g, '<br>');
+            return formattedText;
+        }
+        
 
         function addSelected(type) {
             const select = document.getElementById(type);
