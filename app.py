@@ -427,8 +427,8 @@ def manage_herbals():
     herbals_count = herbals_data_collection.count_documents({})  # นับจำนวนเอกสารทั้งหมด
     total_pages = (herbals_count + per_page - 1) // per_page  # คำนวณจำนวนหน้าทั้งหมด
 
-    # ดึงข้อมูลจาก MongoDB โดยใช้ skip และ limit เพื่อแบ่งข้อมูลตามหน้า
-    herbals = herbals_data_collection.find().skip((page - 1) * per_page).limit(per_page)
+    # ดึงข้อมูลจาก MongoDB และแปลงให้เป็นลิสต์ก่อน
+    herbals = list(herbals_data_collection.find().skip((page - 1) * per_page).limit(per_page))
 
     # ดึงคำเตือนที่เกี่ยวข้องกับแต่ละสมุนไพร
     for herbal in herbals:
@@ -448,12 +448,7 @@ def manage_herbals():
         # เก็บคำเตือนเป็นสตริงในฟิลด์ warnings_text ของ herbal
         herbal['warnings_text'] = ", ".join(warning_texts) if warning_texts else "ไม่มีคำเตือน"
 
-    return render_template(
-        'manage_herbals.html', 
-        herbals=herbals, 
-        page=page, 
-        total_pages=total_pages
-    )
+    return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages)
 
 @app.route('/add_herbal', methods=['POST'])
 def add_herbal():
