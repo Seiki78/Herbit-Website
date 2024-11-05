@@ -471,7 +471,7 @@ def add_herbal():
     herbals_data_collection.insert_one({'hm_id': hm_id, 'hm_name': hm_name, 'hm_dosage': hm_dosage, 'hm_recipe': hm_recipe})
 
     # ดึงคำเตือนที่เลือกมา
-    wn_ids = request.form.getlist('wn_ids')
+    wn_ids = request.form.getlist('warnings')
     
     # สร้างเอกสารความสัมพันธ์ระหว่าง hm_id และ wn_id แต่ละรายการใน collection hm_wn
     for wn_id in wn_ids:

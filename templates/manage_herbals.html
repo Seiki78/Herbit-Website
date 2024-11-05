@@ -163,13 +163,13 @@
                     
                 </div>
                 <div class="head">
-                    <select id="warnings" name="wn_ids" multiple>
+                    <select id="warnings" name="warnings" multiple>
                         <option value="">-- เลือก --</option>
                         {% for warning in warnings %}
                             <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
                         {% endfor %}    
                     </select>
-                    <button type="button" onclick="addSelected('wn_ids')">เพิ่มคำเตือน</button>
+                    <button type="button" onclick="addSelected('warnings')">เพิ่มคำเตือน</button>
                 </div>
 
 
