@@ -447,8 +447,10 @@ def manage_herbals():
         
         # เก็บคำเตือนเป็นสตริงในฟิลด์ warnings_text ของ herbal
         herbal['warnings_text'] = ", ".join(warning_texts) if warning_texts else "ไม่มีคำเตือน"
+    # ดึงข้อมูล collection herbals_data
+    warnings = warnings_data_collection.find()
 
-    return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages)
+    return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages, warnings=warnings)
 
 @app.route('/add_herbal', methods=['POST'])
 def add_herbal():
