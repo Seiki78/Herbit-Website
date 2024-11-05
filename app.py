@@ -422,7 +422,6 @@ def edit_user(user_id):
 
 @app.route('/manage_herbals')
 def manage_herbals():
-
     page = request.args.get('page', 1, type=int)  # รับค่าหน้าจาก URL หรือกำหนดเป็นหน้า 1 ถ้าไม่มีการส่งมา
     per_page = 25  # กำหนดจำนวนข้อมูลต่อหน้า
     herbals_count = herbals_data_collection.count_documents({})  # นับจำนวนเอกสารทั้งหมด
@@ -430,9 +429,6 @@ def manage_herbals():
 
     # ดึงข้อมูลจาก MongoDB โดยใช้ skip และ limit เพื่อแบ่งข้อมูลตามหน้า
     herbals = herbals_data_collection.find().skip((page - 1) * per_page).limit(per_page)
-
-    # ดึงข้อมูล collection herbals_data
-    warnings = warnings_data_collection.find()
 
     # ดึงคำเตือนที่เกี่ยวข้องกับแต่ละสมุนไพร
     for herbal in herbals:
@@ -452,7 +448,12 @@ def manage_herbals():
         # เก็บคำเตือนเป็นสตริงในฟิลด์ warnings_text ของ herbal
         herbal['warnings_text'] = ", ".join(warning_texts) if warning_texts else "ไม่มีคำเตือน"
 
-    return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages, warnings=warnings)
+    return render_template(
+        'manage_herbals.html', 
+        herbals=herbals, 
+        page=page, 
+        total_pages=total_pages
+    )
 
 @app.route('/add_herbal', methods=['POST'])
 def add_herbal():
