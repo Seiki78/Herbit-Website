@@ -248,8 +248,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var recipeElements = document.querySelectorAll('.hm-warnings');
-            var recipeElements = document.querySelectorAll('.hm-recipes');
-            var recipeElements = document.querySelectorAll('.hm-dosages');
             
             recipeElements.forEach(function(element) {
                 var rawText = element.textContent || element.innerText;
@@ -257,11 +255,15 @@
                 element.innerHTML = formattedText;
             });
 
+            var recipeElements = document.querySelectorAll('.hm-recipes');
+
             recipeElements.forEach(function(element) {
                 var rawText = element.textContent || element.innerText;
                 var formattedText = formatRecipeText(rawText);
                 element.innerHTML = formattedText;
             });
+
+            var recipeElements = document.querySelectorAll('.hm-dosages');
 
             recipeElements.forEach(function(element) {
                 var rawText = element.textContent || element.innerText;
