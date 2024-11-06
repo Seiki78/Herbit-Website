@@ -121,7 +121,7 @@
     <div>
         <div class="content">
             <div class="text-container">
-                <span><h2 style="align-items: center;">แก้ไขข้อมูล</h2>&nbsp;<p>รหัสยาสมุนไพร-{{ herbal['hm_id'] }}</p></span>
+                <span><h2 style="align-items: center;">แก้ไขข้อมูล</h2>&nbsp;<p>รหัสยาสมุนไพร - {{ herbal['hm_id'] }}</p></span>
             </div>
             <!-- {% if selected_herbal %}
                 <label for="hm_id">ยาสมุนไพร : {{ selected_herbal['hm_id'] }} - {{ selected_herbal['hm_name'] }}</label>
@@ -141,7 +141,7 @@
                             <label for="hm_name">ชื่อยาสมุนไพร</label>
                         </th>
                         <td>
-                            <input type="text" name="hm_name" placeholder="กรอกชื่อยาสมุนไพร" required>
+                            <input type="text" name="hm_name" value="{{ herbal['hm_name'] }}">
                         </td>
                     </tr>
                     <tr>
@@ -149,7 +149,7 @@
                             <label for="hm_recipe">ตำรับยา</label>
                         </th>
                         <td>
-                            <input type="text" name="hm_recipe" placeholder="กรอกรายละเอียด" >
+                            <input type="text" name="hm_recipe" value="{{ herbal['hm_recipe'] }}">
                         </td>
                     </tr>
                     <tr>
@@ -157,7 +157,7 @@
                             <label for="hm_dosage">วิธีใช้</label>
                         </th>
                         <td>
-                            <input type="text" name="hm_dosage" placeholder="กรอกวิธีใช้ยาใหม่(ถ้ามี)" >
+                            <input type="text" name="hm_dosage" value="{{ herbal['hm_dosage'] }}">
                         </td>
                     </tr>
 
@@ -167,7 +167,7 @@
                 <div class="selected-list">
                     <table class="warningTable">
                         <thead>
-                            <tr><th>คำเตือนที่มีอยู่</th></tr>
+                            <tr><th>คำเตือน</th></tr>
                         </thead>
                         <tbody id="selectedWarningsList">
                             {% for warning in warnings %}
