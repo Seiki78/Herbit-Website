@@ -421,6 +421,24 @@ def edit_user(user_id):
 
     return render_template('edit_users.html', user=user)
 
+@app.route('/admin_signup', methods=['POST','GET'])
+def admin_signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+        # เพิ่มข้อมูลใหม่ลงใน MongoDB / role member
+        users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'admin'})
+
+        flash('เพิ่มผู้ดูแลระบบสำเร็จ!', 'success')
+        return redirect(url_for('manage_members'))
+    
+    return render_template('add_admin.html')
+
 @app.route('/manage_herbals')
 def manage_herbals():
     page = request.args.get('page', 1, type=int)  # รับค่าหน้าจาก URL หรือกำหนดเป็นหน้า 1 ถ้าไม่มีการส่งมา
