@@ -233,7 +233,6 @@
             const selectedOptions = Array.from(select.selectedOptions);
 
             selectedOptions.forEach(option => {
-                // ตรวจสอบว่ามีคำเตือนนี้ในรายการที่เลือกแล้วหรือไม่
                 if (!Array.from(selectedList.children).some(tr => tr.dataset.value === option.value)) {
                     const tr = document.createElement('tr');
                     const tdText = document.createElement('td');
@@ -262,7 +261,7 @@
                     hiddenInput.value = option.value;
                     document.querySelector('form').appendChild(hiddenInput);
                 }
-                option.selected = false; // ยกเลิกการเลือกหลังเพิ่ม
+                option.selected = false;
             });
         }
 

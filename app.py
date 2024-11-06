@@ -488,39 +488,38 @@ def delete_herbal(herbal_id):
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_herbals'))
 
+from bson import ObjectId
+
 @app.route('/edit_herbal/<herbal_id>', methods=['GET', 'POST'])
 def edit_herbal(herbal_id):
     if request.method == 'POST':
         # รับข้อมูลใหม่จากฟอร์ม
         hm_name = request.form['hm_name']
         hm_dosage = request.form['hm_dosage']
-        hm_recipe  = request.form['hm_recipe']
-        
+        hm_recipe = request.form['hm_recipe']
+
         # อัปเดตข้อมูลใน MongoDB
         herbals_data_collection.update_one({'_id': ObjectId(herbal_id)}, {'$set': {'hm_name': hm_name, 'hm_dosage': hm_dosage, 'hm_recipe': hm_recipe}})
-        
-        # รับคำเตือนที่แก้ไขล่าสุดจากฟอร์ม
+
+        # รับค่า wn_ids ที่เลือกมาใหม่
         wn_ids = request.form.getlist('wn_ids')
-        
-        # ลบคำเตือนเก่าทั้งหมดที่เกี่ยวข้องกับยานี้ใน `hm_wn`
-        hm_wn_collection.delete_many({'hm_id': int(herbal_id)})
-        
-        # เพิ่มคำเตือนใหม่ที่เลือกเข้าไป
+
+        # ดึง hm_id ของสมุนไพรปัจจุบัน
+        herbal = herbals_data_collection.find_one({'_id': ObjectId(herbal_id)})
+        hm_id = herbal['hm_id']
+
+        # ลบความสัมพันธ์คำเตือนที่มีอยู่ใน hm_wn ก่อนแล้วเพิ่มใหม่ตามที่เลือก
+        hm_wn_collection.delete_many({'hm_id': int(hm_id)})  # ลบรายการที่มี hm_id ตรงกับยานี้
         for wn_id in wn_ids:
-            hm_wn_collection.insert_one({'hm_id': int(herbal_id), 'wn_id': int(wn_id)})
-        
+            hm_wn_collection.insert_one({'hm_id': int(hm_id), 'wn_id': int(wn_id)})
+
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
         return redirect(url_for('manage_herbals'))
-    
+
     # ดึงข้อมูลที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
     herbal = herbals_data_collection.find_one({'_id': ObjectId(herbal_id)})
-
-    # ดึงคำเตือนที่มีอยู่ใน `hm_wn`
-    related_warnings = list(hm_wn_collection.find({'hm_id': int(herbal_id)}))
-    existing_wn_ids = [str(warning['wn_id']) for warning in related_warnings]
-
-    # ดึงข้อมูลคำเตือนทั้งหมดเพื่อนำไปแสดงใน select
-    warnings = list(warnings_data_collection.find())
+    existing_wn_ids = [rel['wn_id'] for rel in hm_wn_collection.find({'hm_id': herbal['hm_id']})]
+    warnings = warnings_data_collection.find()
 
     return render_template('edit_herbals.html', herbal=herbal, warnings=warnings, existing_wn_ids=existing_wn_ids)
 
