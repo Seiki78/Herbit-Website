@@ -187,11 +187,11 @@
                 </div>
                 
                 <!-- แสดงตัวเลือกคำเตือนที่เพิ่มใหม่ได้ -->
-                <select id="warnings" name="wn_ids" multiple>
+                <select id="warnings" name="warnings" multiple>
                     <option value="">-- เลือก --</option>
                     {% for warning in warnings %}
-                        <option value="{{ warning['wn_id'] }}" {% if warning['wn_id'] in existing_wn_ids %}selected{% endif %}>{{ warning['wn_id'] }} - {{ warning['wn_name'] }}</option>
-                    {% endfor %}
+                        <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
+                    {% endfor %}    
                 </select>
                 <button type="button" onclick="addSelected('warnings')">เพิ่มคำเตือน</button>
             </div>
@@ -199,7 +199,7 @@
 
             </div>
     
-            <button type="submit" class="btn2">บันทึกการแก้ไข</button>
+            <button type="submit" class="btn1">บันทึกการแก้ไข</button>
         </div>
 
     </form>
