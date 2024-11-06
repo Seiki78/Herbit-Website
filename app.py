@@ -447,6 +447,7 @@ def manage_herbals():
         
         # เก็บคำเตือนเป็นสตริงในฟิลด์ warnings_text ของ herbal
         herbal['warnings_text'] = ", ".join(warning_texts) if warning_texts else "-"
+        
     # ดึงข้อมูล collection warnings_data
     warnings = warnings_data_collection.find()
 
