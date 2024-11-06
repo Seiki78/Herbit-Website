@@ -499,13 +499,30 @@ def edit_herbal(herbal_id):
         # อัปเดตข้อมูลใน MongoDB
         herbals_data_collection.update_one({'_id': ObjectId(herbal_id)}, {'$set': {'hm_name': hm_name, 'hm_dosage': hm_dosage, 'hm_recipe': hm_recipe}})
         
+        # รับคำเตือนที่แก้ไขล่าสุดจากฟอร์ม
+        wn_ids = request.form.getlist('wn_ids')
+        
+        # ลบคำเตือนเก่าทั้งหมดที่เกี่ยวข้องกับยานี้ใน `hm_wn`
+        hm_wn_collection.delete_many({'hm_id': int(herbal_id)})
+        
+        # เพิ่มคำเตือนใหม่ที่เลือกเข้าไป
+        for wn_id in wn_ids:
+            hm_wn_collection.insert_one({'hm_id': int(herbal_id), 'wn_id': int(wn_id)})
+        
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
         return redirect(url_for('manage_herbals'))
     
     # ดึงข้อมูลที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
     herbal = herbals_data_collection.find_one({'_id': ObjectId(herbal_id)})
 
-    return render_template('edit_herbals.html', herbal=herbal)
+    # ดึงคำเตือนที่มีอยู่ใน `hm_wn`
+    related_warnings = list(hm_wn_collection.find({'hm_id': int(herbal_id)}))
+    existing_wn_ids = [str(warning['wn_id']) for warning in related_warnings]
+
+    # ดึงข้อมูลคำเตือนทั้งหมดเพื่อนำไปแสดงใน select
+    warnings = list(warnings_data_collection.find())
+
+    return render_template('edit_herbals.html', herbal=herbal, warnings=warnings, existing_wn_ids=existing_wn_ids)
 
 @app.route('/manage_medicines')
 def manage_medicines():

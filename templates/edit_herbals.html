@@ -132,22 +132,76 @@
 
     </div>
 
-        <label for="hm_name">ชื่อยาสมุนไพร&nbsp;</label>
-        <input type="text" id="hm_name" name="hm_name" value="{{ herbal['hm_name'] }}">
-        <br>
+        <div class="table-data">
+        
+            <div class="order">
+                <table>
+                    <tr>
+                        <th>
+                            <label for="hm_name">ชื่อยาสมุนไพร</label>
+                        </th>
+                        <td>
+                            <input type="text" name="hm_name" placeholder="กรอกชื่อยาสมุนไพร" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="hm_recipe">ตำรับยา</label>
+                        </th>
+                        <td>
+                            <input type="text" name="hm_recipe" placeholder="กรอกรายละเอียด" >
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="hm_dosage">วิธีใช้</label>
+                        </th>
+                        <td>
+                            <input type="text" name="hm_dosage" placeholder="กรอกวิธีใช้ยาใหม่(ถ้ามี)" >
+                        </td>
+                    </tr>
 
-        <label for="hm_dosage">วิธีใช้&nbsp;</label>
-        <input type="text" id="hm_dosage" name="hm_dosage" value="{{ herbal['hm_dosage'] }}">
-        <br>
+                </table><br>
 
-        <label for="hm_recipe">ตำรับยา&nbsp;</label>
-        <input type="text" id="hm_recipe" name="hm_recipe" value="{{ herbal['hm_recipe'] }}">
-        <br>
+                <!-- แสดงคำเตือนที่เลือกไว้แล้ว -->
+                <div class="selected-list">
+                    <table class="warningTable">
+                        <thead>
+                            <tr><th>คำเตือนที่มีอยู่</th></tr>
+                        </thead>
+                        <tbody id="selectedWarningsList">
+                            {% for warning in warnings %}
+                                {% if warning['wn_id'] in existing_wn_ids %}
+                                <tr data-value="{{ warning['wn_id'] }}">
+                                    <td>{{ warning['wn_name'] }}</td>
+                                    <td>
+                                        <button type="button" onclick="removeWarning(this)">ลบ</button>
 
-        <label for="hm_dosage">คำเตือน&nbsp;</label>
-        <br>
+                                    </td>
+                                    <input type="hidden" name="wn_ids" value="{{ warning['wn_id'] }}">
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- แสดงตัวเลือกคำเตือนที่เพิ่มใหม่ได้ -->
+                <select id="warnings" name="wn_ids" multiple>
+                    <option value="">-- เลือก --</option>
+                    {% for warning in warnings %}
+                        <option value="{{ warning['wn_id'] }}" {% if warning['wn_id'] in existing_wn_ids %}selected{% endif %}>{{ warning['wn_id'] }} - {{ warning['wn_name'] }}</option>
+                    {% endfor %}
+                </select>
+                <button type="button" onclick="addSelected('warnings')">เพิ่มคำเตือน</button>
+            </div>
 
-        <button type="submit">บันทึกการแก้ไข</button>
+
+            </div>
+    
+            <button type="submit" class="btn2">บันทึกการแก้ไข</button>
+        </div>
+
     </form>
 	
 
@@ -158,7 +212,62 @@
 
 
     <script>
-    
+
+        function removeWarning(button) {
+            const row = button.closest('tr');
+            const wnId = row.dataset.value;
+
+            // ลบแถวที่เลือก
+            row.remove();
+
+            // ลบ input hidden ที่เกี่ยวข้อง
+            const hiddenInput = document.querySelector(`input[name="wn_ids"][value="${wnId}"]`);
+            if (hiddenInput) {
+                hiddenInput.remove();
+            }
+        }
+
+        function addSelected(type) {
+            const select = document.getElementById(type);
+            const selectedList = document.getElementById('selectedWarningsList');
+            const selectedOptions = Array.from(select.selectedOptions);
+
+            selectedOptions.forEach(option => {
+                // ตรวจสอบว่ามีคำเตือนนี้ในรายการที่เลือกแล้วหรือไม่
+                if (!Array.from(selectedList.children).some(tr => tr.dataset.value === option.value)) {
+                    const tr = document.createElement('tr');
+                    const tdText = document.createElement('td');
+                    tdText.textContent = option.textContent;
+
+                    const tdAction = document.createElement('td');
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button';
+                    removeButton.textContent = 'ลบ';
+                    removeButton.onclick = () => {
+                        selectedList.querySelector(`tr[data-value="${option.value}"]`).remove();
+                        document.querySelector(`input[name="wn_ids"][value="${option.value}"]`).remove();
+                    };
+                    tdAction.appendChild(removeButton);
+
+                    tr.appendChild(tdText);
+                    tr.appendChild(tdAction);
+                    tr.dataset.value = option.value;
+
+                    selectedList.appendChild(tr);
+
+                    // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'wn_ids';
+                    hiddenInput.value = option.value;
+                    document.querySelector('form').appendChild(hiddenInput);
+                }
+                option.selected = false; // ยกเลิกการเลือกหลังเพิ่ม
+            });
+        }
+
+
+        
     </script>
     
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
