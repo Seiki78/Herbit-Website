@@ -54,7 +54,7 @@ def get_breastfeeding_name(user_id):
         elif breastfeeding == 1:
             return 'ให้นมบุตร'
     
-    return "Unknown"
+    return "(ไม่มีข้อมูล)"
 
 def get_pregnant_name(user_id):
     user = users_collection.find_one({'_id': ObjectId(user_id)})
@@ -66,7 +66,7 @@ def get_pregnant_name(user_id):
         elif pregnant == 1:
             return 'ตั้งครรภ์'
     
-    return "Unknown"
+    return "(ไม่มีข้อมูล)"
 
 def get_gender_name(user_id):
     user = users_collection.find_one({'_id': ObjectId(user_id)})  # ค้นหาจาก _id
@@ -78,7 +78,7 @@ def get_gender_name(user_id):
         elif gender == 1:
             return 'หญิง'
     
-    return "Unknown"
+    return "(ไม่มีข้อมูล)"
 
 @app.route('/')
 def index():
@@ -438,6 +438,38 @@ def admin_signup():
         return redirect(url_for('manage_members'))
     
     return render_template('add_admin.html')
+
+@app.route('/member_signup', methods=['POST','GET'])
+def member_signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        fname = request.form['fname']
+        lname = request.form['lname']
+
+        # แปลงวันเกิดเป็น datetime object
+        dob_str = request.form['dob']
+        dob = datetime.strptime(dob_str, '%Y-%m-%d')
+
+        gender = int(request.form['gender'])
+        pregnant = int(request.form.get('pregnant', 0)) # ถ้าไม่ส่งค่ามา กำหนดค่าเริ่มต้นเป็น 0
+        breastfeeding = int(request.form.get('breastfeeding', 0))
+        weight = int(request.form['weight'])
+        height = int(request.form['height'])
+
+        # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+        # เพิ่มข้อมูลใหม่ลงใน MongoDB / role member
+        users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member',
+                                     'fname': fname, 'lname': lname, 'dob': dob, 'gender': gender, 'pregnant': pregnant,
+                                     'breastfeeding': breastfeeding, 'weight': weight, 'height': height})
+
+        flash('เพิ่มสมาชิกสำเร็จ!', 'success')
+        return redirect(url_for('manage_members'))
+    
+    return render_template('add_member.html')
 
 @app.route('/manage_herbals')
 def manage_herbals():

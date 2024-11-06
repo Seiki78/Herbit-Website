@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="icon" href="{{ url_for('static', filename='leafe_oo.png') }}" type="image/png">
+	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>หน้าหลัก</title>
+</head> 
+<body>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-overlay alert-{{ category }} hidden">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="sidebar">
+        <a href="" class="brand">
+            <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+			<span class="text">Mongo</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="">
+					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">แดชบอร์ด</span>
+				</a>
+			</li>
+            <li class="active">
+				<a href="{{ url_for('manage_members') }}">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='group.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการสมาชิก</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('manage_herbals') }}">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='leaf_01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการยาสมุนไพร</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('manage_medicines') }}">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='medicine.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูลยา</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('manage_chrosymps') }}">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='prevent.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูลโรคและอาการ</span>
+				</a>
+			</li>
+            <li>
+				<a href="{{ url_for('manage_allergys') }}">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='no-milk.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูลการแพ้</span>
+				</a>
+			</li>
+            <li>
+				<a href="{{ url_for('manage_trains') }}">
+					<i class='bx bxs-doughnut-chart' ><img src="{{ url_for('static', filename='database.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">จัดการข้อมูล Training</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="{{ url_for('logout') }}" class="logout">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='logout.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">ออกจากระบบ</span>
+				</a>
+			</li>
+		</ul>
+
+    </section>
+
+
+
+
+    <section id="content">
+<!-- NAVBAR -->
+<nav>
+    <!-- เมนูไอคอนอยู่ชิดซ้าย -->
+    <i class='bx bx-menu'>
+        <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
+    </i>
+
+	<div class="marquee-container">
+        <div class="marquee">
+            <p style="color: rgb(161, 193, 226);">เป็นเพียงการให้ความรู้เกี่ยวกับยาสมุนไพร โดยอ้างอิงข้อมูลจาก NLEM:บัญชียาหลักแห่งชาติ (ฉบับที่ 2) พ.ศ. 2555 ประกาศ ณ วันที่ 21 สิงหาคม พ.ศ. 2555 เท่านั้น ไม่ใช่การรักษาโรคแต่อย่างใด หากป่วยควรพบแพทย์ผู้เชี่ยวชาญเพื่อรับการรักษาต่อไป</p>
+        </div>
+    </div>
+
+</nav>
+<!-- NAVBAR -->
+
+<!-- MAIN -->
+<main>
+	<div class="head-title">
+        <div class="left">
+            <h1>ข้อมูลสมาชิก</h1>          
+        </div>
+    </div>
+
+	<form action="{{ url_for('member_signup') }}" method="POST">
+		<div class="table-data">
+			<div class="order">
+				<a href="" class="back" style="display: flex; align-items: center; justify-content: right;">
+					<img src="{{ url_for('static', filename='add-friend.png') }}">
+				</a>
+				<div class="head">
+					<h1>เพิ่มผู้ดูแลระบบ</h1>
+					<img src="{{ url_for('static', filename='crown.png') }}" class="icon-mini" alt="Menu Icon">
+				</div>
+
+				<table>
+					<tr>
+						<th>ชื่อผู้ใช้</th>
+						<td><input type="text" id="username" name="username" required></td>
+					</tr>
+					<tr>
+						<th>อีเมล</th>
+						<td><input type="email" id="email" name="email" required></td>
+					</tr>
+					<tr>
+						<th>รหัสผ่าน</th>
+						<td><input type="password" id="password" name="password" required></td>
+					</tr>
+					<tr>
+						<th>ชื่อ</th>
+						<td><input type="text" id="fname" name="fname" placeholder="ชื่อ" required></td>
+					</tr>
+					<tr>
+						<th>นามสกุล</th>
+						<td><input type="text" id="lname" name="lname" placeholder="นามสกุล" required></td>
+					</tr>
+					<tr>
+						<th>วัน/เดือน/ปีเกิด</th>
+						<td><input type="date" name="dob" id="" required></td>
+					</tr>
+				</table>
+				<br>
+					<label for="gender">เพศ</label>
+					<select name="gender" id="gender" onchange="toggleFemaleField()" required>
+						<option value="">--เลือก--</option>
+						<option value="0">ชาย</option>
+						<option value="1">หญิง</option>
+					</select><br>
+					<label for="weight">น้ำหนัก</label>
+					<input type="int" name="weight" id="" placeholder="กก." required>
+					<label for="height">&nbsp;&nbsp;ส่วนสูง</label>
+					<input type="int" name="height" id="" placeholder="ซม." required>
+					<br>
+					
+
+				<button type="submit" class="btn-submit">ยืนยัน</button>
+
+				<br>
+			</div>
+		</div>
+	</form>
+
+</main>
+<!-- MAIN -->
+
+    </section>
+
+
+    <script>
+		document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                event.target.value = event.target.checked ? "1" : "0";
+            });
+        }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
+
+        // ฟังก์ชัน toggleFemaleField() 
+        function toggleFemaleField() {
+            var genderSelect = document.getElementById("gender");
+            var selectedValue = genderSelect.options[genderSelect.selectedIndex].value;
+            var FemaleField = document.getElementById("FemaleField");
+            if (selectedValue == "1") {
+                FemaleField.style.display = "block";
+            } else {
+                FemaleField.style.display = "none";
+            }
+        }
+		
+
+    </script>
+	  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
