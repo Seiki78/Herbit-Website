@@ -447,7 +447,7 @@ def manage_herbals():
         
         # เก็บคำเตือนเป็นสตริงในฟิลด์ warnings_text ของ herbal
         herbal['warnings_text'] = ", ".join(warning_texts) if warning_texts else "ไม่มีคำเตือน"
-    # ดึงข้อมูล collection herbals_data
+    # ดึงข้อมูล collection warnings_data
     warnings = warnings_data_collection.find()
 
     return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages, warnings=warnings)
@@ -519,7 +519,9 @@ def edit_herbal(herbal_id):
     # ดึงข้อมูลที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
     herbal = herbals_data_collection.find_one({'_id': ObjectId(herbal_id)})
     existing_wn_ids = [rel['wn_id'] for rel in hm_wn_collection.find({'hm_id': herbal['hm_id']})]
-    warnings = warnings_data_collection.find()
+
+    # ดึงข้อมูล collection warnings_data และแปลงเป็น list
+    warnings = list(warnings_data_collection.find())
 
     return render_template('edit_herbals.html', herbal=herbal, warnings=warnings, existing_wn_ids=existing_wn_ids)
 
