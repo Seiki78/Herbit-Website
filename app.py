@@ -512,14 +512,24 @@ def add_herbal():
 
 @app.route('/delete_herbal/<herbal_id>', methods=['POST'])
 def delete_herbal(herbal_id):
-    # ลบข้อมูลยาสมุนไพรออกจาก MongoDB โดยใช้ ObjectId
-    herbals_data_collection.delete_one({'_id': ObjectId(herbal_id)})
-
-    # ลบข้อมูลคำเตือนและอาการที่เกี่ยวข้องกับ hm_id ของสมุนไพรนี้ (อาจจะหลายรายการ)
-    hm_wn_collection.delete_many({'hm_id': herbal_id})
-    hm_st_collection.delete_many({'hm_id': herbal_id})
+    # ลบข้อมูลยาสมุนไพรออกจาก MongoDB โดยใช้ ObjectId ใน herbals_data_collection
+    herbals_data = herbals_data_collection.find_one({'_id': ObjectId(herbal_id)})
     
-    flash('ลบข้อมูลสำเร็จ!', 'success')
+    # ตรวจสอบว่ามีข้อมูลใน herbals_data_collection หรือไม่
+    if herbals_data:
+        hm_id = herbals_data['hm_id']  # ได้ hm_id ของสมุนไพรนั้น
+
+        # ลบข้อมูลใน herbals_data_collection
+        herbals_data_collection.delete_one({'_id': ObjectId(herbal_id)})
+
+        # ลบข้อมูลคำเตือนและอาการที่เกี่ยวข้องกับ hm_id ของสมุนไพรนี้
+        hm_wn_collection.delete_many({'hm_id': hm_id})
+        hm_st_collection.delete_many({'hm_id': hm_id})
+        
+        flash('ลบข้อมูลสำเร็จ!', 'success')
+    else:
+        flash('ไม่พบข้อมูลยาสมุนไพรที่ต้องการลบ', 'error')
+
     return redirect(url_for('manage_herbals'))
 
 @app.route('/edit_herbal/<herbal_id>', methods=['GET', 'POST'])
