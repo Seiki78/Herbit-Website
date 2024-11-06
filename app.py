@@ -424,7 +424,7 @@ def edit_user(user_id):
 @app.route('/manage_herbals')
 def manage_herbals():
     page = request.args.get('page', 1, type=int)  # รับค่าหน้าจาก URL หรือกำหนดเป็นหน้า 1 ถ้าไม่มีการส่งมา
-    per_page = 25  # กำหนดจำนวนข้อมูลต่อหน้า
+    per_page = 10  # กำหนดจำนวนข้อมูลต่อหน้า
     herbals_count = herbals_data_collection.count_documents({})  # นับจำนวนเอกสารทั้งหมด
     total_pages = (herbals_count + per_page - 1) // per_page  # คำนวณจำนวนหน้าทั้งหมด
 
