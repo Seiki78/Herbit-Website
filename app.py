@@ -536,6 +536,9 @@ def edit_herbal(herbal_id):
         # รับค่า wn_ids ที่เลือกมาใหม่
         wn_ids = request.form.getlist('wn_ids')
 
+        # รับค่า st_ids ที่เลือกมาใหม่
+        st_ids = request.form.getlist('st_ids')
+
         # ดึง hm_id ของสมุนไพรปัจจุบัน
         herbal = herbals_data_collection.find_one({'_id': ObjectId(herbal_id)})
         hm_id = herbal['hm_id']
@@ -545,17 +548,26 @@ def edit_herbal(herbal_id):
         for wn_id in wn_ids:
             hm_wn_collection.insert_one({'hm_id': int(hm_id), 'wn_id': int(wn_id)})
 
+        # ลบความสัมพันธ์คำเตือนที่มีอยู่ใน hm_wn ก่อนแล้วเพิ่มใหม่ตามที่เลือก
+        hm_st_collection.delete_many({'hm_id': int(hm_id)})  # ลบรายการที่มี hm_id ตรงกับยานี้
+        for st_id in st_ids:
+            hm_st_collection.insert_one({'hm_id': int(hm_id), 'st_id': int(st_id)})
+
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
         return redirect(url_for('manage_herbals'))
 
     # ดึงข้อมูลที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
     herbal = herbals_data_collection.find_one({'_id': ObjectId(herbal_id)})
     existing_wn_ids = [rel['wn_id'] for rel in hm_wn_collection.find({'hm_id': herbal['hm_id']})]
+    existing_st_ids = [rel['st_id'] for rel in hm_st_collection.find({'hm_id': herbal['hm_id']})]
 
     # ดึงข้อมูล collection warnings_data และแปลงเป็น list
     warnings = list(warnings_data_collection.find())
 
-    return render_template('edit_herbals.html', herbal=herbal, warnings=warnings, existing_wn_ids=existing_wn_ids)
+    # ดึงข้อมูล collection warnings_data และแปลงเป็น list
+    symptoms = list(symptoms_data_collection.find())
+
+    return render_template('edit_herbals.html', herbal=herbal, warnings=warnings, existing_wn_ids=existing_wn_ids, symptoms=symptoms, existing_st_ids=existing_st_ids)
 
 @app.route('/manage_medicines')
 def manage_medicines():
