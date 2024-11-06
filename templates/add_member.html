@@ -111,26 +111,22 @@
 	<form action="{{ url_for('member_signup') }}" method="POST">
 		<div class="table-data">
 			<div class="order">
-				<a href="" class="back" style="display: flex; align-items: center; justify-content: right;">
-					<img src="{{ url_for('static', filename='add-friend.png') }}">
-				</a>
 				<div class="head">
-					<h1>เพิ่มผู้ดูแลระบบ</h1>
-					<img src="{{ url_for('static', filename='crown.png') }}" class="icon-mini" alt="Menu Icon">
+					<h1>เพิ่มสมาชิก</h1>
 				</div>
 
 				<table>
 					<tr>
 						<th>ชื่อผู้ใช้</th>
-						<td><input type="text" id="username" name="username" required></td>
+						<td><input type="text" id="username" name="username" placeholder="ชื่อผู้ใช้" required></td>
 					</tr>
 					<tr>
 						<th>อีเมล</th>
-						<td><input type="email" id="email" name="email" required></td>
+						<td><input type="email" id="email" name="email" placeholder="อีเมล" required></td>
 					</tr>
 					<tr>
 						<th>รหัสผ่าน</th>
-						<td><input type="password" id="password" name="password" required></td>
+						<td><input type="password" id="password" name="password" placeholder="รหัสผ่าน" required></td>
 					</tr>
 					<tr>
 						<th>ชื่อ</th>
@@ -146,12 +142,26 @@
 					</tr>
 				</table>
 				<br>
+
+				<div>
 					<label for="gender">เพศ</label>
 					<select name="gender" id="gender" onchange="toggleFemaleField()" required>
 						<option value="">--เลือก--</option>
 						<option value="0">ชาย</option>
 						<option value="1">หญิง</option>
-					</select><br>
+					</select>
+				</div>
+					
+					<div id="FemaleField" style="display: none;">
+						<div class="form-group-horizontal2">
+							<label for="pregnant">การตั้งครรภ์</label>
+							<input type="checkbox" id="pregnant" name="pregnant" value="1"/>
+	
+							<label for="breastfeeding">การให้นมบุตร</label>
+							<input type="checkbox" id="breastfeeding" name="breastfeeding" value="1"/>
+						</div>
+					</div>
+				<br>
 					<label for="weight">น้ำหนัก</label>
 					<input type="int" name="weight" id="" placeholder="กก." required>
 					<label for="height">&nbsp;&nbsp;ส่วนสูง</label>
