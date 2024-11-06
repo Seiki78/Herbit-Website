@@ -22,6 +22,7 @@ chronics_data_collection = db['chronics_data']
 symptoms_data_collection = db['symptoms_data']
 warnings_data_collection = db['warnings_data']
 hm_wn_collection = db['hm_wn']
+hm_st_collection = db['hm_st']
 
 # ตั้งค่า Flask-Login
 login_manager = LoginManager()
@@ -430,7 +431,7 @@ def manage_herbals():
     # ดึงข้อมูลจาก MongoDB และแปลงให้เป็นลิสต์ก่อน
     herbals = list(herbals_data_collection.find().skip((page - 1) * per_page).limit(per_page))
 
-    # ดึงคำเตือนที่เกี่ยวข้องกับแต่ละสมุนไพร
+    # ดึงคำเตือน ที่เกี่ยวข้องกับแต่ละสมุนไพร
     for herbal in herbals:
         hm_id = herbal['hm_id']
         
@@ -447,11 +448,32 @@ def manage_herbals():
         
         # เก็บคำเตือนเป็นสตริงในฟิลด์ warnings_text ของ herbal
         herbal['warnings_text'] = ", ".join(warning_texts) if warning_texts else "-"
+
+    # ดึงอาการ ที่เกี่ยวข้องกับแต่ละสมุนไพร
+    for herbal in herbals:
+        hm_id = herbal['hm_id']
         
+        # ค้นหาเอกสารใน hm_st ที่เชื่อมโยงกับ hm_id ปัจจุบัน
+        related_symptoms = list(hm_st_collection.find({'hm_id': hm_id}))
+        
+        # ดึงคำเตือนจาก symptoms_data_collection ตาม st_id ที่พบ
+        symptom_texts = []
+        for rel in related_symptoms:
+            st_id = rel['st_id']
+            symptom = symptoms_data_collection.find_one({'st_id': st_id})
+            if symptom:
+                symptom_texts.append(symptom['st_name'])
+        
+        # เก็บคำเตือนเป็นสตริงในฟิลด์ symptoms_text ของ herbal
+        herbal['symptoms_text'] = ", ".join(symptom_texts) if symptom_texts else "-"
+
     # ดึงข้อมูล collection warnings_data
     warnings = warnings_data_collection.find()
 
-    return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages, warnings=warnings)
+    # ดึงข้อมูล collection warnings_data
+    symptoms = symptoms_data_collection.find()
+
+    return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages, warnings=warnings, symptoms=symptoms)
 
 @app.route('/add_herbal', methods=['POST'])
 def add_herbal():
@@ -473,10 +495,17 @@ def add_herbal():
 
     # ดึงคำเตือนที่เลือกมา
     wn_ids = request.form.getlist('warnings')
+
+    # ดึงอาการที่เลือกมา
+    st_ids = request.form.getlist('symptoms')
     
     # สร้างเอกสารความสัมพันธ์ระหว่าง hm_id และ wn_id แต่ละรายการใน collection hm_wn
     for wn_id in wn_ids:
         hm_wn_collection.insert_one({'hm_id': int(hm_id), 'wn_id': int(wn_id)})
+
+    # สร้างเอกสารความสัมพันธ์ระหว่าง hm_id และ st_id แต่ละรายการใน collection hm_st
+    for st_id in st_ids:
+        hm_st_collection.insert_one({'hm_id': int(hm_id), 'st_id': int(st_id)})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_herbals'))
@@ -485,11 +514,13 @@ def add_herbal():
 def delete_herbal(herbal_id):
     # ลบข้อมูลยาสมุนไพรออกจาก MongoDB โดยใช้ ObjectId
     herbals_data_collection.delete_one({'_id': ObjectId(herbal_id)})
+
+    # ลบข้อมูลคำเตือนและอาการที่เกี่ยวข้องกับ hm_id ของสมุนไพรนี้ (อาจจะหลายรายการ)
+    hm_wn_collection.delete_many({'hm_id': herbal_id})
+    hm_st_collection.delete_many({'hm_id': herbal_id})
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_herbals'))
-
-from bson import ObjectId
 
 @app.route('/edit_herbal/<herbal_id>', methods=['GET', 'POST'])
 def edit_herbal(herbal_id):

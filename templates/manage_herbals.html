@@ -171,6 +171,34 @@
                     </select>
                     <button type="button" onclick="addSelected('warnings')">เพิ่มคำเตือน</button>
                 </div>
+                <br>
+
+                <div class="head">
+                    <div class="selected-list">
+
+                        <table class="symptomTable" id="selectedSymptomsList">
+                            <thead>
+                                <tr>
+                                    <th>อาการที่เกี่ยวข้อง</th>
+    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Selected items will be displayed here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+                <div class="head">
+                    <select id="symptoms" name="symptoms" multiple>
+                        <option value="">-- เลือก --</option>
+                        {% for symptom in symptoms %}
+                            <option value="{{ symptom['st_id'] }}" title="{{ symptom['st_name'] }}">{{ symptom['st_id'] }}-{{ symptom['st_name'] | truncate(40, True) }}</option>
+                        {% endfor %}    
+                    </select>
+                    <button type="button" onclick="addSelected('symptoms')">เพิ่มอาการ</button>
+                </div>
 
 
                 <button type="submit" class="submit-btn">
@@ -195,7 +223,8 @@
                         <th style="width: 20%;">วิธีใช้</th>
                         <th style="width: 20%;">ตำรับยา</th>
                         <th style="width: 15%;">คำเตือน</th>
-                        <th"></th>
+                        <th>อาการที่เกี่ยวข้อง</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -206,6 +235,7 @@
                         <td class="hm-dosages">{{ herbal['hm_dosage'] }}</td>
                         <td class="hm-recipes">{{ herbal['hm_recipe'] }}</td>
                         <td class="hm-warnings">{{ herbal['warnings_text'] }}</td>
+                        <td class="hm-symptoms">{{ herbal['symptoms_text'] }}</td>
                         <td>
                             <a href="{{ url_for('edit_herbal', herbal_id=herbal['_id']) }}">แก้ไข</a>
                             <form action="{{ url_for('delete_herbal', herbal_id=herbal['_id']) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete()">
@@ -215,7 +245,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3">ไม่พบข้อมูลยาสมุนไพร</td>
+                        <td colspan="6">ไม่พบข้อมูลยาสมุนไพร</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -271,6 +301,14 @@
                 element.innerHTML = formattedText;
             });
 
+            var recipeElements = document.querySelectorAll('.hm-symptoms');
+
+            recipeElements.forEach(function(element) {
+                var rawText = element.textContent || element.innerText;
+                var formattedText = formatSymptomText(rawText);
+                element.innerHTML = formattedText;
+            });
+
         });
 
         function formatWarningText(text) {
@@ -282,6 +320,10 @@
             return formattedText;
         }
         function formatDosageText(text) {
+            var formattedText = text.replace(/,/g, '<br>');
+            return formattedText;
+        }
+        function formatSymptomText(text) {
             var formattedText = text.replace(/,/g, '<br>');
             return formattedText;
         }

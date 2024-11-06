@@ -194,10 +194,49 @@
                     {% endfor %}    
                 </select>
                 <button type="button" onclick="addSelected('warnings')">เพิ่มคำเตือน</button>
+
+                <!-- แสดงคำเตือนที่เลือกไว้แล้ว -->
+                <div class="selected-list">
+                    <table class="symptomTable">
+                        <thead>
+                            <tr><th>อาการที่เกี่ยวข้อง</th></tr>
+                        </thead>
+                        <tbody id="selectedSymptomsList">
+                            {% for symptom in symptoms %}
+                                {% if symptom['st_id'] in existing_st_ids %}
+                                <tr data-value="{{ symptom['st_id'] }}">
+                                    <td>{{ symptom['st_id'] }} - {{ symptom['st_name'] }}</td>
+                                    <td>
+                                        <button type="button" onclick="removeWarning(this)">ลบ</button>
+
+                                    </td>
+                                    <input type="hidden" name="st_ids" value="{{ symptom['st_id'] }}">
+                                </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- แสดงตัวเลือกคำเตือนที่เพิ่มใหม่ได้ -->
+                <select id="symptoms" name="symptoms" multiple>
+                    <option value="">-- เลือก --</option>
+                    {% for symptom in symptoms %}
+                        <option value="{{ symptom['st_id'] }}" title="{{ symptom['st_name'] }}">{{ symptom['st_id'] }} - {{ symptom['st_name'] | truncate(40, True) }}</option>
+                    {% endfor %}    
+                </select>
+                <button type="button" onclick="addSelected('symptoms')">เพิ่มอาการ</button>
+
+
+
+
+
+
+
             </div>
 
 
-            </div>
+        
     
             <button type="submit" class="btn1">บันทึกการแก้ไข</button>
         </div>
@@ -215,13 +254,13 @@
 
         function removeWarning(button) {
             const row = button.closest('tr');
-            const wnId = row.dataset.value;
+            const id = row.dataset.value;
 
             // ลบแถวที่เลือก
             row.remove();
 
             // ลบ input hidden ที่เกี่ยวข้อง
-            const hiddenInput = document.querySelector(`input[name="wn_ids"][value="${wnId}"]`);
+            const hiddenInput = document.querySelector(`input[value="${id}"]`);
             if (hiddenInput) {
                 hiddenInput.remove();
             }
@@ -229,10 +268,11 @@
 
         function addSelected(type) {
             const select = document.getElementById(type);
-            const selectedList = document.getElementById('selectedWarningsList');
+            const selectedList = document.getElementById(type === 'warnings' ? 'selectedWarningsList' : 'selectedSymptomsList');
             const selectedOptions = Array.from(select.selectedOptions);
 
             selectedOptions.forEach(option => {
+                // ตรวจสอบว่าแถวที่เลือกมีอยู่ในตารางแล้วหรือไม่
                 if (!Array.from(selectedList.children).some(tr => tr.dataset.value === option.value)) {
                     const tr = document.createElement('tr');
                     const tdText = document.createElement('td');
@@ -244,7 +284,7 @@
                     removeButton.textContent = 'ลบ';
                     removeButton.onclick = () => {
                         selectedList.querySelector(`tr[data-value="${option.value}"]`).remove();
-                        document.querySelector(`input[name="wn_ids"][value="${option.value}"]`).remove();
+                        document.querySelector(`input[name="${type === 'warnings' ? 'wn_ids' : 'st_ids'}"][value="${option.value}"]`).remove();
                     };
                     tdAction.appendChild(removeButton);
 
@@ -257,14 +297,13 @@
                     // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า
                     const hiddenInput = document.createElement('input');
                     hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'wn_ids';
+                    hiddenInput.name = type === 'warnings' ? 'wn_ids' : 'st_ids';
                     hiddenInput.value = option.value;
                     document.querySelector('form').appendChild(hiddenInput);
                 }
                 option.selected = false;
             });
         }
-
 
         
     </script>
