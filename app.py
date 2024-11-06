@@ -444,13 +444,24 @@ def manage_herbals():
             warning = warnings_data_collection.find_one({'wn_id': wn_id})
             if warning:
                 warning_texts.append(warning['wn_name'])
+
+        # ดึงคำเตือนจาก warnings_data_collection ตาม wn_id ที่พบ
+        warning_ids = []
+        for rel in related_warnings:
+            wn_id = rel['wn_id']
+            warning = warnings_data_collection.find_one({'wn_id': wn_id})
+            if warning:
+                warning_texts.append(warning['wn_id'])
         
         # เก็บคำเตือนเป็นสตริงในฟิลด์ warnings_text ของ herbal
         herbal['warnings_text'] = ", ".join(warning_texts) if warning_texts else "ไม่มีคำเตือน"
+
+        herbal['warning_ids'] = ", ".join(warning_texts) if warning_texts else "ไม่มีคำเตือน"
+
     # ดึงข้อมูล collection warnings_data
     warnings = warnings_data_collection.find()
 
-    return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages, warnings=warnings)
+    return render_template('manage_herbals.html', herbals=herbals, page=page, total_pages=total_pages, warnings=warnings, warning_ids=warning_ids)
 
 @app.route('/add_herbal', methods=['POST'])
 def add_herbal():

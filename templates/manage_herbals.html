@@ -194,7 +194,7 @@
                         <th>ชื่อยาสมุนไพร</th>
                         <th style="width: 20%;">วิธีใช้</th>
                         <th style="width: 20%;">ตำรับยา</th>
-                        <th style="width: 15%;">คำเตือน</th>
+                        <th style="width: 15%;">คำเตือน(รหัส)</th>
                         <th"></th>
                     </tr>
                 </thead>
@@ -205,7 +205,7 @@
                         <td>{{ herbal['hm_name'] }}</td>
                         <td class="hm-dosages">{{ herbal['hm_dosage'] }}</td>
                         <td class="hm-recipes">{{ herbal['hm_recipe'] }}</td>
-                        <td class="hm-warnings">{{ herbal['warnings_text'] }}</td>
+                        <td class="hm-warnings">{{ herbal['warning_ids'] }}</td>
                         <td>
                             <a href="{{ url_for('edit_herbal', herbal_id=herbal['_id']) }}">แก้ไข</a>
                             <form action="{{ url_for('delete_herbal', herbal_id=herbal['_id']) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete()">

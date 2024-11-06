@@ -173,7 +173,7 @@
                             {% for warning in warnings %}
                                 {% if warning['wn_id'] in existing_wn_ids %}
                                 <tr data-value="{{ warning['wn_id'] }}">
-                                    <td>{{ warning['wn_name'] }}</td>
+                                    <td>{{ warning['wn_id'] }} - {{ warning['wn_name'] }}</td>
                                     <td>
                                         <button type="button" onclick="removeWarning(this)">ลบ</button>
 
@@ -190,7 +190,7 @@
                 <select id="warnings" name="warnings" multiple>
                     <option value="">-- เลือก --</option>
                     {% for warning in warnings %}
-                        <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
+                        <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }} - {{ warning['wn_name'] | truncate(40, True) }}</option>
                     {% endfor %}    
                 </select>
                 <button type="button" onclick="addSelected('warnings')">เพิ่มคำเตือน</button>
