@@ -184,7 +184,7 @@
                     </thead>
                     <tbody id="selectedChronicsList">
                         {% for chronic in chronics %}
-                            <tr data-value="{{ chronic['cn_id'] }}">
+                            <tr>
                                 <td>{{ chronic['cn_id'] }} - {{ chronic['cn_name'] }}</td>
                             </tr>
                         {% endfor %}
@@ -200,7 +200,7 @@
                     </thead>
                     <tbody id="selectedMedicinesList">
                         {% for medicine in medicines %}
-                            <tr data-value="{{ medicine['md_id'] }}">
+                            <tr>
                                 <td>{{ medicine['md_id'] }} - {{ medicine['md_name'] }}</td>
                             </tr>
                         {% endfor %}
@@ -216,7 +216,7 @@
                     </thead>
                     <tbody id="selectedAllergysList">
                         {% for allergy in allergys %}
-                            <tr data-value="{{ allergy['ag_id'] }}">
+                            <tr>
                                 <td>{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</td>
                             </tr>
                         {% endfor %}
