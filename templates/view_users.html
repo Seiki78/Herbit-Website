@@ -175,53 +175,62 @@
         </div>
 
         <div class="order">
-            <!-- <table class="chronicsTable" id="selectedChronicsList">
-                <thead>
-                    <tr>
-                        <th>โรคประจำตัว</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for chronic in chronic_diseases %}
-                    <tr>
-                        <td>&nbsp;&nbsp;{{ chronic[0] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table><br>
+            <!-- แสดงโรคประจำตัวที่เลือกไว้แล้ว -->
+            <div class="selected-list">
+                <table class="chronicTable">
+                    <thead>
+                        <tr><th>โรคประจำตัว</th></tr>
+                    </thead>
+                    <tbody id="selectedChronicsList">
+                        {% for chronic in chronics %}
+                            {% if chronic['cn_id'] in existing_cn_ids %}
+                            <tr data-value="{{ chronic['cn_id'] }}">
+                                <td>{{ chronic['cn_id'] }} - {{ chronic['cn_name'] }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div><br>
 
-            <table class="allergiesTable" id="selectedallergiesList">
-                <thead>
-                    <tr>
-                        <th>ข้อมูลการแพ้</th>
+            <!-- แสดงยาที่ใช้ที่เลือกไว้แล้ว -->
+            <div class="selected-list">
+                <table class="medicineTable">
+                    <thead>
+                        <tr><th>ยาที่ใช้</th></tr>
+                    </thead>
+                    <tbody id="selectedMedicinesList">
+                        {% for medicine in medicines %}
+                            {% if medicine['md_id'] in existing_md_ids %}
+                            <tr data-value="{{ medicine['md_id'] }}">
+                                <td>{{ medicine['md_id'] }} - {{ medicine['md_name'] }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div><br>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for allergy in allergies %}
-                    <tr>
-                        <td>&nbsp;&nbsp;{{ allergy[0] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table><br>
+            <!-- แสดงข้อมูลการแพ้ที่เลือกไว้แล้ว -->
+            <div class="selected-list">
+                <table class="allergyTable">
+                    <thead>
+                        <tr><th>ข้อมูลการแพ้</th></tr>
+                    </thead>
+                    <tbody id="selectedAllergysList">
+                        {% for allergy in allergys %}
+                            {% if allergy['cn_id'] in existing_ag_ids %}
+                            <tr data-value="{{ allergy['ag_id'] }}">
+                                <td>{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-            <table class="medicinesTable" id="selectedMedicinesList">
-                <thead>
-                    <tr>
-                        <th>ข้อมูลการใช้ยา</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for medicine in medicines %}
-                    <tr>
-                        <td>&nbsp;&nbsp;{{ medicine[0] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table><br> -->
         </div>
 
     </div>

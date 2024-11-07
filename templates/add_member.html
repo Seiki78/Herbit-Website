@@ -165,11 +165,100 @@
 					<input type="int" name="weight" id="" placeholder="กก." required>
 					<label for="height">&nbsp;&nbsp;ส่วนสูง</label>
 					<input type="int" name="height" id="" placeholder="ซม." required>
-					<br>
-
-				<button type="submit" class="btn-submit">ยืนยัน</button>
-
 				<br>
+
+
+				<div class="order">
+                
+					<div class="head">
+						<div class="selected-list">
+	
+							<table class="chronicsTable" id="selectedChronicsList">
+							<thead>
+								<tr>
+									<th>โรคประจำตัว</th>
+	 
+								</tr>
+							</thead>
+							<tbody>
+								 <!-- Selected items will be displayed here -->
+							</tbody>
+						</table>
+						</div>
+						
+					</div>
+	
+					<div class="head">
+						<select id="chronics" name="chronics" multiple>
+							<option value="">-- เลือก --</option>
+							{% for chronic in chronics %}
+								<option value="{{ chronic['cn_id'] }}">{{ chronic['cn_name'] }}</option> 
+							{% endfor %}
+						</select>
+						<button type="button" onclick="addSelected()">เพิ่มโรคประจำตัว</button>
+					</div>
+	
+					<div class="head">
+						<div class="selected-list">
+	
+							<table class="allergysTable" id="selectedAllergysList">
+							<thead>
+								<tr>
+									<th>ข้อมูลการแพ้</th>
+	 
+								</tr>
+							</thead>
+							<tbody>
+								 <!-- Selected items will be displayed here -->
+							</tbody>
+						</table>
+						</div>
+						
+					</div>
+	
+					<div class="head">
+						<select id="allergys" name="allergys" multiple>
+							<option value="">-- เลือก --</option>
+							{% for allergy in allergys %}
+								<option value="{{ allergy['ag_id'] }}">{{ allergy['ag_name'] }}</option> 
+							{% endfor %}
+						</select>
+						<button type="button" onclick="addSelected()">เพิ่มการแพ้</button>
+					</div>
+	
+					<div class="head">
+						<div class="selected-list">
+	
+							<table class="medicinesTable" id="selectedMedicinesList">
+							<thead>
+								<tr>
+									<th>ยาที่ใช้</th>
+	 
+								</tr>
+							</thead>
+							<tbody>
+								 <!-- Selected items will be displayed here -->
+							</tbody>
+						</table>
+						</div>
+						
+					</div>
+	
+					<div class="head">
+						<select id="medicines" name="medicines" multiple>
+							<option value="">-- เลือก --</option>
+							{% for medicine in medicines %}
+								<option value="{{ medicine['md_id'] }}">{{ medicine['md_id'] }}{{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</option> 
+							{% endfor %}
+						</select>
+						<button type="button" onclick="addSelected()">เพิ่มยาที่ใช้</button>
+					</div>
+	
+					<button type="submit" class="btn-submit">เพิ่มสมาชิก</button>
+	
+				</div>
+	
+				
 			</div>
 		</div>
 	</form>
@@ -181,6 +270,50 @@
 
 
     <script>
+
+		function addSelected(type) {
+            const select = document.getElementById(type);
+            const selectedList = document.getElementById(`selected${type.charAt(0).toUpperCase() + type.slice(1)}List`);
+
+            const selectedOptions = Array.from(select.selectedOptions);
+
+            selectedOptions.forEach(option => {
+                // ตรวจสอบว่ามีรายการนี้อยู่แล้วในรายการที่เลือกหรือไม่
+                if (!Array.from(selectedList.children).some(tr => tr.dataset.value === option.value)) {
+                    const tr = document.createElement('tr');
+                    const tdText = document.createElement('td');
+                    tdText.textContent = option.textContent;
+                    const tdAction = document.createElement('td');
+                    
+                    // สร้างปุ่มลบ
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button'; // Prevent form submission
+                    removeButton.textContent = 'ลบ';
+                    removeButton.onclick = () => {
+                        selectedList.querySelector(`tr[data-value="${option.value}"]`).remove();
+                        document.querySelector(`input[name="${type}"][value="${option.value}"]`).remove();
+                    };
+                    tdAction.appendChild(removeButton);
+
+                    tr.appendChild(tdText);
+                    tr.appendChild(tdAction);
+
+                    tr.dataset.value = option.value; // Store value in dataset
+
+                    selectedList.querySelector('tbody').appendChild(tr);
+
+                    // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = type;
+                    hiddenInput.value = option.value;
+                    document.querySelector('form').appendChild(hiddenInput);
+                }
+                option.selected = false; // Deselect the option after adding
+            });
+        }
+
+
 		document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
             checkbox.addEventListener('change', (event) => {
                 event.target.value = event.target.checked ? "1" : "0";

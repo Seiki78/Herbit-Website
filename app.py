@@ -23,6 +23,9 @@ symptoms_data_collection = db['symptoms_data']
 warnings_data_collection = db['warnings_data']
 hm_wn_collection = db['hm_wn']
 hm_st_collection = db['hm_st']
+u_cn_collection = db['u_cn']
+u_md_collection = db['u_md']
+u_ag_collection = db['u_ag']
 
 # ตั้งค่า Flask-Login
 login_manager = LoginManager()
@@ -143,6 +146,15 @@ def logout():
 @app.route('/signup', methods=['POST','GET'])
 def signup():
     if request.method == 'POST':
+        # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี cn_id มากที่สุด
+        last_user = users_collection.find_one(sort=[("u_id", -1)])
+        
+        # ถ้ามีเอกสารอยู่ ให้เอา u_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 201
+        if last_user:
+            u_id = last_user['u_id'] + 1
+        else:
+            u_id = 201  # กำหนดค่าเริ่มต้นเป็น 201 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
+
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
@@ -163,7 +175,7 @@ def signup():
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
         # เพิ่มข้อมูลใหม่ลงใน MongoDB / role member
-        users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member',
+        users_collection.insert_one({'u_id': u_id, 'username': username, 'email': email, 'password': hashed_password, 'role': 'member',
                                      'fname': fname, 'lname': lname, 'dob': dob, 'gender': gender, 'pregnant': pregnant,
                                      'breastfeeding': breastfeeding, 'weight': weight, 'height': height})
 
@@ -379,7 +391,28 @@ def detail_users(user_id):
         else:
             age = None  # กรณีที่ dob ไม่มีข้อมูล
 
-        return render_template('view_users.html', user=user, age=age, gender_name=gender_name, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name)
+        # ดึงข้อมูลโรคประจำตัว ยาที่ใช้ และข้อมูลการแพ้จาก collection u_cn, u_md และ u_ag ตาม user_id
+        existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': ObjectId(user_id)})]
+        existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': ObjectId(user_id)})]
+        existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': ObjectId(user_id)})]
+
+        # ดึงข้อมูลโรค ยา และการแพ้จาก collections ที่เก็บข้อมูลโรคประจำตัว ยา และข้อมูลการแพ้
+        chronics = chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}})
+        medicines = medicines_data_collection.find({'md_id': {'$in': existing_md_ids}})
+        allergys = allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}})
+
+        return render_template(
+            'view_users.html', 
+            user=user, 
+            age=age, 
+            gender_name=gender_name, 
+            pregnant_name=pregnant_name, 
+            breastfeeding_name=breastfeeding_name, 
+            chronics=chronics, 
+            medicines=medicines, 
+            allergys=allergys
+        )
+
     else:
         # กรณีที่ไม่พบข้อมูลผู้ใช้
         flash('ไม่พบข้อมูลสมาชิก', 'danger')
@@ -424,6 +457,15 @@ def edit_user(user_id):
 @app.route('/admin_signup', methods=['POST','GET'])
 def admin_signup():
     if request.method == 'POST':
+        # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี cn_id มากที่สุด
+        last_user = users_collection.find_one(sort=[("u_id", -1)])
+        
+        # ถ้ามีเอกสารอยู่ ให้เอา u_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 201
+        if last_user:
+            u_id = last_user['u_id'] + 1
+        else:
+            u_id = 201  # กำหนดค่าเริ่มต้นเป็น 201 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
+
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
@@ -432,7 +474,7 @@ def admin_signup():
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
         # เพิ่มข้อมูลใหม่ลงใน MongoDB / role member
-        users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'admin'})
+        users_collection.insert_one({'u_id': u_id, 'username': username, 'email': email, 'password': hashed_password, 'role': 'admin'})
 
         flash('เพิ่มผู้ดูแลระบบสำเร็จ!', 'success')
         return redirect(url_for('manage_members'))
@@ -442,6 +484,16 @@ def admin_signup():
 @app.route('/member_signup', methods=['POST','GET'])
 def member_signup():
     if request.method == 'POST':
+
+        # ค้นหาเอกสาร(เอกสาร=ข้อมูลแถวล่าสุด)ที่มี cn_id มากที่สุด
+        last_user = users_collection.find_one(sort=[("u_id", -1)])
+        
+        # ถ้ามีเอกสารอยู่ ให้เอา u_id ล่าสุดมาบวก 1, ถ้าไม่มีให้ตั้งค่าเป็น 201
+        if last_user:
+            u_id = last_user['u_id'] + 1
+        else:
+            u_id = 201  # กำหนดค่าเริ่มต้นเป็น 201 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
+            
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
@@ -462,14 +514,40 @@ def member_signup():
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
 
         # เพิ่มข้อมูลใหม่ลงใน MongoDB / role member
-        users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member',
+        users_collection.insert_one({'u_id': u_id,'username': username, 'email': email, 'password': hashed_password, 'role': 'member',
                                      'fname': fname, 'lname': lname, 'dob': dob, 'gender': gender, 'pregnant': pregnant,
                                      'breastfeeding': breastfeeding, 'weight': weight, 'height': height})
+
+        # ดึงคำเตือนที่เลือกมา
+        cn_ids = request.form.getlist('chronics')
+
+        # ดึงอาการที่เลือกมา
+        md_ids = request.form.getlist('medicines')
+
+        # ดึงการแพ้ที่เลือกมา
+        ag_ids = request.form.getlist('allergys')
+
+        # สร้างเอกสารความสัมพันธ์ระหว่าง u_id และ cn_id แต่ละรายการใน collection u_cn
+        for cn_id in cn_ids:
+            u_cn_collection.insert_one({'u_id': int(u_id), 'cn_id': int(cn_id)})
+
+        # สร้างเอกสารความสัมพันธ์ระหว่าง u_id และ md_id แต่ละรายการใน collection u_md
+        for md_id in md_ids:
+            u_md_collection.insert_one({'u_id': int(u_id), 'md_id': int(md_id)})
+
+        # สร้างเอกสารความสัมพันธ์ระหว่าง u_id และ ag_id แต่ละรายการใน collection u_ag
+        for ag_id in ag_ids:
+            u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
+        
+        chronics = chronics_data_collection.find()
+        medicines = medicines_data_collection.find()
+        allergys = allergys_data_collection.find()
 
         flash('เพิ่มสมาชิกสำเร็จ!', 'success')
         return redirect(url_for('manage_members'))
     
-    return render_template('add_member.html')
+    
+    return render_template('add_member.html', chronics=chronics, medicines=medicines, allergys=allergys)
 
 @app.route('/manage_herbals')
 def manage_herbals():
