@@ -379,30 +379,49 @@ def detail_users(user_id):
     user = users_collection.find_one({'_id': ObjectId(user_id)})
 
     if user:
-        # ดึงข้อมูลเพศและสถานะต่างๆ
         gender_name = get_gender_name(user_id)
         pregnant_name = get_pregnant_name(user_id)
         breastfeeding_name = get_breastfeeding_name(user_id)
 
-        # คำนวณอายุ
         dob = user.get('dob')
         if dob:
             today = datetime.today()
             age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
         else:
-            age = None
+            age = None  # กรณีที่ dob ไม่มีข้อมูล
 
-        # ดึงข้อมูลที่เกี่ยวข้องกับ user_id
+        # ดึงข้อมูลโรคประจำตัว ยาที่ใช้ และข้อมูลการแพ้จาก collection u_cn, u_md และ u_ag ตาม user_id
         existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': ObjectId(user_id)})]
         existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': ObjectId(user_id)})]
         existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': ObjectId(user_id)})]
 
-        # ดึงข้อมูลโรคประจำตัว ยา และข้อมูลการแพ้
+        # Debug: ตรวจสอบว่า existing_cn_ids, existing_md_ids, และ existing_ag_ids ได้ค่าถูกต้องหรือไม่
+        print("Existing Chronic IDs:", existing_cn_ids)
+        print("Existing Medicine IDs:", existing_md_ids)
+        print("Existing Allergy IDs:", existing_ag_ids)
+
+        # ดึงข้อมูลโรค ยา และการแพ้จาก collections ที่เก็บข้อมูลโรคประจำตัว ยา และข้อมูลการแพ้
         chronics = list(chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}}))
         medicines = list(medicines_data_collection.find({'md_id': {'$in': existing_md_ids}}))
         allergys = list(allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}}))
 
-        return render_template('view_users.html', user=user, age=age, gender_name=gender_name, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name, chronics=chronics, medicines=medicines, allergys=allergys)
+        # Debug: ตรวจสอบข้อมูลที่ดึงมาว่าถูกต้องหรือไม่
+        print("Chronics:", chronics)
+        print("Medicines:", medicines)
+        print("Allergies:", allergys)
+
+        return render_template(
+            'view_users.html', 
+            user=user, 
+            age=age, 
+            gender_name=gender_name, 
+            pregnant_name=pregnant_name, 
+            breastfeeding_name=breastfeeding_name, 
+            chronics=chronics, 
+            medicines=medicines, 
+            allergys=allergys
+        )
+
     else:
         flash('ไม่พบข้อมูลสมาชิก', 'danger')
         return redirect(url_for('manage_members'))
