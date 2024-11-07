@@ -397,9 +397,9 @@ def detail_users(user_id):
         existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': ObjectId(user_id)})]
 
         # ดึงข้อมูลโรค ยา และการแพ้จาก collections ที่เก็บข้อมูลโรคประจำตัว ยา และข้อมูลการแพ้
-        chronics = chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}})
-        medicines = medicines_data_collection.find({'md_id': {'$in': existing_md_ids}})
-        allergys = allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}})
+        chronics = list(chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}}))
+        medicines = list(medicines_data_collection.find({'md_id': {'$in': existing_md_ids}}))
+        allergys = list(allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}}))
 
         return render_template(
             'view_users.html', 
@@ -414,7 +414,6 @@ def detail_users(user_id):
         )
 
     else:
-        # กรณีที่ไม่พบข้อมูลผู้ใช้
         flash('ไม่พบข้อมูลสมาชิก', 'danger')
         return redirect(url_for('manage_members'))
 
