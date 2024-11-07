@@ -462,7 +462,7 @@ def edit_user(user_id):
         # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_md ก่อนแล้วเพิ่มใหม่ตามที่เลือก
         u_md_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
         for md_id in md_ids:
-            u_md_collection.insert_one({'u_id': int(u_id), 'st_id': int(md_id)})
+            u_md_collection.insert_one({'u_id': int(u_id), 'md_id': int(md_id)})
 
         # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_ag ก่อนแล้วเพิ่มใหม่ตามที่เลือก
         u_ag_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
