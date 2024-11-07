@@ -195,7 +195,7 @@
 								<option value="{{ chronic['cn_id'] }}">{{ chronic['cn_name'] }}</option> 
 							{% endfor %}
 						</select>
-						<button type="button" onclick="addSelected()">เพิ่มโรคประจำตัว</button>
+						<button type="button" onclick="addSelected('chronics')">เพิ่มโรคประจำตัว</button>
 					</div>
 	
 					<div class="head">
@@ -223,7 +223,7 @@
 								<option value="{{ allergy['ag_id'] }}">{{ allergy['ag_name'] }}</option> 
 							{% endfor %}
 						</select>
-						<button type="button" onclick="addSelected()">เพิ่มการแพ้</button>
+						<button type="button" onclick="addSelected('allergys')">เพิ่มการแพ้</button>
 					</div>
 	
 					<div class="head">
@@ -248,10 +248,10 @@
 						<select id="medicines" name="medicines" multiple>
 							<option value="">-- เลือก --</option>
 							{% for medicine in medicines %}
-								<option value="{{ medicine['md_id'] }}">{{ medicine['md_id'] }}{{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</option> 
+								<option value="{{ medicine['md_id'] }}">{{ medicine['md_id'] }} - {{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</option> 
 							{% endfor %}
 						</select>
-						<button type="button" onclick="addSelected()">เพิ่มยาที่ใช้</button>
+						<button type="button" onclick="addSelected('medicines')">เพิ่มยาที่ใช้</button>
 					</div>
 	
 					<button type="submit" class="btn-submit">เพิ่มสมาชิก</button>
