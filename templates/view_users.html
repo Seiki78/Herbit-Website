@@ -176,49 +176,43 @@
 
         <div class="order">
 
-            <!-- แสดงโรคประจำตัวที่เลือกไว้แล้ว -->
+            <!-- แสดงโรคประจำตัว -->
             <div class="selected-list">
                 <table class="chronicTable">
-                    <thead>
-                        <tr><th>โรคประจำตัว</th></tr>
-                    </thead>
+                    <thead><tr><th>โรคประจำตัว</th></tr></thead>
                     <tbody id="selectedChronicsList">
                         {% for chronic in chronics %}
-                            <tr>
-                                <td>{{ chronic['cn_id'] }} - {{ chronic['cn_name'] }}</td>
-                            </tr>
+                        <tr><td>{{ chronic['cn_id'] }} - {{ chronic['cn_name'] }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="2">ไม่มีข้อมูลโรคประจำตัว</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div><br>
-        
-            <!-- แสดงยาที่ใช้ที่เลือกไว้แล้ว -->
+
+            <!-- แสดงยาที่ใช้ -->
             <div class="selected-list">
                 <table class="medicineTable">
-                    <thead>
-                        <tr><th>ยาที่ใช้</th></tr>
-                    </thead>
+                    <thead><tr><th>ยาที่ใช้</th></tr></thead>
                     <tbody id="selectedMedicinesList">
                         {% for medicine in medicines %}
-                            <tr>
-                                <td>{{ medicine['md_id'] }} - {{ medicine['md_name'] }}</td>
-                            </tr>
+                        <tr><td>{{ medicine['md_id'] }} - {{ medicine['md_name'] }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="2">ไม่มีข้อมูลยาที่ใช้</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div><br>
-        
-            <!-- แสดงข้อมูลการแพ้ที่เลือกไว้แล้ว -->
+
+            <!-- แสดงข้อมูลการแพ้ -->
             <div class="selected-list">
                 <table class="allergyTable">
-                    <thead>
-                        <tr><th>ข้อมูลการแพ้</th></tr>
-                    </thead>
+                    <thead><tr><th>ข้อมูลการแพ้</th></tr></thead>
                     <tbody id="selectedAllergysList">
                         {% for allergy in allergys %}
-                            <tr>
-                                <td>{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</td>
-                            </tr>
+                        <tr><td>{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="2">ไม่มีข้อมูลการแพ้</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>

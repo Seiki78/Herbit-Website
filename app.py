@@ -375,13 +375,16 @@ def manage_members():
 
 @app.route('/detail_users/<user_id>')
 def detail_users(user_id):
+    # ดึงข้อมูลสมาชิกตาม user_id
     user = users_collection.find_one({'_id': ObjectId(user_id)})
 
     if user:
+        # ดึงข้อมูลเพศและสถานะต่างๆ
         gender_name = get_gender_name(user_id)
         pregnant_name = get_pregnant_name(user_id)
         breastfeeding_name = get_breastfeeding_name(user_id)
 
+        # คำนวณอายุ
         dob = user.get('dob')
         if dob:
             today = datetime.today()
@@ -389,31 +392,17 @@ def detail_users(user_id):
         else:
             age = None
 
-        # ดึงข้อมูลโรคประจำตัว ยาที่ใช้ และข้อมูลการแพ้
+        # ดึงข้อมูลที่เกี่ยวข้องกับ user_id
         existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': ObjectId(user_id)})]
         existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': ObjectId(user_id)})]
         existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': ObjectId(user_id)})]
 
+        # ดึงข้อมูลโรคประจำตัว ยา และข้อมูลการแพ้
         chronics = list(chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}}))
         medicines = list(medicines_data_collection.find({'md_id': {'$in': existing_md_ids}}))
         allergys = list(allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}}))
 
-        # ตรวจสอบการดึงข้อมูล
-        print("Chronics:", chronics)
-        print("Medicines:", medicines)
-        print("Allergies:", allergys)
-
-        return render_template(
-            'view_users.html', 
-            user=user, 
-            age=age, 
-            gender_name=gender_name, 
-            pregnant_name=pregnant_name, 
-            breastfeeding_name=breastfeeding_name, 
-            chronics=chronics, 
-            medicines=medicines, 
-            allergys=allergys
-        )
+        return render_template('view_users.html', user=user, age=age, gender_name=gender_name, pregnant_name=pregnant_name, breastfeeding_name=breastfeeding_name, chronics=chronics, medicines=medicines, allergys=allergys)
     else:
         flash('ไม่พบข้อมูลสมาชิก', 'danger')
         return redirect(url_for('manage_members'))
