@@ -539,13 +539,14 @@ def member_signup():
         for ag_id in ag_ids:
             u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
         
-        chronics = chronics_data_collection.find()
-        medicines = medicines_data_collection.find()
-        allergys = allergys_data_collection.find()
+        
 
         flash('เพิ่มสมาชิกสำเร็จ!', 'success')
         return redirect(url_for('manage_members'))
     
+    chronics = chronics_data_collection.find()
+    medicines = medicines_data_collection.find()
+    allergys = allergys_data_collection.find()
     
     return render_template('add_member.html', chronics=chronics, medicines=medicines, allergys=allergys)
 
