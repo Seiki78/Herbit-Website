@@ -420,8 +420,24 @@ def detail_users(user_id):
 
 @app.route('/delete_user/<user_id>', methods=['POST'])
 def delete_user(user_id):
-    # ลบข้อมูลยาสมุนไพรออกจาก MongoDB โดยใช้ ObjectId
-    users_collection.delete_one({'_id': ObjectId(user_id)})
+    # ลบข้อมูลผู้ใช้ออกจาก MongoDB โดยใช้ ObjectId ใน users_collection
+    users = users_collection.find_one({'_id': ObjectId(user_id)})
+
+    # ตรวจสอบว่ามีข้อมูลใน users_collection หรือไม่
+    if users:
+        u_id = users['u_id']  # ได้ u_id ของผู้ใช้นั้น
+
+        # ลบข้อมูลใน users_collection
+        users_collection.delete_one({'_id': ObjectId(user_id)})
+
+        # ลบข้อมูลคำเตือนและอาการที่เกี่ยวข้องกับ u_id ของสมุนไพรนี้
+        u_cn_collection.delete_many({'u_id': u_id})
+        u_md_collection.delete_many({'u_id': u_id})
+        u_ag_collection.delete_many({'u_id': u_id})
+        
+        flash('ลบข้อมูลสำเร็จ!', 'success')
+    else:
+        flash('ไม่พบข้อมูลสมาชิกที่ต้องการลบ', 'error')
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_members'))

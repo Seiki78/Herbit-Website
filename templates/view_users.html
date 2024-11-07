@@ -184,16 +184,14 @@
                     </thead>
                     <tbody id="selectedChronicsList">
                         {% for chronic in chronics %}
-                            {% if chronic['cn_id'] in existing_cn_ids %}
                             <tr data-value="{{ chronic['cn_id'] }}">
                                 <td>{{ chronic['cn_id'] }} - {{ chronic['cn_name'] }}</td>
                             </tr>
-                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
             </div><br>
-
+        
             <!-- แสดงยาที่ใช้ที่เลือกไว้แล้ว -->
             <div class="selected-list">
                 <table class="medicineTable">
@@ -202,16 +200,14 @@
                     </thead>
                     <tbody id="selectedMedicinesList">
                         {% for medicine in medicines %}
-                            {% if medicine['md_id'] in existing_md_ids %}
                             <tr data-value="{{ medicine['md_id'] }}">
                                 <td>{{ medicine['md_id'] }} - {{ medicine['md_name'] }}</td>
                             </tr>
-                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
             </div><br>
-
+        
             <!-- แสดงข้อมูลการแพ้ที่เลือกไว้แล้ว -->
             <div class="selected-list">
                 <table class="allergyTable">
@@ -220,18 +216,15 @@
                     </thead>
                     <tbody id="selectedAllergysList">
                         {% for allergy in allergys %}
-                            {% if allergy['cn_id'] in existing_ag_ids %}
                             <tr data-value="{{ allergy['ag_id'] }}">
                                 <td>{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</td>
                             </tr>
-                            {% endif %}
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
-
-
-        </div>
+        
+        </div>        
 
     </div>
     
