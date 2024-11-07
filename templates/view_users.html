@@ -196,7 +196,7 @@
                     <thead><tr><th>ยาที่ใช้</th></tr></thead>
                     <tbody id="selectedMedicinesList">
                         {% for medicine in medicines %}
-                        <tr><td>{{ medicine['md_id'] }} - {{ medicine['md_name'] }}</td></tr>
+                        <tr><td>{{ medicine['md_id'] }} - {{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</td></tr>
                         {% else %}
                         <tr><td colspan="2">ไม่มีข้อมูลยาที่ใช้</td></tr>
                         {% endfor %}
