@@ -172,7 +172,7 @@
                             <td>
                                 <select name="gender" id="gender" onchange="toggleFemaleField()" required>
                                     <option value="" {% if user['gender'] is none %}selected{% endif %}>--เลือก--</option>
-                                    <option value="0" {% if user['gender'] == 1 %}selected{% endif %}>ชาย</option>
+                                    <option value="0" {% if user['gender'] == 0 %}selected{% endif %}>ชาย</option>
                                     <option value="1" {% if user['gender'] == 1 %}selected{% endif %}>หญิง</option>
                                 </select>
                             </td>
