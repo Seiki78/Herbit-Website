@@ -476,8 +476,8 @@ def edit_user(user_id):
     user = users_collection.find_one({'_id': ObjectId(user_id)})
 
     existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user['u_id']})]
-    existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user['hm_id']})]
-    existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user['ag_id']})]
+    existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user['u_id']})]
+    existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user['u_id']})]
 
     # ดึงข้อมูล collection chronics_data และแปลงเป็น list
     chronics = list(chronics_data_collection.find())
