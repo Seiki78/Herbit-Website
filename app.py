@@ -421,6 +421,75 @@ def detail_users(user_id):
     flash('ไม่พบข้อมูลสมาชิก', 'danger')
     return redirect(url_for('manage_members'))
 
+@app.route('/edit_user/<user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    if request.method == 'POST':
+
+        username = request.form['username']
+        email = request.form['email']
+
+        new_password = request.form['new_password']
+        hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
+
+        fname = request.form['fname']
+        lname = request.form['lname']
+        gender = request.form['gender']
+        pregnant = request.form['pregnant']
+        breastfeeding = request.form['breastfeeding']
+        
+        # อัปเดตข้อมูลผู้ใช้ใน MongoDB
+        users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname, 
+                                                                          'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}})
+        
+        # รับค่า cn_ids ที่เลือกมาใหม่
+        cn_ids = request.form.getlist('cn_ids')
+
+        # รับค่า md_ids ที่เลือกมาใหม่
+        md_ids = request.form.getlist('md_ids')
+
+        # รับค่า ag_ids ที่เลือกมาใหม่
+        ag_ids = request.form.getlist('ag_ids')
+
+        # ดึง hm_id ของสมุนไพรปัจจุบัน
+        user = users_collection.find_one({'_id': ObjectId(user_id)})
+        u_id = user['u_id']
+
+        # ลบความสัมพันธ์โรคประจำตัว ที่มีอยู่ใน u_cn ก่อนแล้วเพิ่มใหม่ตามที่เลือก
+        u_cn_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
+        for cn_id in cn_ids:
+            u_cn_collection.insert_one({'u_id': int(u_id), 'cn_id': int(cn_id)})
+
+        # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_md ก่อนแล้วเพิ่มใหม่ตามที่เลือก
+        u_md_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
+        for md_id in md_ids:
+            u_md_collection.insert_one({'u_id': int(u_id), 'st_id': int(md_id)})
+
+        # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_ag ก่อนแล้วเพิ่มใหม่ตามที่เลือก
+        u_ag_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
+        for ag_id in ag_ids:
+            u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
+        
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_members'))
+    
+    # ดึงข้อมูลผู้ใช้ ที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
+
+    existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user['u_id']})]
+    existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user['hm_id']})]
+    existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user['ag_id']})]
+
+    # ดึงข้อมูล collection chronics_data และแปลงเป็น list
+    chronics = list(chronics_data_collection.find())
+
+    # ดึงข้อมูล collection medicines_data และแปลงเป็น list
+    medicines = list(medicines_data_collection.find())
+
+    # ดึงข้อมูล collection allergys_data และแปลงเป็น list
+    allergys = list(allergys_data_collection.find())
+
+    return render_template('edit_users.html', user=user, chronics=chronics, medicines=medicines, allergys=allergys, existing_cn_ids=existing_cn_ids, existing_md_ids=existing_md_ids, existing_ag_ids=existing_ag_ids)
+
 @app.route('/delete_user/<user_id>', methods=['POST'])
 def delete_user(user_id):
     # ลบข้อมูลผู้ใช้ออกจาก MongoDB โดยใช้ ObjectId ใน users_collection
@@ -444,34 +513,6 @@ def delete_user(user_id):
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_members'))
-
-@app.route('/edit_user/<user_id>', methods=['GET', 'POST'])
-def edit_user(user_id):
-    if request.method == 'POST':
-
-        username = request.form['username']
-        email = request.form['email']
-
-        new_password = request.form['new_password']
-        hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
-
-        fname = request.form['fname']
-        lname = request.form['lname']
-        gender = request.form['gender']
-        pregnant = request.form['pregnant']
-        breastfeeding = request.form['breastfeeding']
-        
-        # อัปเดตข้อมูลผู้ใช้ใน MongoDB
-        users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname, 
-                                                                          'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}})
-        
-        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
-        return redirect(url_for('manage_members'))
-    
-    # ดึงข้อมูลผู้ใช้ ที่ต้องการแก้ไขเพื่อแสดงในฟอร์ม
-    user = users_collection.find_one({'_id': ObjectId(user_id)})
-
-    return render_template('edit_users.html', user=user)
 
 @app.route('/admin_signup', methods=['POST','GET'])
 def admin_signup():

@@ -193,109 +193,106 @@
                         </ul>
                         
                     </div><br><br>
+
+                    <!-- แสดงโรคประจำตัว ที่เลือกไว้แล้ว -->
+                    <div class="selected-list">
+                        <table class="warningTable">
+                            <thead>
+                                <tr><th>โรคประจำตัว</th></tr>
+                            </thead>
+                            <tbody id="selectedChronicsList">
+                                {% for chronic in chronics %}
+                                    {% if chronic['cn_id'] in existing_cn_ids %}
+                                    <tr data-value="{{ chronic['cn_id'] }}">
+                                        <td>{{ chronic['cn_id'] }} - {{ chronic['cn_name'] }}</td>
+                                        <td>
+                                            <button type="button" onclick="removeItem(this)">ลบ</button>
+
+                                        </td>
+                                        <input type="hidden" name="cn_ids" value="{{ chronic['cn_id'] }}">
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <!-- แสดงตัวเลือกโรคประจำตัว ที่เพิ่มใหม่ได้ -->
+                    <select id="chronics" name="chronics" multiple>
+                        <option value="">-- เลือก --</option>
+                        {% for chronic in chronics %}
+                            <option value="{{ chronic['cn_id'] }}" title="{{ chronic['cn_name'] }}">{{ chronic['cn_id'] }} - {{ chronic['cn_name'] | truncate(40, True) }}</option>
+                        {% endfor %}    
+                    </select>
+                    <button type="button" onclick="addSelected('chronics')">เพิ่มโรคประจำตัว</button>
+
+
+                    <!-- แสดงยาที่ใช้ ที่เลือกไว้แล้ว -->
+                    <div class="selected-list">
+                        <table class="medicinesTable">
+                            <thead>
+                                <tr><th>ยาที่ใช้</th></tr>
+                            </thead>
+                            <tbody id="selectedMedicinesList">
+                                {% for medicine in medicines %}
+                                    {% if medicine['md_id'] in existing_md_ids %}
+                                    <tr data-value="{{ medicine['md_id'] }}">
+                                        <td>{{ medicine['md_id'] }} - {{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</td>
+                                        <td>
+                                            <button type="button" onclick="removeItem(this)">ลบ</button>
+
+                                        </td>
+                                        <input type="hidden" name="cn_ids" value="{{ medicine['md_id'] }}">
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <!-- แสดงตัวเลือกยาที่ใช้ ที่เพิ่มใหม่ได้ -->
+                    <select id="medicines" name="medicines" multiple>
+                        <option value="">-- เลือก --</option>
+                        {% for medicine in medicines %}
+                            <option value="{{ medicine['md_id'] }}">{{ medicine['md_id'] }} - {{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</option>
+                        {% endfor %}    
+                    </select>
+                    <button type="button" onclick="addSelected('medicines')">เพิ่มยาที่ใช้</button>
+
+
+                    <!-- แสดงข้อมูลการแพ้ ที่เลือกไว้แล้ว -->
+                    <div class="selected-list">
+                        <table class="allergysTable">
+                            <thead>
+                                <tr><th>ข้อมูลการแพ้</th></tr>
+                            </thead>
+                            <tbody id="selectedAllergysList">
+                                {% for allergy in allergys %}
+                                    {% if allergy['ag_id'] in existing_ag_ids %}
+                                    <tr data-value="{{ allergy['ag_id'] }}">
+                                        <td>{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</td>
+                                        <td>
+                                            <button type="button" onclick="removeItem(this)">ลบ</button>
+
+                                        </td>
+                                        <input type="hidden" name="ag_ids" value="{{ allergy['ag_id'] }}">
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <!-- แสดงตัวเลือกข้อมูลการแพ้ ที่เพิ่มใหม่ได้ -->
+                    <select id="allergys" name="allergys" multiple>
+                        <option value="">-- เลือก --</option>
+                        {% for allergy in allergys %}
+                            <option value="{{ allergy['ag_id'] }}">{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</option>
+                        {% endfor %}    
+                    </select>
+                    <button type="button" onclick="addSelected('allergys')">เพิ่มข้อมูลการแพ้</button>
                     
-                    <!-- <div class="head">
-                        <div class="selected-list">
-    
-                            <table class="chronicsTable" id="selectedChronicsList">
-                            <thead>
-                                <tr>
-                                    <th>โรคประจำตัว</th>
-     
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for chronic in existing_chronics %}
-                                    <tr>
-                                        <td>{{ chronic }}</td>
-                                        <td></td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        </div>
-                        
-                    </div>
-    
-                    <div class="head">
-                        <select id="Chronics" name="Chronics" multiple>
-                            <option value="">-- เลือก --</option>
-                            {% for Chronic in Chronics %}
-                                <option value="{{ Chronic[0] }}">{{ Chronic[1] }}</option> 
-                                <-- Chronic[0] คือ Chronic_Disease และ Chronic[1] คือ Chronic_Disease_name -->
-                            <!-- {% endfor %}
-                        </select>
-                        <button type="button" onclick="addSelected()">เพิ่ม</button>
-                    </div>
-
-                    <br> -->
-
-                    <!-- <div class="head">
-                        <div class="selected-list">
-    
-                            <table class="allergiesTable" id="selectedallergiesList">
-                            <thead>
-                                <tr>
-                                    <th>ข้อมูลการแพ้</th>
-     
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for allergie in existing_allergies %}
-                                    <tr>
-                                        <td>{{ allergie }}</td>
-                                        <td></td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        </div>
-                        
-                    </div> -->
-    
-                    <!-- <div class="head">
-                        <select id="allergie" name="allergies" multiple>
-                            <option value="">-- เลือก --</option>
-                            {% for allergie in allergies %}
-                                <option value="{{ allergie[0] }}">{{ allergie[1] }}</option> 
-                            {% endfor %}
-                        </select>
-                        <button type="button" onclick="addSelected()">เพิ่ม</button>
-                    </div> -->
-
-                    <!-- <div class="head">
-                        <div class="selected-list">
-    
-                            <table class="chronicsTable" id="selectedChronicsList">
-                            <thead>
-                                <tr>
-                                    <th>ยาที่ใช้</th>
-     
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for medicines in existing_medicines %}
-                                    <tr>
-                                        <td>{{ medicines }}</td>
-                                        <td></td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        </div>
-                        
-                    </div> -->
-    
-                    <!-- <div class="head">
-                        <select id="medicines" name="medicines" multiple>
-                            <option value="">-- เลือก --</option>
-                            {% for medicine in medicines %}
-                                <option value="{{ medicine[0] }}">{{ medicine[1] }} - {{ medicine[2] }}</option> 
-                            {% endfor %}
-                        </select>
-                        <button type="button" onclick="addSelected()">เพิ่ม</button>
-                    </div> -->
-
+                    
 
                     <button type="submit" class="submit-btn">
                         <img src="{{ url_for('static', filename='check_blue.png') }}" alt="Submit">
@@ -318,6 +315,65 @@
 
 
     <script>
+
+        function removeItem(button) {
+            const row = button.closest('tr');
+            const id = row.dataset.value;
+
+            // ลบแถวที่เลือก
+            row.remove();
+
+            // ลบ input hidden ที่เกี่ยวข้องตามประเภท
+            const inputName = row.closest('table').id === 'selectedChronicsList' ? 'cn_ids'
+                            : row.closest('table').id === 'selectedMedicinesList' ? 'md_ids'
+                            : 'ag_ids';
+                            
+            const hiddenInput = document.querySelector(`input[name="${inputName}"][value="${id}"]`);
+            if (hiddenInput) {
+                hiddenInput.remove();
+            }
+        }
+
+        function addSelected(type) {
+            const select = document.getElementById(type);
+            const selectedListId = type === 'chronics' ? 'selectedChronicsList' 
+                            : type === 'medicines' ? 'selectedMedicinesList' 
+                            : 'selectedAllergysList';
+            const selectedList = document.getElementById(selectedListId);
+            const selectedOptions = Array.from(select.selectedOptions);
+
+            selectedOptions.forEach(option => {
+                if (!Array.from(selectedList.children).some(tr => tr.dataset.value === option.value)) {
+                    const tr = document.createElement('tr');
+                    const tdText = document.createElement('td');
+                    tdText.textContent = option.textContent;
+
+                    const tdAction = document.createElement('td');
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button';
+                    removeButton.textContent = 'ลบ';
+                    removeButton.onclick = () => removeItem(removeButton);
+                    tdAction.appendChild(removeButton);
+
+                    tr.appendChild(tdText);
+                    tr.appendChild(tdAction);
+                    tr.dataset.value = option.value;
+
+                    selectedList.appendChild(tr);
+
+                    // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า โดยใช้ชื่อฟิลด์ที่เหมาะสมกับประเภท
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = type === 'chronics' ? 'cn_ids' : type === 'medicines' ? 'md_ids' : 'ag_ids';
+                    hiddenInput.value = option.value;
+                    document.querySelector('form').appendChild(hiddenInput);
+                }
+                option.selected = false;
+            });
+        }
+
+
+
         document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
             checkbox.addEventListener('change', (event) => {
                 event.target.value = event.target.checked ? "1" : "0";
