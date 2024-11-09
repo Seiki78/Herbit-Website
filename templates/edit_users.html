@@ -196,7 +196,7 @@
 
                     <!-- แสดงโรคประจำตัว ที่เลือกไว้แล้ว -->
                     <div class="selected-list">
-                        <table class="warningTable">
+                        <table class="chronicTable">
                             <thead>
                                 <tr><th>โรคประจำตัว</th></tr>
                             </thead>
@@ -261,7 +261,7 @@
 
 
                     <!-- แสดงข้อมูลการแพ้ ที่เลือกไว้แล้ว -->
-                    <div class="selected-list">
+                    <!-- <div class="selected-list">
                         <table class="allergysTable">
                             <thead>
                                 <tr><th>ข้อมูลการแพ้</th></tr>
@@ -281,16 +281,16 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-                    </div>
+                    </div> -->
                 
                     <!-- แสดงตัวเลือกข้อมูลการแพ้ ที่เพิ่มใหม่ได้ -->
-                    <select id="allergys" name="allergys" multiple>
+                    <!-- <select id="allergys" name="allergys" multiple>
                         <option value="">-- เลือก --</option>
                         {% for allergy in allergys %}
                             <option value="{{ allergy['ag_id'] }}">{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</option>
                         {% endfor %}    
                     </select>
-                    <button type="button" onclick="addSelected('allergys')">เพิ่มข้อมูลการแพ้</button>
+                    <button type="button" onclick="addSelected('allergys')">เพิ่มข้อมูลการแพ้</button> -->
                     <br>
                     
 
@@ -321,52 +321,16 @@
             // ลบแถวที่เลือก
             row.remove();
 
-            // ลบ input hidden ที่เกี่ยวข้องตามประเภท
-            let inputName;
-            switch (row.closest('table').id) {
-                case 'selectedChronicsList':
-                    inputName = 'cn_ids';
-                    break;
-                case 'selectedMedicinesList':
-                    inputName = 'md_ids';
-                    break;
-                case 'selectedAllergysList':
-                    inputName = 'ag_ids';
-                    break;
-                default:
-                    inputName = ''; // กรณีที่ไม่ตรงกับเงื่อนไขใด ๆ
-                    break;
-            }
-
-            if (inputName) {
-                const hiddenInput = document.querySelector(`input[name="${inputName}"][value="${id}"]`);
-                if (hiddenInput) {
-                    hiddenInput.remove();
-                }
+            // ลบ input hidden ที่เกี่ยวข้อง
+            const hiddenInput = document.querySelector(`input[value="${id}"]`);
+            if (hiddenInput) {
+                hiddenInput.remove();
             }
         }
 
         function addSelected(type) {
             const select = document.getElementById(type);
-            let selectedListId;
-
-            // เลือกตารางที่จะแสดงข้อมูลตามประเภท
-            switch (type) {
-                case 'chronics':
-                    selectedListId = 'selectedChronicsList';
-                    break;
-                case 'medicines':
-                    selectedListId = 'selectedMedicinesList';
-                    break;
-                case 'allergys':
-                    selectedListId = 'selectedAllergysList';
-                    break;
-                default:
-                    selectedListId = ''; // กรณีที่ไม่ตรงกับเงื่อนไขใด ๆ
-                    break;
-            }
-
-            const selectedList = document.getElementById(selectedListId);
+            const selectedList = document.getElementById(type === 'chronics' ? 'selectedChronicsList' : 'selectedMedicinesList');
             const selectedOptions = Array.from(select.selectedOptions);
 
             selectedOptions.forEach(option => {
@@ -380,7 +344,10 @@
                     const removeButton = document.createElement('button');
                     removeButton.type = 'button';
                     removeButton.textContent = 'ลบ';
-                    removeButton.onclick = () => removeItem(removeButton);
+                    removeButton.onclick = () => {
+                        selectedList.querySelector(`tr[data-value="${option.value}"]`).remove();
+                        document.querySelector(`input[name="${type === 'chronics' ? 'cn_ids' : 'md_ids'}"][value="${option.value}"]`).remove();
+                    };
                     tdAction.appendChild(removeButton);
 
                     tr.appendChild(tdText);
@@ -389,36 +356,16 @@
 
                     selectedList.appendChild(tr);
 
-                    // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า โดยใช้ชื่อฟิลด์ที่เหมาะสมกับประเภท
-                    let hiddenInputName;
-                    switch (type) {
-                        case 'chronics':
-                            hiddenInputName = 'cn_ids';
-                            break;
-                        case 'medicines':
-                            hiddenInputName = 'md_ids';
-                            break;
-                        case 'allergys':
-                            hiddenInputName = 'ag_ids';
-                            break;
-                        default:
-                            hiddenInputName = '';
-                            break;
-                    }
-
-                    if (hiddenInputName) {
-                        const hiddenInput = document.createElement('input');
-                        hiddenInput.type = 'hidden';
-                        hiddenInput.name = hiddenInputName;
-                        hiddenInput.value = option.value;
-                        document.querySelector('form').appendChild(hiddenInput);
-                    }
+                    // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = type === 'chronics' ? 'cn_ids' : 'md_ids';
+                    hiddenInput.value = option.value;
+                    document.querySelector('form').appendChild(hiddenInput);
                 }
                 option.selected = false;
             });
         }
-
-
 
 
         document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
