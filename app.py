@@ -468,6 +468,12 @@ def edit_user(user_id):
         u_ag_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
         for ag_id in ag_ids:
             u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
+
+        print(request.form)
+        print(existing_cn_ids)
+        print(existing_md_ids)
+        print(existing_ag_ids)
+
         
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
         return redirect(url_for('manage_members'))

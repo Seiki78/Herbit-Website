@@ -232,6 +232,13 @@
 
 
     <script>
+
+        document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                event.target.value = event.target.checked ? "1" : "0";
+            });
+        }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
+
         document.addEventListener('DOMContentLoaded', function() {
             var genderName = "{{ gender_name }}";
             var femaleFields = document.querySelectorAll('.FemaleField');
