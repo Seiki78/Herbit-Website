@@ -439,9 +439,9 @@ def edit_user(user_id):
 
         fname = request.form['fname']
         lname = request.form['lname']
-        gender = request.form['gender']
-        pregnant = request.form.get('pregnant', 0)
-        breastfeeding = request.form.get('breastfeeding', 0)
+        gender = int(request.form['gender'])
+        pregnant = int(request.form.get('pregnant', 0))
+        breastfeeding = int(request.form.get('breastfeeding', 0))
         
         # อัปเดตข้อมูลผู้ใช้ใน MongoDB
         users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname, 
