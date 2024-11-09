@@ -322,25 +322,55 @@
             row.remove();
 
             // ลบ input hidden ที่เกี่ยวข้องตามประเภท
-            const inputName = row.closest('table').id === 'selectedChronicsList' ? 'cn_ids'
-                            : row.closest('table').id === 'selectedMedicinesList' ? 'md_ids'
-                            : 'ag_ids';
-                            
-            const hiddenInput = document.querySelector(`input[name="${inputName}"][value="${id}"]`);
-            if (hiddenInput) {
-                hiddenInput.remove();
+            let inputName;
+            switch (row.closest('table').id) {
+                case 'selectedChronicsList':
+                    inputName = 'cn_ids';
+                    break;
+                case 'selectedMedicinesList':
+                    inputName = 'md_ids';
+                    break;
+                case 'selectedAllergysList':
+                    inputName = 'ag_ids';
+                    break;
+                default:
+                    inputName = ''; // กรณีที่ไม่ตรงกับเงื่อนไขใด ๆ
+                    break;
+            }
+
+            if (inputName) {
+                const hiddenInput = document.querySelector(`input[name="${inputName}"][value="${id}"]`);
+                if (hiddenInput) {
+                    hiddenInput.remove();
+                }
             }
         }
 
         function addSelected(type) {
             const select = document.getElementById(type);
-            const selectedListId = type === 'chronics' ? 'selectedChronicsList' 
-                            : type === 'medicines' ? 'selectedMedicinesList' 
-                            : 'selectedAllergysList';
+            let selectedListId;
+
+            // เลือกตารางที่จะแสดงข้อมูลตามประเภท
+            switch (type) {
+                case 'chronics':
+                    selectedListId = 'selectedChronicsList';
+                    break;
+                case 'medicines':
+                    selectedListId = 'selectedMedicinesList';
+                    break;
+                case 'allergys':
+                    selectedListId = 'selectedAllergysList';
+                    break;
+                default:
+                    selectedListId = ''; // กรณีที่ไม่ตรงกับเงื่อนไขใด ๆ
+                    break;
+            }
+
             const selectedList = document.getElementById(selectedListId);
             const selectedOptions = Array.from(select.selectedOptions);
 
             selectedOptions.forEach(option => {
+                // ตรวจสอบว่าแถวที่เลือกมีอยู่ในตารางแล้วหรือไม่
                 if (!Array.from(selectedList.children).some(tr => tr.dataset.value === option.value)) {
                     const tr = document.createElement('tr');
                     const tdText = document.createElement('td');
@@ -360,15 +390,34 @@
                     selectedList.appendChild(tr);
 
                     // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า โดยใช้ชื่อฟิลด์ที่เหมาะสมกับประเภท
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = type === 'chronics' ? 'cn_ids' : type === 'medicines' ? 'md_ids' : 'ag_ids';
-                    hiddenInput.value = option.value;
-                    document.querySelector('form').appendChild(hiddenInput);
+                    let hiddenInputName;
+                    switch (type) {
+                        case 'chronics':
+                            hiddenInputName = 'cn_ids';
+                            break;
+                        case 'medicines':
+                            hiddenInputName = 'md_ids';
+                            break;
+                        case 'allergys':
+                            hiddenInputName = 'ag_ids';
+                            break;
+                        default:
+                            hiddenInputName = '';
+                            break;
+                    }
+
+                    if (hiddenInputName) {
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = hiddenInputName;
+                        hiddenInput.value = option.value;
+                        document.querySelector('form').appendChild(hiddenInput);
+                    }
                 }
                 option.selected = false;
             });
         }
+
 
 
 
