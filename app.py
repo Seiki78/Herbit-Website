@@ -450,7 +450,7 @@ def edit_user(user_id):
         # รับค่า ag_ids ที่เลือกมาใหม่
         ag_ids = request.form.getlist('ag_ids')
 
-        # ดึง hm_id ของสมุนไพรปัจจุบัน
+        # ดึง hm_id ของ user ปัจจุบัน
         user = users_collection.find_one({'_id': ObjectId(user_id)})
         u_id = user['u_id']
 
