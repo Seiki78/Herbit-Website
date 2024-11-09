@@ -261,7 +261,7 @@
 
 
                     <!-- แสดงข้อมูลการแพ้ ที่เลือกไว้แล้ว -->
-                    <!-- <div class="selected-list">
+                    <div class="selected-list">
                         <table class="allergysTable">
                             <thead>
                                 <tr><th>ข้อมูลการแพ้</th></tr>
@@ -281,16 +281,16 @@
                                 {% endfor %}
                             </tbody>
                         </table>
-                    </div> -->
+                    </div>
                 
                     <!-- แสดงตัวเลือกข้อมูลการแพ้ ที่เพิ่มใหม่ได้ -->
-                    <!-- <select id="allergys" name="allergys" multiple>
+                    <select id="allergys" name="allergys" multiple>
                         <option value="">-- เลือก --</option>
                         {% for allergy in allergys %}
                             <option value="{{ allergy['ag_id'] }}">{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</option>
                         {% endfor %}    
                     </select>
-                    <button type="button" onclick="addSelected('allergys')">เพิ่มข้อมูลการแพ้</button> -->
+                    <button type="button" onclick="addSelected('allergys')">เพิ่มข้อมูลการแพ้</button>
                     <br>
                     
 
@@ -330,7 +330,7 @@
 
         function addSelected(type) {
             const select = document.getElementById(type);
-            const selectedList = document.getElementById(type === 'chronics' ? 'selectedChronicsList' : 'selectedMedicinesList');
+            const selectedList = document.getElementById(type === 'chronics' ? 'selectedChronicsList' : type === 'medicines' ? 'selectedMedicinesList' : type === 'allergys' ? 'selectedAllergysList' : '');
             const selectedOptions = Array.from(select.selectedOptions);
 
             selectedOptions.forEach(option => {
@@ -346,7 +346,7 @@
                     removeButton.textContent = 'ลบ';
                     removeButton.onclick = () => {
                         selectedList.querySelector(`tr[data-value="${option.value}"]`).remove();
-                        document.querySelector(`input[name="${type === 'chronics' ? 'cn_ids' : 'md_ids'}"][value="${option.value}"]`).remove();
+                        document.querySelector(`input[name="${type === 'chronics' ? 'cn_ids' : type === 'medicines' ? 'md_ids' : type === 'allergys' ? 'ag_ids' : ''}"][value="${option.value}"]`).remove();
                     };
                     tdAction.appendChild(removeButton);
 
@@ -359,7 +359,7 @@
                     // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า
                     const hiddenInput = document.createElement('input');
                     hiddenInput.type = 'hidden';
-                    hiddenInput.name = type === 'chronics' ? 'cn_ids' : 'md_ids';
+                    hiddenInput.name = type === 'chronics' ? 'cn_ids' : type === 'medicines' ? 'md_ids': type === 'allergys' ? 'ag_ids' :'';
                     hiddenInput.value = option.value;
                     document.querySelector('form').appendChild(hiddenInput);
                 }

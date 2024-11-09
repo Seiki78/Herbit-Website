@@ -448,7 +448,7 @@ def edit_user(user_id):
         md_ids = request.form.getlist('md_ids')
 
         # รับค่า ag_ids ที่เลือกมาใหม่
-        # ag_ids = request.form.getlist('ag_ids')
+        ag_ids = request.form.getlist('ag_ids')
 
         # ดึง hm_id ของ user ปัจจุบัน
         user = users_collection.find_one({'_id': ObjectId(user_id)})
@@ -465,9 +465,9 @@ def edit_user(user_id):
             u_md_collection.insert_one({'u_id': int(u_id), 'md_id': int(md_id)})
 
         # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_ag ก่อนแล้วเพิ่มใหม่ตามที่เลือก
-        # u_ag_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
-        # for ag_id in ag_ids:
-        #     u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
+        u_ag_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
+        for ag_id in ag_ids:
+            u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
 
         
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
@@ -478,7 +478,7 @@ def edit_user(user_id):
 
     existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user['u_id']})]
     existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user['u_id']})]
-    # existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user['u_id']})]
+    existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user['u_id']})]
 
     # ดึงข้อมูล collection chronics_data และแปลงเป็น list
     chronics = list(chronics_data_collection.find())
@@ -487,9 +487,9 @@ def edit_user(user_id):
     medicines = list(medicines_data_collection.find())
 
     # ดึงข้อมูล collection allergys_data และแปลงเป็น list
-    # allergys = list(allergys_data_collection.find())
+    allergys = list(allergys_data_collection.find())
 
-    return render_template('edit_users.html', user=user, chronics=chronics, medicines=medicines, allergys=allergys, existing_cn_ids=existing_cn_ids, existing_md_ids=existing_md_ids)
+    return render_template('edit_users.html', user=user, chronics=chronics, medicines=medicines, allergys=allergys, existing_cn_ids=existing_cn_ids, existing_md_ids=existing_md_ids, existing_ag_ids=existing_ag_ids)
 
 @app.route('/delete_user/<user_id>', methods=['POST'])
 def delete_user(user_id):
