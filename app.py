@@ -427,49 +427,51 @@ def edit_user(user_id):
 
         username = request.form['username']
         email = request.form['email']
-
         new_password = request.form['new_password']
-        hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
+
+        if new_password:
+            hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
+        else:
+            hashed_password = user['password']
 
         fname = request.form['fname']
         lname = request.form['lname']
         gender = request.form['gender']
-        pregnant = request.form['pregnant']
-        breastfeeding = request.form['breastfeeding']
+        pregnant = request.form.get('pregnant', 0)
+        breastfeeding = request.form.get('breastfeeding', 0)
         
         # อัปเดตข้อมูลผู้ใช้ใน MongoDB
         users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname, 
                                                                           'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}})
         
-        # รับค่า cn_ids ที่เลือกมาใหม่
-        cn_ids = request.form.getlist('cn_ids')
-
-        # รับค่า md_ids ที่เลือกมาใหม่
-        md_ids = request.form.getlist('md_ids')
-
-        # รับค่า ag_ids ที่เลือกมาใหม่
-        ag_ids = request.form.getlist('ag_ids')
-
-        # ดึง hm_id ของ user ปัจจุบัน
+         # ดึง u_id ของ user ปัจจุบัน
         user = users_collection.find_one({'_id': ObjectId(user_id)})
         u_id = user['u_id']
 
+        # รับค่า cn_ids ที่เลือกมาใหม่
+        cn_ids = request.form.getlist('chronics')
         # ลบความสัมพันธ์โรคประจำตัว ที่มีอยู่ใน u_cn ก่อนแล้วเพิ่มใหม่ตามที่เลือก
-        u_cn_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
-        for cn_id in cn_ids:
-            u_cn_collection.insert_one({'u_id': int(u_id), 'cn_id': int(cn_id)})
+        if cn_ids:
+            u_cn_collection.delete_many({'u_id': int(u_id)})
+            for cn_id in cn_ids:
+                u_cn_collection.insert_one({'u_id': int(u_id), 'cn_id': int(cn_id)})
 
+        # รับค่า md_ids ที่เลือกมาใหม่
+        md_ids = request.form.getlist('medicines')
         # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_md ก่อนแล้วเพิ่มใหม่ตามที่เลือก
-        u_md_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
-        for md_id in md_ids:
-            u_md_collection.insert_one({'u_id': int(u_id), 'md_id': int(md_id)})
+        if md_ids:
+            u_md_collection.delete_many({'u_id': int(u_id)})
+            for md_id in md_ids:
+                u_md_collection.insert_one({'u_id': int(u_id), 'md_id': int(md_id)})
 
+        # รับค่า ag_ids ที่เลือกมาใหม่
+        ag_ids = request.form.getlist('allergys')
         # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_ag ก่อนแล้วเพิ่มใหม่ตามที่เลือก
-        u_ag_collection.delete_many({'u_id': int(u_id)})  # ลบรายการที่มี u_id ตรงกับยานี้
-        for ag_id in ag_ids:
-            u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
+        if ag_ids:
+            u_ag_collection.delete_many({'u_id': int(u_id)})
+            for ag_id in ag_ids:
+                u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
 
-        
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
         return redirect(url_for('manage_members'))
     
