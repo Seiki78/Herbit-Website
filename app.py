@@ -423,6 +423,10 @@ def detail_users(user_id):
 
 @app.route('/edit_user/<user_id>', methods=['GET', 'POST'])
 def edit_user(user_id):
+    # ดึง u_id ของ user ปัจจุบัน
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
+    u_id = user['u_id']
+
     if request.method == 'POST':
 
         username = request.form['username']
@@ -443,10 +447,6 @@ def edit_user(user_id):
         # อัปเดตข้อมูลผู้ใช้ใน MongoDB
         users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname, 
                                                                           'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}})
-        
-         # ดึง u_id ของ user ปัจจุบัน
-        user = users_collection.find_one({'_id': ObjectId(user_id)})
-        u_id = user['u_id']
 
         # รับค่า cn_ids ที่เลือกมาใหม่
         cn_ids = request.form.getlist('chronics')
