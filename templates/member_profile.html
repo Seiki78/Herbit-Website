@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>ข้อมูลยาสมุนไพร</title>
+</head> 
+<body>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-overlay alert-{{ category }} hidden">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="sidebar">
+        <a href="" class="brand">
+            <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+			<span class="text">Mongo</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="{{ url_for('dashboard') }}">
+					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">แดชบอร์ด</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="{{ url_for('profile') }}">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='health-report.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">โปรไฟล์</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='medical.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">วิเคราะห์ยาสมุนไพร</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="{{ url_for('logout') }}" class="logout">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='logout.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">ออกจากระบบ</span>
+				</a>
+			</li>
+		</ul>
+
+    </section>
+
+
+
+
+    <section id="content">
+<!-- NAVBAR -->
+<nav>
+    <!-- เมนูไอคอนอยู่ชิดซ้าย -->
+    <i class='bx bx-menu'>
+        <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
+    </i>
+  
+    <!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
+    <a href="{{ url_for('profile') }}" class="profile">
+        <img src="{{ url_for('static', filename='user.png') }}">
+    </a>
+  </nav>
+<!-- NAVBAR -->
+
+<!-- MAIN -->
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>โปรไฟล์</h1>          
+        </div>
+        <a href="" class="btn-download">แก้ไขข้อมูล</a>
+    </div>
+
+    <div class="table-data">
+
+        <div class="order">
+            
+                <table>
+                    <tr>
+                        <td>
+                            <label>ชื่อผู้ใช้</label>
+                        </td>
+                        <td>
+                            {{ user['username'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>อีเมล</label>
+                        </td>
+                        <td>
+                            {{ user['email'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>ชื่อ-นามสกุล</label>
+                        </td>
+                        <td>
+                            {{ user['fname'] }} {{ user['lname'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>เพศ</label>
+                        </td>
+                        <td>
+                            {{ gender_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>อายุ</label>
+                        </td>
+                        <td>
+                            {{ age }}
+                        </td>
+                    </tr>
+                 
+                    <tr class="FemaleField" style="display: none;">
+                        <td>
+                            <img src="{{ url_for('static', filename='pregnant_4370507.png') }}" class="icon-mini" alt="Menu Icon">
+                        </td>
+                        <td>
+                            {{ pregnant_name }}
+                        </td>
+                    </tr>
+                    <tr class="FemaleField" style="display: none;">
+                        <td>
+                            <img src="{{ url_for('static', filename='breastfeeding.png') }}" class="icon-mini" alt="Menu Icon">
+                        </td>
+                        <td>
+                            {{ breastfeeding_name }}
+                        </td>
+                    </tr>
+                
+                </table><br>
+
+            
+            <br>
+        </div>
+
+        <div class="order">
+
+            <!-- แสดงโรคประจำตัว -->
+            <div class="selected-list">
+                <table class="chronicTable">
+                    <thead><tr><th>โรคประจำตัว</th></tr></thead>
+                    <tbody id="selectedChronicsList">
+                        {% for chronic in chronics %}
+                        <tr><td>{{ chronic['cn_id'] }} - {{ chronic['cn_name'] }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="2">ไม่มีข้อมูลโรคประจำตัว</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div><br>
+
+            <!-- แสดงยาที่ใช้ -->
+            <div class="selected-list">
+                <table class="medicineTable">
+                    <thead><tr><th>ยาที่ใช้</th></tr></thead>
+                    <tbody id="selectedMedicinesList">
+                        {% for medicine in medicines %}
+                        <tr><td>{{ medicine['md_id'] }} - {{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="2">ไม่มีข้อมูลยาที่ใช้</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div><br>
+
+            <!-- แสดงข้อมูลการแพ้ -->
+            <div class="selected-list">
+                <table class="allergyTable">
+                    <thead><tr><th>ข้อมูลการแพ้</th></tr></thead>
+                    <tbody id="selectedAllergysList">
+                        {% for allergy in allergys %}
+                        <tr><td>{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="2">ไม่มีข้อมูลการแพ้</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        
+        </div>        
+
+    </div>
+    
+
+
+
+</main>
+<!-- MAIN -->
+
+    </section>
+
+
+    <script>
+
+        document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                event.target.value = event.target.checked ? "1" : "0";
+            });
+        }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var genderName = "{{ gender_name }}";
+            var femaleFields = document.querySelectorAll('.FemaleField');
+
+            if (genderName === "หญิง") {
+                femaleFields.forEach(function(field) {
+                    field.style.display = "table-row";
+                });
+            } else {
+                femaleFields.forEach(function(field) {
+                    field.style.display = "none";
+                });
+            }
+        });
+        
+
+    </script>       
+              
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

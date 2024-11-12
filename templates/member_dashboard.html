@@ -27,27 +27,21 @@
 		</a>
 		<ul class="side-menu top">
 			<li class="active">
-				<a href="">
+				<a href="{{ url_for('dashboard') }}">
 					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">แดชบอร์ด</span>
 				</a>
 			</li>
 			<li>
-				<a href="">
+				<a href="{{ url_for('profile') }}">
 					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='health-report.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">ข้อมูลสุขภาพ</span>
+					<span class="text">โปรไฟล์</span>
 				</a>
 			</li>
-            <li>
-                <a href="">
-                  <i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='patient.png') }}" class="icon-mini" alt="Menu Icon"></i>
-                  <span class="text">โปรไฟล์</span>
-                </a>
-              </li>
 			<li>
 				<a href="">
 					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='medical.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">วิเคราะห์ยาสมุนไพรด้วยตนเอง</span>
+					<span class="text">วิเคราะห์ยาสมุนไพร</span>
 				</a>
 			</li>
 		</ul>
@@ -72,7 +66,7 @@
     </i>
   
     <!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
-    <a href="" class="profile">
+    <a href="{{ url_for('profile') }}" class="profile">
         <img src="{{ url_for('static', filename='user.png') }}">
     </a>
   </nav>
@@ -84,9 +78,9 @@
         <div class="left">
             <h1>แดชบอร์ดสมาชิก (ทดสอบ)</h1>
             <ul class="breadcrumb">
-                <li>
+                <!-- <li>
                     <a href="{{ url_for('dashboard') }}">หน้าหลัก</a>
-                </li>
+                </li> -->
 
             </ul>
         </div>
