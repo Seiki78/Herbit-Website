@@ -33,7 +33,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="{{ url_for('profile') }}">
+				<a href="{{ url_for('profile', user_id=user['_id']) }}">
 					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='health-report.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">โปรไฟล์</span>
 				</a>
@@ -66,7 +66,7 @@
     </i>
   
     <!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
-    <a href="{{ url_for('profile') }}" class="profile">
+    <a href="{{ url_for('profile', user_id=user['_id']) }}" class="profile">
         <img src="{{ url_for('static', filename='user.png') }}">
     </a>
   </nav>
