@@ -1048,9 +1048,9 @@ def profile(user_id):
             age=age, 
             gender_name=gender_name, 
             pregnant_name=pregnant_name, 
-            breastfeeding_name=breastfeeding_name,
-            chronics=chronics,
-            medicines=medicines,
+            breastfeeding_name=breastfeeding_name, 
+            chronics=chronics, 
+            medicines=medicines, 
             allergys=allergys
         )
     else:
