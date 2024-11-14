@@ -978,35 +978,35 @@ def add_warning():
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_warnings'))
 
-@app.route('/profile/<user_id>')
-def profile(user_id):
+# @app.route('/profile/<user_id>')
+# def profile(user_id):
 
-    # ดึงข้อมูลทั้งหมดจาก Collection
-    user = users_collection.find_one({'_id': ObjectId(user_id)})
+#     # ดึงข้อมูลทั้งหมดจาก Collection
+#     user = users_collection.find_one({'_id': ObjectId(user_id)})
 
-    if user:
-        gender_name = get_gender_name(user_id)
-        pregnant_name = get_pregnant_name(user_id)
-        breastfeeding_name = get_breastfeeding_name(user_id)
+#     if user:
+#         gender_name = get_gender_name(user_id)
+#         pregnant_name = get_pregnant_name(user_id)
+#         breastfeeding_name = get_breastfeeding_name(user_id)
         
-        dob = user['dob']
-        if dob:
-            today = datetime.today()
-            age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-        else:
-            age = None
+#         dob = user['dob']
+#         if dob:
+#             today = datetime.today()
+#             age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+#         else:
+#             age = None
 
-        return render_template(
-                'member_profile.html', 
-                user=user, 
-                age=age, 
-                gender_name=gender_name, 
-                pregnant_name=pregnant_name, 
-                breastfeeding_name=breastfeeding_name
-            )
-    else:
-        flash('ไม่พบข้อมูล', 'danger')
-        return redirect(url_for('dashboard'))
+#         return render_template(
+#                 'member_profile.html', 
+#                 user=user, 
+#                 age=age, 
+#                 gender_name=gender_name, 
+#                 pregnant_name=pregnant_name, 
+#                 breastfeeding_name=breastfeeding_name
+#             )
+#     else:
+#         flash('ไม่พบข้อมูล', 'danger')
+#         return redirect(url_for('dashboard'))
 
 @app.route('/profile')
 @login_required
