@@ -1008,38 +1008,45 @@ def profile(user_id):
         flash('ไม่พบข้อมูล', 'danger')
         return redirect(url_for('dashboard'))
 
-@app.route('/profile/<user_id>')
+@app.route('/profile')
 @login_required
-def profile(user_id):
-    # ตรวจสอบว่า user_id ที่ส่งมาคือ user ที่ล็อกอินอยู่หรือไม่
-    if str(current_user.id) != user_id:
-        flash('คุณไม่สามารถดูข้อมูลของผู้ใช้อื่นได้', 'danger')
-        return redirect(url_for('dashboard'))
-
-    # ดึงข้อมูลจาก MongoDB
-    user = users_collection.find_one({'_id': ObjectId(user_id)})
+def profile():
+    # ดึงข้อมูลของผู้ใช้ที่ล็อกอินอยู่จาก current_user
+    user = users_collection.find_one({'_id': ObjectId(str(current_user.id))})
 
     if user:
-        gender_name = get_gender_name(user_id)
-        pregnant_name = get_pregnant_name(user_id)
-        breastfeeding_name = get_breastfeeding_name(user_id)
+        # ดึงข้อมูลเกี่ยวกับเพศ, การตั้งครรภ์, และการให้นมบุตร
+        gender_name = get_gender_name(str(current_user.id))
+        pregnant_name = get_pregnant_name(str(current_user.id))
+        breastfeeding_name = get_breastfeeding_name(str(current_user.id))
         
+        # คำนวณอายุจากวันเกิด
         dob = user['dob']
         if dob:
             today = datetime.today()
             age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
         else:
             age = None
-
+        
+        # ดึงข้อมูล u_id ของสมาชิก
         user_u_id = user['u_id']
-                
-        # ดึงข้อมูลโรคประจำตัว ยาที่ใช้ และข้อมูลการแพ้ตาม u_id แทน _id
+        
+        # ดึงข้อมูลโรคประจำตัวจาก u_cn_collection โดยใช้ u_id
         existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user_u_id})]
+        
+        # ดึงข้อมูลยาที่ใช้จาก u_md_collection โดยใช้ u_id
         existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user_u_id})]
+        
+        # ดึงข้อมูลการแพ้จาก u_ag_collection โดยใช้ u_id
         existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user_u_id})]
-
+        
+        # ดึงข้อมูลโรคประจำตัวจาก collection chronics_data
         chronics = list(chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}}))
+        
+        # ดึงข้อมูลยาที่ใช้จาก collection medicines_data
         medicines = list(medicines_data_collection.find({'md_id': {'$in': existing_md_ids}}))
+        
+        # ดึงข้อมูลการแพ้จาก collection allergys_data
         allergys = list(allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}}))
 
         return render_template(
@@ -1048,13 +1055,13 @@ def profile(user_id):
             age=age, 
             gender_name=gender_name, 
             pregnant_name=pregnant_name, 
-            breastfeeding_name=breastfeeding_name, 
-            chronics=chronics, 
-            medicines=medicines, 
-            allergys=allergys
+            breastfeeding_name=breastfeeding_name,
+            chronics=chronics,  # ส่งข้อมูลโรคประจำตัวไปยัง template
+            medicines=medicines,  # ส่งข้อมูลยาที่ใช้ไปยัง template
+            allergys=allergys  # ส่งข้อมูลการแพ้ไปยัง template
         )
     else:
-        flash('ไม่พบข้อมูล', 'danger')
+        flash('ไม่พบข้อมูลผู้ใช้', 'danger')
         return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
