@@ -978,36 +978,6 @@ def add_warning():
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_warnings'))
 
-# @app.route('/profile/<user_id>')
-# def profile(user_id):
-
-#     # ดึงข้อมูลทั้งหมดจาก Collection
-#     user = users_collection.find_one({'_id': ObjectId(user_id)})
-
-#     if user:
-#         gender_name = get_gender_name(user_id)
-#         pregnant_name = get_pregnant_name(user_id)
-#         breastfeeding_name = get_breastfeeding_name(user_id)
-        
-#         dob = user['dob']
-#         if dob:
-#             today = datetime.today()
-#             age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-#         else:
-#             age = None
-
-#         return render_template(
-#                 'member_profile.html', 
-#                 user=user, 
-#                 age=age, 
-#                 gender_name=gender_name, 
-#                 pregnant_name=pregnant_name, 
-#                 breastfeeding_name=breastfeeding_name
-#             )
-#     else:
-#         flash('ไม่พบข้อมูล', 'danger')
-#         return redirect(url_for('dashboard'))
-
 @app.route('/profile')
 @login_required
 def profile():
@@ -1063,6 +1033,80 @@ def profile():
     else:
         flash('ไม่พบข้อมูลผู้ใช้', 'danger')
         return redirect(url_for('dashboard'))
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    # ใช้ current_user.id เพื่อดึงข้อมูลผู้ใช้ที่ล็อกอินอยู่
+    user = users_collection.find_one({'_id': ObjectId(str(current_user.id))})
+
+    if request.method == 'POST':
+        # รับข้อมูลจากฟอร์ม
+        username = request.form['username']
+        email = request.form['email']
+        new_password = request.form['new_password']
+
+        # ถ้ามีการเปลี่ยนแปลงรหัสผ่าน, แฮชรหัสผ่านใหม่
+        if new_password:
+            hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256')
+        else:
+            hashed_password = user['password']  # ใช้รหัสผ่านเดิมหากไม่ได้เปลี่ยน
+
+        fname = request.form['fname']
+        lname = request.form['lname']
+        gender = int(request.form['gender'])
+        pregnant = int(request.form.get('pregnant', 0))  # ถ้าไม่ส่งค่ามา ให้ค่าเป็น 0
+        breastfeeding = int(request.form.get('breastfeeding', 0))  # ถ้าไม่ส่งค่ามา ให้ค่าเป็น 0
+
+        # อัปเดตข้อมูลใน MongoDB
+        users_collection.update_one(
+            {'_id': ObjectId(str(current_user.id))},
+            {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname,
+                      'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}}
+        )
+
+        # ดึง u_id ของ user ปัจจุบัน
+        u_id = user['u_id']
+
+        # รับค่า cn_ids ที่เลือกมาใหม่
+        cn_ids = request.form.getlist('cn_ids')
+        # ลบความสัมพันธ์โรคประจำตัว ที่มีอยู่ใน u_cn ก่อนแล้วเพิ่มใหม่ตามที่เลือก
+        if cn_ids:
+            u_cn_collection.delete_many({'u_id': int(u_id)})
+            for cn_id in cn_ids:
+                u_cn_collection.insert_one({'u_id': int(u_id), 'cn_id': int(cn_id)})
+
+        # รับค่า md_ids ที่เลือกมาใหม่
+        md_ids = request.form.getlist('md_ids')
+        # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_md ก่อนแล้วเพิ่มใหม่ตามที่เลือก
+        if md_ids:
+            u_md_collection.delete_many({'u_id': int(u_id)})
+            for md_id in md_ids:
+                u_md_collection.insert_one({'u_id': int(u_id), 'md_id': int(md_id)})
+
+        # รับค่า ag_ids ที่เลือกมาใหม่
+        ag_ids = request.form.getlist('ag_ids')
+        # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_ag ก่อนแล้วเพิ่มใหม่ตามที่เลือก
+        if ag_ids:
+            u_ag_collection.delete_many({'u_id': int(u_id)})
+            for ag_id in ag_ids:
+                u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
+
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('profile'))  # ไปยังหน้าข้อมูลส่วนตัว
+
+    # ดึงข้อมูลการโรคประจำตัว, ยาที่ใช้ และข้อมูลการแพ้ที่มีอยู่
+    existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user['u_id']})]
+    existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user['u_id']})]
+    existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user['u_id']})]
+
+    # ดึงข้อมูลจาก collection ต่างๆ ที่จะใช้แสดงในฟอร์ม
+    chronics = list(chronics_data_collection.find())
+    medicines = list(medicines_data_collection.find())
+    allergys = list(allergys_data_collection.find())
+
+    return render_template('edit_profile.html', user=user, chronics=chronics, medicines=medicines, allergys=allergys,
+                           existing_cn_ids=existing_cn_ids, existing_md_ids=existing_md_ids, existing_ag_ids=existing_ag_ids)
 
 if __name__ == '__main__':
 

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>ข้อมูลยาสมุนไพร</title>
+</head> 
+<body>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-overlay alert-{{ category }} hidden">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="sidebar">
+        <a href="" class="brand">
+            <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+			<span class="text">Mongo</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="{{ url_for('dashboard') }}">
+					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">แดชบอร์ด</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="{{ url_for('profile') }}">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='health-report.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">โปรไฟล์</span>
+				</a>
+			</li>
+			<li>
+				<a href="">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='medical.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">วิเคราะห์ยาสมุนไพร</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="{{ url_for('logout') }}" class="logout">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='logout.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">ออกจากระบบ</span>
+				</a>
+			</li>
+		</ul>
+
+    </section>
+
+
+
+
+    <section id="content">
+<!-- NAVBAR -->
+<nav>
+    <!-- เมนูไอคอนอยู่ชิดซ้าย -->
+    <i class='bx bx-menu'>
+        <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
+    </i>
+  
+    <!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
+    <a href="{{ url_for('profile') }}" class="profile">
+        <img src="{{ url_for('static', filename='user.png') }}">
+    </a>
+  </nav>
+<!-- NAVBAR -->
+
+<!-- MAIN -->
+<main>
+    <div class="head-title">
+        <div class="left">
+            <h1>โปรไฟล์</h1>          
+        </div>
+    </div>
+
+    <form method="POST">
+
+        <div class="table-data">
+
+            <div class="order">
+                <div class="head">
+                    <h3>แก้ไขข้อมูล</h3>
+                    <i class='bx bx-search' ></i>
+                    <i class='bx bx-filter' ></i>
+                </div>
+                
+                    <table>
+                        <tr>
+                            <td>
+                                <label>ชื่อผู้ใช้</label>
+                            </td>
+                            <td>
+                                <input type="text" name="username" value="{{ user['username'] }}" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>อีเมล</label>
+                            </td>
+                            <td>
+                                <input type="email" name="email" value="{{ user['email'] }}" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>รหัสผ่าน</label>
+                            </td>
+                            <td>
+                                <a href="#" id="togglePasswordLink">แก้ไขรหัสผ่าน</a>
+                            </td>
+                        </tr>
+                        <tr id="newPasswordRow" style="display:none;">
+                            <td>
+                                <label>รหัสผ่านใหม่</label>
+                            </td>
+                            <td>
+                                <input type="password" name="new_password" placeholder="กรอกรหัสผ่านใหม่">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>ชื่อ</label>
+                            </td>
+                            <td>
+                                <input type="text" name="fname" value="{{ user['fname'] }}" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>นามสกุล</label>
+                            </td>
+                            <td>
+                                <input type="text" name="lname" value="{{ user['lname'] }}" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>เพศ</label>
+                            </td>
+                            <td>
+                                <select name="gender" id="gender" onchange="toggleFemaleField()">
+                                    <option value="" {% if user['gender'] is none %}selected{% endif %}>--เลือก--</option>
+                                    <option value="0" {% if user['gender'] == 0 %}selected{% endif %}>ชาย</option>
+                                    <option value="1" {% if user['gender'] == 1 %}selected{% endif %}>หญิง</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table><br>
+                    <div id="FemaleField" style="display: none;">
+                        <ul>
+                            <li>
+                                <input id="pregnant" type="checkbox" name="pregnant" value="1" {% if user['pregnant'] == 1 %}checked{% endif %}>
+                                <span>ตั้งครรภ์</span>
+                                
+                            </li>
+                            <li>
+                                <input id="breastfeeding" type="checkbox" name="breastfeeding" value="1" {% if user['breastfeeding'] == 1 %}checked{% endif %}>
+                                <span>ให้นมบุตร</span>
+                                
+                            </li>
+                        </ul>
+                        
+                    </div><br><br>
+
+                    <!-- แสดงโรคประจำตัว ที่เลือกไว้แล้ว -->
+                    <div class="selected-list">
+                        <table class="chronicTable">
+                            <thead>
+                                <tr><th>โรคประจำตัว</th></tr>
+                            </thead>
+                            <tbody id="selectedChronicsList">
+                                {% for chronic in chronics %}
+                                    {% if chronic['cn_id'] in existing_cn_ids %}
+                                    <tr data-value="{{ chronic['cn_id'] }}">
+                                        <td>{{ chronic['cn_id'] }} - {{ chronic['cn_name'] }}</td>
+                                        <td>
+                                            <button type="button" onclick="removeItem(this)">ลบ</button>
+
+                                        </td>
+                                        <input type="hidden" name="cn_ids" value="{{ chronic['cn_id'] }}">
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <!-- แสดงตัวเลือกโรคประจำตัว ที่เพิ่มใหม่ได้ -->
+                    <select id="chronics" name="chronics" multiple>
+                        <option value="">-- เลือก --</option>
+                        {% for chronic in chronics %}
+                            <option value="{{ chronic['cn_id'] }}" title="{{ chronic['cn_name'] }}">{{ chronic['cn_id'] }} - {{ chronic['cn_name'] | truncate(40, True) }}</option>
+                        {% endfor %}    
+                    </select>
+                    <button type="button" onclick="addSelected('chronics')">เพิ่มโรคประจำตัว</button>
+
+
+                    <!-- แสดงยาที่ใช้ ที่เลือกไว้แล้ว -->
+                    <div class="selected-list">
+                        <table class="medicinesTable">
+                            <thead>
+                                <tr><th>ยาที่ใช้</th></tr>
+                            </thead>
+                            <tbody id="selectedMedicinesList">
+                                {% for medicine in medicines %}
+                                    {% if medicine['md_id'] in existing_md_ids %}
+                                    <tr data-value="{{ medicine['md_id'] }}">
+                                        <td>{{ medicine['md_id'] }} - {{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</td>
+                                        <td>
+                                            <button type="button" onclick="removeItem(this)">ลบ</button>
+
+                                        </td>
+                                        <input type="hidden" name="md_ids" value="{{ medicine['md_id'] }}">
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <!-- แสดงตัวเลือกยาที่ใช้ ที่เพิ่มใหม่ได้ -->
+                    <select id="medicines" name="medicines" multiple>
+                        <option value="">-- เลือก --</option>
+                        {% for medicine in medicines %}
+                            <option value="{{ medicine['md_id'] }}">{{ medicine['md_id'] }} - {{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</option>
+                        {% endfor %}    
+                    </select>
+                    <button type="button" onclick="addSelected('medicines')">เพิ่มยาที่ใช้</button>
+
+
+                    <!-- แสดงข้อมูลการแพ้ ที่เลือกไว้แล้ว -->
+                    <div class="selected-list">
+                        <table class="allergysTable">
+                            <thead>
+                                <tr><th>ข้อมูลการแพ้</th></tr>
+                            </thead>
+                            <tbody id="selectedAllergysList">
+                                {% for allergy in allergys %}
+                                    {% if allergy['ag_id'] in existing_ag_ids %}
+                                    <tr data-value="{{ allergy['ag_id'] }}">
+                                        <td>{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</td>
+                                        <td>
+                                            <button type="button" onclick="removeItem(this)">ลบ</button>
+
+                                        </td>
+                                        <input type="hidden" name="ag_ids" value="{{ allergy['ag_id'] }}">
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                
+                    <!-- แสดงตัวเลือกข้อมูลการแพ้ ที่เพิ่มใหม่ได้ -->
+                    <select id="allergys" name="allergys" multiple>
+                        <option value="">-- เลือก --</option>
+                        {% for allergy in allergys %}
+                            <option value="{{ allergy['ag_id'] }}">{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</option>
+                        {% endfor %}    
+                    </select>
+                    <button type="button" onclick="addSelected('allergys')">เพิ่มข้อมูลการแพ้</button>
+                    <br>
+                    
+
+                <button type="submit" class="btn-submit">แก้ไขข้อมูล</button>
+
+                
+            </div>
+
+        </div>
+
+    </form>
+    
+
+
+</main>
+<!-- MAIN -->
+
+    </section>
+
+
+    <script>
+
+        function removeItem(button) {
+            const row = button.closest('tr');
+            const id = row.dataset.value;
+
+            // ลบแถวที่เลือก
+            row.remove();
+
+            // ลบ input hidden ที่เกี่ยวข้อง
+            const hiddenInput = document.querySelector(`input[value="${id}"]`);
+            if (hiddenInput) {
+                hiddenInput.remove();
+            }
+        }
+
+        function addSelected(type) {
+            const select = document.getElementById(type);
+            const selectedList = document.getElementById(type === 'chronics' ? 'selectedChronicsList' : type === 'medicines' ? 'selectedMedicinesList' : type === 'allergys' ? 'selectedAllergysList' : '');
+            const selectedOptions = Array.from(select.selectedOptions);
+
+            selectedOptions.forEach(option => {
+                // ตรวจสอบว่าแถวที่เลือกมีอยู่ในตารางแล้วหรือไม่
+                if (!Array.from(selectedList.children).some(tr => tr.dataset.value === option.value)) {
+                    const tr = document.createElement('tr');
+                    const tdText = document.createElement('td');
+                    tdText.textContent = option.textContent;
+
+                    const tdAction = document.createElement('td');
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button';
+                    removeButton.textContent = 'ลบ';
+                    removeButton.onclick = () => {
+                        selectedList.querySelector(`tr[data-value="${option.value}"]`).remove();
+                        document.querySelector(`input[name="${type === 'chronics' ? 'cn_ids' : type === 'medicines' ? 'md_ids' : type === 'allergys' ? 'ag_ids' : ''}"][value="${option.value}"]`).remove();
+                    };
+                    tdAction.appendChild(removeButton);
+
+                    tr.appendChild(tdText);
+                    tr.appendChild(tdAction);
+                    tr.dataset.value = option.value;
+
+                    selectedList.appendChild(tr);
+
+                    // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = type === 'chronics' ? 'cn_ids' : type === 'medicines' ? 'md_ids': type === 'allergys' ? 'ag_ids' :'';
+                    hiddenInput.value = option.value;
+                    document.querySelector('form').appendChild(hiddenInput);
+                }
+                option.selected = false;
+            });
+        }
+
+
+        document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                event.target.value = event.target.checked ? "1" : "0";
+            });
+        }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
+
+        // ฟังก์ชัน toggleFemaleField() 
+        function toggleFemaleField() {
+            var genderSelect = document.getElementById("gender");
+            var selectedValue = genderSelect.options[genderSelect.selectedIndex].value;
+            var FemaleField = document.getElementById("FemaleField");
+            if (selectedValue == "1") {
+                FemaleField.style.display = "block";
+            } else {
+                FemaleField.style.display = "none";
+            }
+        }
+
+        document.getElementById('togglePasswordLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var newPasswordRow = document.getElementById('newPasswordRow');
+            if (newPasswordRow.style.display === 'none') {
+                newPasswordRow.style.display = 'table-row'; // แสดงแถวที่ซ่อนอยู่
+            } else {
+                newPasswordRow.style.display = 'none'; // ซ่อนแถว
+            }
+        });
+        
+    </script>       
+              
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
