@@ -153,16 +153,23 @@
                                 </select>
                             </td>
                         </tr>
-                        <tr id="FemaleField" style="display: none;">
-                            <td colspan="2">
-                                <input id="pregnant" type="checkbox" name="pregnant" value="1" {% if user['pregnant'] == 1 %}checked{% endif %}>&nbsp;<label>ตั้งครรภ์</label>
-                            </td>
-                        </tr>
-                        <tr id="FemaleField" style="display: none;">
-                            <td colspan="2">
-                                <input id="breastfeeding" type="checkbox" name="breastfeeding" value="1" {% if user['breastfeeding'] == 1 %}checked{% endif %}>&nbsp;<label>ให้นมบุตร</label>
-                            </td>
-                        </tr>
+                    </table><br>
+                    <div id="FemaleField" style="display: none;">
+                        <ul>
+                            <li>
+                                <input id="pregnant" type="checkbox" name="pregnant" value="1" {% if user['pregnant'] == 1 %}checked{% endif %}>
+                                <span>ตั้งครรภ์</span>
+                                
+                            </li>
+                            <li>
+                                <input id="breastfeeding" type="checkbox" name="breastfeeding" value="1" {% if user['breastfeeding'] == 1 %}checked{% endif %}>
+                                <span>ให้นมบุตร</span>
+                                
+                            </li>
+                        </ul>
+                        
+                    </div><br>
+                    <table>
                         <tr>
                             <td>
                                 <label>น้ำหนัก</label>
@@ -180,7 +187,8 @@
                             </td>
                         </tr>
                     </table>
-                    <br><br>
+                    
+                    <br>
 
                     <!-- แสดงโรคประจำตัว ที่เลือกไว้แล้ว -->
                     <div class="selected-list">
