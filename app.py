@@ -978,241 +978,6 @@ def add_warning():
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_warnings'))
 
-# @app.route('/general_predict', methods=['POST'])
-# def general_predict():
-
-#     Age = request.form.get('Age')
-#     pregnant = request.form.get('pregnant')
-#     dizziness1 = request.form.get('dizziness1')
-#     Palpitations = request.form.get('Palpitations')
-#     squeamish = request.form.get('squeamish')
-#     vomit = request.form.get('vomit')
-#     dizziness2 = request.form.get('dizziness2')
-#     dizziness3 = request.form.get('dizziness3')
-#     dizziness4 = request.form.get('dizziness4')
-#     colic1 = request.form.get('colic1')
-#     tired = request.form.get('tired')
-#     cannot_sleep = request.form.get('cannot_sleep')
-#     flatulence = request.form.get('flatulence')
-#     stomach_ache = request.form.get('stomach_ache')
-#     constipation1 = request.form.get('constipation1')
-#     diarrhea1 = request.form.get('diarrhea1')
-#     hemorrhoids = request.form.get('hemorrhoids')
-#     menstruation = request.form.get('menstruation')
-#     Menstrual_cramps = request.form.get('Menstrual_cramps')
-#     postpartum_woman = request.form.get('postpartum_woman')
-#     Lochia = request.form.get('Lochia')
-#     Vaginal_Discharge = request.form.get('Vaginal_Discharge')
-#     Nourish_blood = request.form.get('Nourish_blood')
-#     fever1 = request.form.get('fever1')
-#     inner_heat = request.form.get('inner_heat')
-#     Measles = request.form.get('Measles')
-#     Chickenpox = request.form.get('Chickenpox')
-#     fever2 = request.form.get('fever2')
-#     fever3 = request.form.get('fever3')
-#     cough = request.form.get('cough')
-#     phlegm = request.form.get('phlegm')
-#     cold = request.form.get('cold')
-#     Allergic_Rhinitis = request.form.get('Allergic_Rhinitis')
-#     body_aches = request.form.get('body_aches')
-#     tendon = request.form.get('tendon')
-#     Tight_numb = request.form.get('Tight_numb')
-#     muscles_tendons = request.form.get('muscles_tendons')
-#     dizziness5 = request.form.get('dizziness5')
-
-#     # ถ้าไม่เลือก checkbox ให้ตั้งค่าเป็น 0
-#     pregnant = 0 if pregnant is None else 1
-#     dizziness1 = 0 if dizziness1 is None else 1
-#     Palpitations = 0 if Palpitations is None else 1
-#     squeamish = 0 if squeamish is None else 1
-#     vomit = 0 if vomit is None else 1
-#     dizziness2 = 0 if dizziness2 is None else 1
-#     dizziness3 = 0 if dizziness3 is None else 1
-#     dizziness4 = 0 if dizziness4 is None else 1
-#     colic1 = 0 if colic1 is None else 1
-#     tired = 0 if tired is None else 1
-#     cannot_sleep = 0 if cannot_sleep is None else 1
-#     flatulence = 0 if flatulence is None else 1
-#     stomach_ache = 0 if stomach_ache is None else 1
-#     constipation1 = 0 if constipation1 is None else 1
-#     diarrhea1 = 0 if diarrhea1 is None else 1
-#     hemorrhoids = 0 if hemorrhoids is None else 1
-#     menstruation = 0 if menstruation is None else 1
-#     Menstrual_cramps = 0 if Menstrual_cramps is None else 1
-#     postpartum_woman = 0 if postpartum_woman is None else 1
-#     Lochia = 0 if Lochia is None else 1
-#     Vaginal_Discharge = 0 if Vaginal_Discharge is None else 1
-#     Nourish_blood = 0 if Nourish_blood is None else 1
-#     fever1 = 0 if fever1 is None else 1
-#     inner_heat = 0 if inner_heat is None else 1
-#     Measles = 0 if Measles is None else 1
-#     Chickenpox = 0 if Chickenpox is None else 1
-#     fever2 = 0 if fever2 is None else 1
-#     fever3 = 0 if fever3 is None else 1
-#     cough = 0 if cough is None else 1
-#     phlegm = 0 if phlegm is None else 1
-#     cold = 0 if cold is None else 1
-#     Allergic_Rhinitis = 0 if Allergic_Rhinitis is None else 1
-#     body_aches = 0 if body_aches is None else 1
-#     tendon = 0 if tendon is None else 1
-#     Tight_numb = 0 if Tight_numb is None else 1
-#     muscles_tendons = 0 if muscles_tendons is None else 1
-#     dizziness5 = 0 if dizziness5 is None else 1
-
-
-#     input_data = db.DataFrame({
-#         'Age': Age,
-#         'pregnant': pregnant,
-#         'dizziness1': dizziness1,
-#         'Palpitations': Palpitations,
-#         'squeamish': squeamish,
-#         'vomit': vomit,
-#         'dizziness2': dizziness2,
-#         'dizziness3': dizziness3,
-#         'dizziness4': dizziness4,
-#         'colic1': colic1,
-#         'tired': tired,
-#         'cannot_sleep': cannot_sleep,
-#         'flatulence': flatulence,
-#         'stomach_ache': stomach_ache,
-#         'constipation1': constipation1,
-#         'diarrhea1': diarrhea1,
-#         'hemorrhoids': hemorrhoids,
-#         'menstruation': menstruation,
-#         'Menstrual_cramps': Menstrual_cramps,
-#         'postpartum_woman': postpartum_woman,
-#         'Lochia': Lochia,
-#         'Vaginal_Discharge': Vaginal_Discharge,
-#         'Nourish_blood': Nourish_blood,
-#         'fever1': fever1,
-#         'inner_heat': inner_heat,
-#         'Measles': Measles,
-#         'Chickenpox': Chickenpox,
-#         'fever2': fever2,
-#         'fever3': fever3,
-#         'cough': cough,
-#         'phlegm': phlegm,
-#         'cold': cold,
-#         'Allergic_Rhinitis': Allergic_Rhinitis,
-#         'body_aches': body_aches,
-#         'tendon': tendon,
-#         'Tight_numb': Tight_numb,
-#         'muscles_tendons': muscles_tendons,
-#         'dizziness5': dizziness5,
-#     })
-
-#     class_names=[str(i) for i in y_train.unique()]
-
-#     dot_data = StringIO()
-#     export_graphviz(clf.estimators_[0], out_file=dot_data, filled=True, rounded=True, special_characters=True, feature_names=feature_cols, class_names=class_names)
-#     graph = pydotplus.graph_from_dot_data(dot_data.getvalue())  
-#     graph.write_png('random_forest_tree_pre_00.png')
-#     Image(graph.create_png())
-
-#     try:
-#         print(input_data)
-        
-#         # ทำนายความน่าจะเป็นของทุกคลาส
-#         probabilities = clf.predict_proba(input_data)[0]
-
-#         for i, prob in enumerate(probabilities):
-#             h_id = clf.classes_[i]
-#             print(f"ผลการทำนายก่อนเข้าเงื่อนไขตรวจสอบ คลาส: {h_id}, ความน่าจะเป็น: {prob}")
-
-#         # เรียกใช้ฟังก์ชัน check_conditions
-#         new_probabilities = check_conditions(probabilities, pregnant, Age, fever1, squeamish, vomit)
-
-#         print("ผลการทำนายหลังเข้าเงื่อนไขตรวจสอบ: ", new_probabilities)
-
-#         # จัดเรียง index จากความน่าจะเป็นที่มากไปน้อย
-#         sorted_indices = np.argsort(-new_probabilities)
-
-#         # สร้าง list ที่จะถูกส่งไปที่ template
-#         data_to_template = []
-
-#         added_h_ids = set()  # ใช้ set นี้เพื่อตรวจสอบว่า h_id ใด ๆ ถูกเพิ่มแล้ว
-        
-#         # เพิ่มข้อมูลที่ต้องการแสดงใน template 
-#         for index in sorted_indices:
-#             prob = new_probabilities[index]
-#             h_id = clf.classes_[index]
-#             if hm_id not in added_h_ids and prob > 0.0 :  # ตรวจสอบว่า h_id นี้ยังไม่ได้ถูกเพิ่ม # เช็คว่าความน่าจะเป็นมากกว่า 0
-#                 hm_name = get_hm_name(h_id)
-#                 wn_name = get_wn_name(h_id)
-#                 hm_dosage = get_hm_dosage(h_id)
-
-#             # สร้าง dictionary ใหม่สำหรับ class นี้ ในแต่ละรอบของ loop
-#             class_data = {
-#                 "class": h_id,
-#                 "probability": prob,
-#                 "hm_name": hm_name,
-#                 "wn_name": wn_name,
-#                 "hm_dosage": hm_dosage,
-#             }
-
-#             # เพิ่ม class_data ลงใน data_to_template
-#             data_to_template.append(class_data)
-
-#             # เพิ่ม h_id นี้ลงใน set
-#             added_h_ids.add(h_id)
-        
-#         # ดึงข้อมูล Chronic
-#         chronics = chronics_data_collection.find()
-
-#         # ดึงข้อมูล Allergies
-        
-#         allergys = allergys_data_collection.find()
-
-#     except Exception as e:
-#         print(f"เกิดข้อผิดพลาด: {e}")
-
-#     return render_template("general_predict.html", prediction=class_data['hm_name'], probabilities=data_to_template, chronics=chronics, allergys=allergys)
-
-# @app.route('/profile/<user_id>')
-# def profile(user_id):
-#     # ดึงข้อมูลสมาชิกตาม _id ของ MongoDB
-#     user = users_collection.find_one({'_id': ObjectId(user_id)})
-
-#     if user:
-#         gender_name = get_gender_name(user_id)
-#         pregnant_name = get_pregnant_name(user_id)
-#         breastfeeding_name = get_breastfeeding_name(user_id)
-
-#         dob = user.get('dob')
-#         if dob:
-#             today = datetime.today()
-#             age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
-#         else:
-#             age = None
-
-#         # ตรวจสอบว่า user มี 'u_id' หรือไม่
-#         if 'u_id' in user:
-#             user_u_id = user['u_id']
-            
-#             # ดึงข้อมูลโรคประจำตัว ยาที่ใช้ และข้อมูลการแพ้ตาม u_id แทน _id
-#             existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user_u_id})]
-#             existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user_u_id})]
-#             existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user_u_id})]
-
-#             chronics = list(chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}}))
-#             medicines = list(medicines_data_collection.find({'md_id': {'$in': existing_md_ids}}))
-#             allergys = list(allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}}))
-
-#             return render_template(
-#                 'member_profile.html', 
-#                 user=user, 
-#                 age=age, 
-#                 gender_name=gender_name, 
-#                 pregnant_name=pregnant_name, 
-#                 breastfeeding_name=breastfeeding_name, 
-#                 chronics=chronics, 
-#                 medicines=medicines, 
-#                 allergys=allergys
-#             )
-#         else:
-#             flash('ไม่พบข้อมูล', 'danger')
-#             return redirect(url_for('dashboard'))
-
 @app.route('/profile/<user_id>')
 def profile(user_id):
 
@@ -1223,14 +988,13 @@ def profile(user_id):
         gender_name = get_gender_name(user_id)
         pregnant_name = get_pregnant_name(user_id)
         breastfeeding_name = get_breastfeeding_name(user_id)
-
-        dob = user.get('dob')
+        
+        dob = user['dob']
         if dob:
             today = datetime.today()
             age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
         else:
             age = None
-
 
         return render_template(
                 'member_profile.html', 
@@ -1240,6 +1004,55 @@ def profile(user_id):
                 pregnant_name=pregnant_name, 
                 breastfeeding_name=breastfeeding_name
             )
+    else:
+        flash('ไม่พบข้อมูล', 'danger')
+        return redirect(url_for('dashboard'))
+
+@app.route('/profile/<user_id>')
+@login_required
+def profile(user_id):
+    # ตรวจสอบว่า user_id ที่ส่งมาคือ user ที่ล็อกอินอยู่หรือไม่
+    if str(current_user.id) != user_id:
+        flash('คุณไม่สามารถดูข้อมูลของผู้ใช้อื่นได้', 'danger')
+        return redirect(url_for('dashboard'))
+
+    # ดึงข้อมูลจาก MongoDB
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
+
+    if user:
+        gender_name = get_gender_name(user_id)
+        pregnant_name = get_pregnant_name(user_id)
+        breastfeeding_name = get_breastfeeding_name(user_id)
+        
+        dob = user['dob']
+        if dob:
+            today = datetime.today()
+            age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+        else:
+            age = None
+
+        user_u_id = user['u_id']
+                
+        # ดึงข้อมูลโรคประจำตัว ยาที่ใช้ และข้อมูลการแพ้ตาม u_id แทน _id
+        existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user_u_id})]
+        existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user_u_id})]
+        existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user_u_id})]
+
+        chronics = list(chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}}))
+        medicines = list(medicines_data_collection.find({'md_id': {'$in': existing_md_ids}}))
+        allergys = list(allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}}))
+
+        return render_template(
+            'member_profile.html', 
+            user=user, 
+            age=age, 
+            gender_name=gender_name, 
+            pregnant_name=pregnant_name, 
+            breastfeeding_name=breastfeeding_name,
+            chronics=chronics,
+            medicines=medicines,
+            allergys=allergys
+        )
     else:
         flash('ไม่พบข้อมูล', 'danger')
         return redirect(url_for('dashboard'))
