@@ -154,10 +154,12 @@
                             </td>
                         </tr>
                         <tr id="FemaleField" style="display: none;">
-                            <td>
+                            <td colspan="2">
                                 <input id="pregnant" type="checkbox" name="pregnant" value="1" {% if user['pregnant'] == 1 %}checked{% endif %}>&nbsp;<label>ตั้งครรภ์</label>
                             </td>
-                            <td>
+                        </tr>
+                        <tr id="FemaleField" style="display: none;">
+                            <td colspan="2">
                                 <input id="breastfeeding" type="checkbox" name="breastfeeding" value="1" {% if user['breastfeeding'] == 1 %}checked{% endif %}>&nbsp;<label>ให้นมบุตร</label>
                             </td>
                         </tr>
