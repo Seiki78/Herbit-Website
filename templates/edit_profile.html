@@ -153,22 +153,32 @@
                                 </select>
                             </td>
                         </tr>
-                    </table><br>
-                    <div id="FemaleField" style="display: none;">
-                        <ul>
-                            <li>
-                                <input id="pregnant" type="checkbox" name="pregnant" value="1" {% if user['pregnant'] == 1 %}checked{% endif %}>
-                                <span>ตั้งครรภ์</span>
-                                
-                            </li>
-                            <li>
-                                <input id="breastfeeding" type="checkbox" name="breastfeeding" value="1" {% if user['breastfeeding'] == 1 %}checked{% endif %}>
-                                <span>ให้นมบุตร</span>
-                                
-                            </li>
-                        </ul>
-                        
-                    </div><br><br>
+                        <tr id="FemaleField" style="display: none;">
+                            <td>
+                                <input id="pregnant" type="checkbox" name="pregnant" value="1" {% if user['pregnant'] == 1 %}checked{% endif %}>&nbsp;<label>ตั้งครรภ์</label>
+                            </td>
+                            <td>
+                                <input id="breastfeeding" type="checkbox" name="breastfeeding" value="1" {% if user['breastfeeding'] == 1 %}checked{% endif %}>&nbsp;<label>ให้นมบุตร</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>น้ำหนัก</label>
+                            </td>
+                            <td>
+                                <input type="int" name="weight" value="{{ user['weight'] }}" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>ส่วนสูง</label>
+                            </td>
+                            <td>
+                                <input type="int" name="height" value="{{ user['height'] }}" >
+                            </td>
+                        </tr>
+                    </table>
+                    <br><br>
 
                     <!-- แสดงโรคประจำตัว ที่เลือกไว้แล้ว -->
                     <div class="selected-list">

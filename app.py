@@ -1057,12 +1057,15 @@ def edit_profile():
         gender = int(request.form['gender'])
         pregnant = int(request.form.get('pregnant', 0))  # ถ้าไม่ส่งค่ามา ให้ค่าเป็น 0
         breastfeeding = int(request.form.get('breastfeeding', 0))  # ถ้าไม่ส่งค่ามา ให้ค่าเป็น 0
+        weight = int(request.form['weight'])
+        height = int(request.form['height'])
 
         # อัปเดตข้อมูลใน MongoDB
         users_collection.update_one(
             {'_id': ObjectId(str(current_user.id))},
             {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname,
-                      'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}}
+                      'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding, 
+                      'weight': weight, 'height': height}}
         )
 
         # ดึง u_id ของ user ปัจจุบัน

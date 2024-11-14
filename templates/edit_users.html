@@ -373,17 +373,21 @@
             });
         }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
 
-        // ฟังก์ชัน toggleFemaleField() 
         function toggleFemaleField() {
             var genderSelect = document.getElementById("gender");
             var selectedValue = genderSelect.options[genderSelect.selectedIndex].value;
             var FemaleField = document.getElementById("FemaleField");
             if (selectedValue == "1") {
-                FemaleField.style.display = "block";
+                FemaleField.style.display = "block";  // แสดง FemaleField
             } else {
-                FemaleField.style.display = "none";
+                FemaleField.style.display = "none";  // ซ่อน FemaleField
             }
         }
+
+        // เรียกฟังก์ชัน toggleFemaleField() ทันทีเมื่อหน้าโหลด
+        document.addEventListener("DOMContentLoaded", function() {
+            toggleFemaleField();  // เรียกฟังก์ชันเมื่อหน้าโหลด
+        });
 
         document.getElementById('togglePasswordLink').addEventListener('click', function(e) {
             e.preventDefault(); // ป้องกันการทำงานของลิงก์
