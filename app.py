@@ -83,6 +83,31 @@ def get_gender_name(user_id):
     
     return "(ไม่มีข้อมูล)"
 
+def get_bmiResult(user_id):
+    user = users_collection.find_one({'_id': ObjectId(user_id)})  # ค้นหาจาก _id
+
+    if user is not None:
+        weight = user.get('weight')
+        height = user.get('height')
+        if weight and height:
+            bmi = weight / (height * height)
+
+            if bmi >= 30 :
+                bmiDescription = 'อ้วนมาก (30.0 ขึ้นไป)\nผู้ที่เข้าข่ายในภาวะอ้วนมากนั้นค่อนข้างอันตราย เสี่ยงต่อการเกิดโรคร้ายแรงที่แฝงมากับความอ้วน หากค่าอยู่ในระดับนี้ จะต้องปรับพฤติกรรมการทานอาหาร และควรเริ่มออกกำลังกาย และหากเลขยิ่งสูงกว่า 40.0 ยิ่งแสดงถึงความอ้วนที่มากขึ้น ควรไปตรวจสุขภาพ และปรึกษาแพทย์'
+            elif bmi >= 25 and bmi < 30:
+                bmiDescription = 'อ้วน (25.0 - 29.9)\nอ้วน ท้วน ถึงแม้จะไม่ถึงเกณฑ์ที่ถือว่าอ้วนมากๆ แต่ก็ยังมีความเสี่ยงต่อการเกิดโรคที่มากับความอ้วนได้เช่นกัน ทั้งโรคเบาหวาน และความดันโลหิตสูง ควรปรับพฤติกรรมการทานอาหาร ออกกำลังกาย และตรวจสุขภาพ'
+            elif bmi >= 18.5 and bmi < 25:
+                bmiDescription = 'น้ำหนักปกติ เหมาะสม (18.5 - 24.0)\nน้ำหนักที่เหมาะสมสำหรับคนไทยคือค่า ระหว่าง 18.5-24 จัดอยู่ในเกณฑ์ปกติ ห่างไกลโรคที่เกิดจากความอ้วน และมีความเสี่ยงต่อการเกิดโรคต่าง ๆ น้อยที่สุด ควรพยายามรักษาระดับค่าให้อยู่ในระดับนี้ให้นานที่สุด และควรตรวจสุขภาพทุกปี'
+            else:
+                bmiDescription = 'ผอมเกินไป (น้อยกว่า 18.5)\nน้ำหนักน้อยกว่าปกติก็ไม่ค่อยดี หากคุณสูงมากแต่น้ำหนักน้อยเกินไป อาจเสี่ยงต่อการได้รับสารอาหารไม่เพียงพอหรือได้รับพลังงานไม่เพียงพอ ส่งผลให้ร่างกายอ่อนเพลียง่าย การรับประทานอาหารให้เพียงพอ และการออกกำลังกายเพื่อเสริมสร้างกล้ามเนื้อสามารถช่วยเพิ่มค่าให้อยู่ในเกณฑ์ปกติได้'
+
+            return bmiDescription
+        
+        elif weight or height:
+            return 'เพิ่มข้อมูลน้ำหนัก/ส่วนสูงที่โปรไฟล์'
+    
+    return "เพิ่มข้อมูลน้ำหนัก/ส่วนสูงที่โปรไฟล์"
+
 @app.route('/')
 def index():
     # ดึงข้อมูลผู้ใช้ทั้งหมดจาก Collection
@@ -1110,6 +1135,20 @@ def edit_profile():
 
     return render_template('edit_profile.html', user=user, chronics=chronics, medicines=medicines, allergys=allergys,
                            existing_cn_ids=existing_cn_ids, existing_md_ids=existing_md_ids, existing_ag_ids=existing_ag_ids)
+
+@app.route('/member_dashboard')
+@login_required
+def member_dashboard():
+    # ดึงข้อมูลของผู้ใช้ที่ล็อกอินอยู่จาก current_user
+    user = users_collection.find_one({'_id': ObjectId(str(current_user.id))})
+
+    if user:
+        # ดึงข้อมูล
+        bmi_result = get_bmiResult(str(current_user.id))
+
+        return render_template('member_dashboard.html', user=user, bmi_result=bmi_result)
+    else:
+        return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
 
