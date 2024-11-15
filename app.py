@@ -97,13 +97,13 @@ def get_bmiResult(user_id):
             bmi = weight / (height * height)
 
             if bmi >= 30:
-                bmiResult = 'อ้วนมาก<br>(30.0 ขึ้นไป)'
+                bmiResult = '(30.0 ขึ้นไป)<br>อ้วนมาก'
             elif bmi >= 25 and bmi < 30:
-                bmiResult = 'อ้วน<br>(25.0 - 29.9)'
+                bmiResult = '(25.0 - 29.9)<br>อ้วน'
             elif bmi >= 18.5 and bmi < 25:
-                bmiResult = 'น้ำหนักปกติ เหมาะสม<br>(18.5 - 24.9)'
+                bmiResult = '(18.5 - 24.9)<br>น้ำหนักปกติ เหมาะสม'
             else:
-                bmiResult = 'ผอมเกินไป<br>(น้อยกว่า 18.5)'
+                bmiResult = '(น้อยกว่า 18.5)<br>ผอมเกินไป'
 
             return bmiResult
         
