@@ -111,6 +111,24 @@ def get_bmiResult(user_id):
 
     return "เพิ่มข้อมูลน้ำหนัก/ส่วนสูงที่โปรไฟล์"
 
+def get_waterResult(user_id):
+    user = users_collection.find_one({'_id': ObjectId(user_id)})  # ค้นหาจาก _id
+
+    if user is not None:
+        weight = user.get('weight')
+
+        if weight and weight > 0:
+
+            recommendedWaterIntake  = weight * 2.2 * 30/2
+
+            waterResult = 'ปริมาณดื่มน้ำที่แนะนำ<br>' + str(recommendedWaterIntake) + ' มล.'
+
+            return waterResult
+        
+        return 'เพิ่มข้อมูลน้ำหนักที่โปรไฟล์'
+
+    return "เพิ่มข้อมูลน้ำหนักที่โปรไฟล์"
+
 @app.route('/')
 def index():
     # ดึงข้อมูลผู้ใช้ทั้งหมดจาก Collection
@@ -155,21 +173,6 @@ def logout():
     logout_user()  # ออกจากระบบผู้ใช้
     flash('ออกจากระบบสำเร็จ', 'success')
     return redirect(url_for('index'))
-
-# @app.route('/add_user', methods=['POST'])
-# def add_user():
-#     username = request.form['username']
-#     email = request.form['email']
-#     password = request.form['password']
-
-#     # แฮชรหัสผ่าน และให้ผลลัพธ์เป็น string
-#     hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-    
-#     # เพิ่มข้อมูลใหม่ลงใน MongoDB
-#     users_collection.insert_one({'username': username, 'email': email, 'password': hashed_password, 'role': 'member'})
-    
-#     flash('เพิ่มผู้ใช้สำเร็จ!', 'success')
-#     return redirect(url_for('index'))
 
 @app.route('/signup', methods=['POST','GET'])
 def signup():
@@ -1148,8 +1151,9 @@ def member_dashboard():
     if user:
         # ดึงข้อมูล
         bmi_result = get_bmiResult(str(current_user.id))
+        water_result = get_waterResult(str(current_user.id))
 
-        return render_template('member_dashboard.html', user=user, bmi_result=bmi_result)
+        return render_template('member_dashboard.html', user=user, bmi_result=bmi_result, water_result=water_result)
     else:
         return redirect(url_for('dashboard'))
 
