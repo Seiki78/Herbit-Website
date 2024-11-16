@@ -76,7 +76,7 @@
 <main>
     <div class="head-title">
         <div class="left">
-            <h1>แดชบอร์ดสมาชิก (ทดสอบ)</h1>
+            <h1>แดชบอร์ด</h1>
             <ul class="breadcrumb">
                 <!-- <li>
                     <a href="{{ url_for('dashboard') }}">หน้าหลัก</a>
@@ -107,6 +107,64 @@
             </span>
         </li>
     </ul>
+
+    <div class="table-data">
+        <div class="order">
+            <div class="head">
+                <h3>ข้อมูลสุขภาพ</h3>
+                <i class='bx bx-search' ></i>
+                <i class='bx bx-filter' ></i>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>รายการ</th>
+                        <th>ประเภท</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for chronic in chronics %}
+                    <tr>
+                        <td>
+                            <p>{{ chronic['cn_name'] }}</p>
+                        <td><span class="status completed">โรคประจำตัว</span></td>
+                    </tr>
+                    {% else %}
+                    {% endfor %}
+
+                    {% for medicine in medicines %}
+                    <tr>
+                        <td>
+                            <p>{{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</p>
+                        </td>
+                        <td><span class="status process">ยาที่ใช้</span></td>
+                    </tr>
+                    {% else %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="todo">
+            <div class="head">
+                <h3>ข้อมูลการแพ้</h3>
+                <i class='bx bx-plus' ></i>
+                <i class='bx bx-filter' ></i>
+            </div>
+            <ul class="todo-list">
+                {% for allergy in allergys %}
+                <li class="not-completed">
+                    <p>{{ allergy['ag_name'] }}</p>
+                    <i class='bx bx-dots-vertical-rounded' ></i>
+                </li>
+                {% else %}
+                <li class="completed">
+                    <p>ไม่มีข้อมูลการแพ้</p>
+                    <i class='bx bx-dots-vertical-rounded' ></i>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 
     
 </main>
