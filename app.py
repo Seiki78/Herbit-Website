@@ -121,13 +121,40 @@ def get_waterResult(user_id):
 
             recommendedWaterIntake  = weight * 2.2 * 30/2
 
-            waterResult = 'ปริมาณดื่มน้ำที่แนะนำ<br>' + str(recommendedWaterIntake) + ' มล.'
+            waterResult = 'ปริมาณดื่มน้ำที่แนะนำต่อวัน<br>' + str(recommendedWaterIntake) + ' มล.'
 
             return waterResult
         
         return 'เพิ่มข้อมูลน้ำหนักที่โปรไฟล์'
 
     return "เพิ่มข้อมูลน้ำหนักที่โปรไฟล์"
+
+def get_sleepResult(user_id):
+    user = users_collection.find_one({'_id': ObjectId(user_id)})  # ค้นหาจาก _id
+
+    if user is not None:
+        dob = user.get('dob')
+
+        if dob:
+            today = datetime.today()
+            age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+            if age < 1 :
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>12 -16 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
+            elif age >= 1 and age <= 2 :
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>11 -14 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
+            elif age >= 3 and age <= 5 :
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>9 -12 ชั่วโมง/ วัน​​'
+            elif age >= 13 and age <= 18 :
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>8 -10 ชั่วโมง/ วัน​​'
+            elif age >18 :
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>7 -9 ชั่วโมง/ วัน​​'
+
+            return sleeResult
+        
+        return 'เพิ่มข้อมูล วัน/เดือน/ปีเกิด ที่โปรไฟล์'
+
+    return "เพิ่มข้อมูล วัน/เดือน/ปีเกิด ที่โปรไฟล์"
 
 @app.route('/')
 def index():
@@ -1152,8 +1179,9 @@ def member_dashboard():
         # ดึงข้อมูล
         bmi_result = get_bmiResult(str(current_user.id))
         water_result = get_waterResult(str(current_user.id))
+        sleep_result = get_sleepResult(str(current_user.id))
 
-        return render_template('member_dashboard.html', user=user, bmi_result=bmi_result, water_result=water_result)
+        return render_template('member_dashboard.html', user=user, bmi_result=bmi_result, water_result=water_result, sleep_result=sleep_result)
     else:
         return redirect(url_for('dashboard'))
 
