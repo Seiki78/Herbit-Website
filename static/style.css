@@ -1571,6 +1571,3 @@ p {
 .pagination a:hover:not(.active) {
     background-color: #ddd;
 }
-.li-background {
-	background-color: var(--blue);
-}
