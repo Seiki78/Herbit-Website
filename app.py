@@ -1102,6 +1102,23 @@ def delete_symptom(symptom_id):
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_chrosymps'))
 
+@app.route('/edit_symptom/<symptom_id>', methods=['GET', 'POST'])
+def edit_symptom(symptom_id):
+    if request.method == 'POST':
+        st_name = request.form['st_name']
+        st_nameEN = request.form['st_nameEN']
+        
+        # อัปเดตเฉพาะชื่อโรคใน MongoDB
+        symptoms_data_collection.update_one({'_id': ObjectId(symptom_id)}, {'$set': {'st_name': st_name, 'st_nameEN': st_nameEN}})
+        
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_chrosymps'))
+    
+    # ดึงข้อมูลอาการที่ต้องการแก้ไข
+    symptom = symptoms_data_collection.find_one({'_id': ObjectId(symptom_id)})
+
+    return render_template('edit_symptoms.html', symptom=symptom)
+
 @app.route('/manage_warnings')
 def manage_warnings():
 
