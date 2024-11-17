@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="icon" href="{{ url_for('static', filename='leafe_oo.png') }}" type="image/png">
+	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>วิเคราะห์ยาสมุนไพร</title>
+</head> 
+<body>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-overlay alert-{{ category }} hidden">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="sidebar">
+        <a href="{{ url_for('dashboard') }}" class="brand">
+            <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+			<span class="text">Herbit</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="{{ url_for('dashboard') }}">
+					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">แดชบอร์ด</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('profile') }}">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='health-report.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">โปรไฟล์</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='medical.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">วิเคราะห์ยาสมุนไพร</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="{{ url_for('logout') }}" class="logout">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='logout.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">ออกจากระบบ</span>
+				</a>
+			</li>
+		</ul>
+
+    </section>
+
+
+
+
+    <section id="content">
+<!-- NAVBAR -->
+<nav>
+    <!-- เมนูไอคอนอยู่ชิดซ้าย -->
+    <i class='bx bx-menu'>
+        <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
+    </i>
+
+	<div class="marquee-container">
+        <div class="marquee">
+            <p style="color: rgb(161, 193, 226);">เป็นเพียงการให้ความรู้เกี่ยวกับยาสมุนไพร โดยอ้างอิงข้อมูลจาก NLEM:บัญชียาหลักแห่งชาติ (ฉบับที่ 2) พ.ศ. 2555 ประกาศ ณ วันที่ 21 สิงหาคม พ.ศ. 2555 เท่านั้น ไม่ใช่การรักษาโรคแต่อย่างใด หากป่วยควรพบแพทย์ผู้เชี่ยวชาญเพื่อรับการรักษาต่อไป</p>
+        </div>
+    </div>
+
+	<!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
+    <a href="{{ url_for('profile') }}" class="profile">
+        <img src="{{ url_for('static', filename='user.png') }}">
+    </a>
+
+</nav>
+<!-- NAVBAR -->
+
+<!-- MAIN -->
+<main>
+
+	<!-- <form action="{{ url_for('member_predict') }}" method="POST" onsubmit="return validateForm()"> -->
+		
+		<div class="layout-container">
+			<div class="layout-box box-left-top">
+	
+				<div class="content">
+					<div class="text-container">
+						<h4 style="display: inline;">เลือก<span style="color: var(--blue);">อาการ</span>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(อย่างน้อย 1 รายการ)</p><br>
+						<br>
+						<h3>จากนั้น<span style="color: var(--blue);"> กดยืนยันข้อมูล</span> เพื่อเริ่มวิเคราะห์ยาสมุนไพร</h3>
+					</div>
+				</div>	
+	
+			</div>
+	
+			<div class="layout-box box-right-top">
+
+	
+	
+			</div>
+			<div class="layout-box box-left-bottom">
+				<h4>กดเลือกหมวดหมู่เพื่อดูรายการเพิ่มเติม</h4><p style="display: inline; color: rgb(161, 193, 226);">(กดอีกครั้งเพื่อซ่อน และการเลือกจะไม่หายไป)</p>
+
+				<ul class="box-info">
+					<a href="" id="toggleDizzinessLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: หน้ามืด วิงเวียน</h3>
+							</span>
+						</li> 
+					</a>  
+					
+					<div id="typeDizziness" style="display:none;">
+	
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="dizziness1" id="" value="1">
+									<span>เวียนหัว</span>
+								</label>
+								<label>
+									<input type="checkbox" name="dizziness2" id="" value="1">
+									<span>หน้ามืด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="dizziness3" id="" value="1">
+									<span>ตาลาย</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="tired" id="" value="1">
+									<span>อ่อนเพลีย</span>
+								</label>
+								<label>
+									<input type="checkbox" name="cannot_sleep" id="" value="1">
+									<span>นอนไม่หลับ</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="dizziness4" id="" value="1">
+									<span>ลมปลายไข้</span>
+									
+								</label>
+								<div class="tooltip-container">
+									<img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+									<span class="tooltip-text">หลังฟื้นไข้แล้วยังมีอาการ เช่น คลื่นไส้ วิงเวียน เบื่ออาหาร ท้องอืด และอ่อนเพลีย</span>
+								</div>
+								<label>
+									<input type="checkbox" name="dizziness5" id="" value="1">
+									<span>ลมกองหยาบ</span>
+								</label>
+								<div class="tooltip-container">
+									<img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+									<span class="tooltip-text">อาการท้องอืด แน่นท้อง แน่นหน้าอก หน้ามืด และเวียนศีรษะ เคลื่อนไปตามส่วนต่าง ๆ ของร่างกาย</span>
+								</div>
+							</div>
+		
+						</div>
+					</div>
+
+					<a href="" id="toggleColicLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: ทรวงอก หัวใจ และอื่น ๆ</h3>
+							</span>
+						</li> 
+					</a>
+					<div id="typeColic" style="display:none;">
+	
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="colic1" id="" value="1">
+									<span>จุกเสียด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Palpitations" id="" value="1">
+									<span>ใจสั่น/ใจหวิว</span>
+								</label>
+							</div>
+						</div>
+		
+					</div>  
+
+					<a href="" id="toggleStomachLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: ทางเดินอาหาร ระบบขับถ่าย</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeStomach" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="squeamish" id="" value="1">
+									<span>คลื่นไส้</span>
+								</label>
+								<label>
+									<input type="checkbox" name="vomit" id="" value="1">
+									<span>อาเจียน</span>
+								</label>
+								<label>
+									<input type="checkbox" name="flatulence" id="" value="1">
+									<span>ท้องอืด ท้องเฟ้อ</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="stomach_ache" id="" value="1">
+									<span>ปวดท้อง</span>
+								</label>
+								<label>
+									<input type="checkbox" name="constipation1" id="" value="1">
+									<span>ท้องผูก</span>
+								</label>
+								<label>
+									<input type="checkbox" name="diarrhea1" id="" value="1">
+									<span>ท้องเสีย</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="hemorrhoids" id="" value="1">
+									<span>ริดสีดวงทวาร</span>
+								</label>
+							</div>
+	
+						</div>
+
+					</div>
+
+					<a href="" id="toggleWomanLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: นรีเวช</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeWoman" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="menstruation" id="" value="1">
+									<span>ประจำเดือนมาไม่สม่ำเสมอ</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="Menstrual_cramps" id="" value="1">
+									<span>ปวดประจำเดือน</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="Lochia" id="" value="1">
+									<span>น้ำคาวปลา</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Vaginal_Discharge" id="" value="1">
+									<span>ตกขาว</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="postpartum_woman" id="" value="1">
+									<span>หญิงหลังคลอด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Nourish_blood" id="" value="1">
+									<span>บำรุงเลือด</span>
+								</label>
+							</div>
+						</div>
+
+					</div>
+
+					<a href="" id="toggleFeverLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: ไข้ หวัด และอื่น ๆ</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeFever" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="fever1" id="" value="1">
+									<span>ไข้</span>
+								</label>
+								<label>
+									<input type="checkbox" name="cold" id="" value="1">
+									<span>หวัด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Allergic_Rhinitis" id="" value="1">
+									<span>แพ้อากาศ</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="cough" id="" value="1">
+									<span>ไอ</span>
+								</label>
+								<label>
+									<input type="checkbox" name="phlegm" id="" value="1">
+									<span>เสมหะ</span>
+								</label>
+								<label>
+									<input type="checkbox" name="inner_heat" id="" value="1">
+									<span>ร้อนใน</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="Measles" id="" value="1">
+									<span>พิษหัด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Chickenpox" id="" value="1">
+									<span>พิษอีสุกอีใส</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="fever2" id="" value="1">
+									<span>ไข้ตานซาง</span>
+								</label>
+								<div class="tooltip-container">
+									<img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+									<span class="tooltip-text">ไข้ตานซาง(สำหรับเด็ก) มีไข้ มีตุ่มใสขึ้นภายในปากกลืนนัำลายลำบาก ไม่ยอมดื่มนม มีผื่นสีแดงขึ้นบริเวณผิวหนังทั่วร่างกาย ผื่นมีลักษณะเหมือนหนังปลากระเบน และมีอาการท้องผูก</span>
+								</div>
+								<label>
+									<input type="checkbox" name="fever3" id="" value="1">
+									<span>ไข้กาฬ</span>
+								</label>
+								<div class="tooltip-container">
+									<img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+									<span class="tooltip-text">มีไข้สูง และอาเจียน มีผื่นสีคล้ำเกิดขึ้นตามร่างกาย บางรายอาจมีอาการคอแข็ง และหลังแอ่น</span>
+								</div>
+							</div>
+		
+						</div>
+
+					</div>
+
+					<a href="" id="toggleMusclesLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: กล้ามเนื้อ เส้นเอ็น</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeMuscles" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="body_aches" id="" value="1">
+									<span>ปวดเมื่อยตามร่างกาย</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="tendon" id="" value="1">
+									<span>ปวดตามเส้นเอ็น</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="Tight_numb" id="" value="1">
+									<span>กล้ามเนื้อมือ เท้า ตึงหรือชา</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="muscles_tendons" id="" value="1">
+									<span>กษัยเส้น</span>
+								</label>
+							</div>
+		
+						</div>
+
+					</div>
+
+					<a href="" id="toggleBalancingLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: บำรุงธาตุ</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeBalancing" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="balancing" id="" value="1">
+									<span>บำรุงธาตุ</span>
+								</label>
+							</div>
+		
+						</div>
+
+					</div>
+
+				</ul>
+
+	
+				
+				
+			</div>
+	
+			<div class="layout-box box-right-bottom">
+				
+				<div>
+					
+					<div class="bot2">
+						<button type="submit" class="btn1">
+							<span class="text"><h3>ยืนยันข้อมูล</h3></span>
+						</button>
+					</div>
+					<label style="color: rgb(161, 193, 226);">(กดเพื่อเริ่มวิเคราะห์ยาสมุนไพร)</label>
+				</div>
+	
+					
+			</div>
+		</div>
+		
+	</form> 
+
+</main>
+<!-- MAIN -->
+
+    </section>
+
+
+    <script>
+
+		function validateForm() {
+
+		const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+		const symptomCheckboxes = Array.from(allCheckboxes).filter(checkbox);
+
+		const isSymptomChecked = symptomCheckboxes.some(checkbox => checkbox.checked);
+
+		if (!isSymptomChecked) {
+		alert('กรุณาเลือกอย่างน้อย 1 อาการ');
+		return false;
+		}
+
+		return true;
+		}
+
+
+		document.getElementById('toggleDizzinessLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeDizziness = document.getElementById('typeDizziness');
+            if (typeDizziness.style.display === 'none') {
+                typeDizziness.style.display = 'block'; // แสดง div
+            } else {
+                typeDizziness.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleColicLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeColic = document.getElementById('typeColic');
+            if (typeColic.style.display === 'none') {
+                typeColic.style.display = 'block'; // แสดง div
+            } else {
+                typeColic.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleStomachLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeStomach = document.getElementById('typeStomach');
+            if (typeStomach.style.display === 'none') {
+                typeStomach.style.display = 'block'; // แสดง div
+            } else {
+                typeStomach.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleWomanLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeWoman = document.getElementById('typeWoman');
+            if (typeWoman.style.display === 'none') {
+                typeWoman.style.display = 'block'; // แสดง div
+            } else {
+                typeWoman.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleFeverLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeFever = document.getElementById('typeFever');
+            if (typeFever.style.display === 'none') {
+                typeFever.style.display = 'block'; // แสดง div
+            } else {
+                typeFever.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleMusclesLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeMuscles = document.getElementById('typeMuscles');
+            if (typeMuscles.style.display === 'none') {
+                typeMuscles.style.display = 'block'; // แสดง div
+            } else {
+                typeMuscles.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleBalancingLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeBalancing = document.getElementById('typeBalancing');
+            if (typeBalancing.style.display === 'none') {
+                typeBalancing.style.display = 'block'; // แสดง div
+            } else {
+                typeBalancing.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+    </script>
+	  
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
