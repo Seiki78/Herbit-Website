@@ -5,6 +5,10 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from pymongo import MongoClient
 from werkzeug.security import check_password_hash, generate_password_hash
 from bson.objectid import ObjectId
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
 app = Flask(__name__)
 
@@ -26,6 +30,52 @@ hm_st_collection = db['hm_st']
 u_cn_collection = db['u_cn']
 u_md_collection = db['u_md']
 u_ag_collection = db['u_ag']
+
+######################################################################## Train
+
+# ดึงข้อมูลจาก MongoDB เตรียมเทรน
+data = list(trains_collection.find())
+
+# แปลงข้อมูล MongoDB เป็น DataFrame เตรียมเทรน
+df = pd.DataFrame(data)
+
+# ตรวจสอบข้อมูลที่ได้
+print(df.head())
+
+# กำหนด feature_cols (ฟีเจอร์ที่ใช้ในการทำนาย)
+feature_cols = ['pregnant', 'dizziness1', 'Palpitations', 'squeamish', 'vomit', 
+                'dizziness2', 'dizziness3', 'dizziness4', 'colic1', 'tired', 
+                'cannot_sleep', 'flatulence', 'stomach_ache', 'constipation1', 
+                'diarrhea1', 'hemorrhoids', 'menstruation', 'Menstrual_cramps', 
+                'postpartum_woman', 'Lochia', 'Vaginal_Discharge', 'Nourish_blood',
+                'fever1', 'inner_heat', 'Measles', 'Chickenpox', 'fever2', 'fever3', 
+                'cough', 'phlegm', 'cold', 'Allergic_Rhinitis', 'body_aches', 'tendon', 
+                'Tight_numb', 'muscles_tendons', 'dizziness5']
+
+# กำหนด target (ผลลัพธ์ที่ต้องการทำนาย)
+target_col = 'hm_id'
+
+# สร้าง DataFrame สำหรับ feature (X) และ target (y)
+X = df[feature_cols]
+y = df[target_col]
+
+# แบ่งข้อมูลเป็นชุดเทรนและชุดทดสอบ
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# สร้างโมเดล Random Forest
+clf = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# ฝึกโมเดลด้วยข้อมูลเทรน
+clf.fit(X_train, y_train)
+
+# ทำนายผลลัพธ์กับข้อมูลทดสอบ
+y_pred = clf.predict(X_test)
+
+# คำนวณความแม่นยำของโมเดล
+accuracy = accuracy_score(y_test, y_pred)
+print("ความแม่นยำของโมเดล: ", accuracy)
+
+######################################################################## Train
 
 # ตั้งค่า Flask-Login
 login_manager = LoginManager()
@@ -140,15 +190,15 @@ def get_sleepResult(user_id):
             age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
             if age < 1 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>12 -16 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>12 - 16 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
             elif age >= 1 and age <= 2 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>11 -14 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>11 - 14 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
             elif age >= 3 and age <= 5 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>9 -12 ชั่วโมง/ วัน​​'
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>9 - 12 ชั่วโมง/ วัน​​'
             elif age >= 13 and age <= 18 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>8 -10 ชั่วโมง/ วัน​​'
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>8 - 10 ชั่วโมง/ วัน​​'
             elif age >18 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>7 -9 ชั่วโมง/ วัน​​'
+                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>7 - 9 ชั่วโมง/ วัน​​'
 
             return sleeResult
         
@@ -156,12 +206,70 @@ def get_sleepResult(user_id):
 
     return "เพิ่มข้อมูล วัน/เดือน/ปีเกิด ที่โปรไฟล์"
 
+def get_hm_name(hm_id):
+    hm_id = int(hm_id)
+    herbal = herbals_data_collection.find_one({'hm_id': hm_id})
+    
+    if herbal:
+        return herbal.get('hm_name', 'ไม่พบชื่อยาสมุนไพร')
+    
+    return 'ไม่พบชื่อยาสมุนไพร'
+
+def get_hm_dosage(hm_id):
+    hm_id = int(hm_id)
+    herbal = herbals_data_collection.find_one({'hm_id': hm_id})
+    
+    if herbal:
+        return herbal.get('hm_dosage', 'ไม่พบวิธีใช้')
+    
+    return 'ไม่พบวิธีใช้'
+
+def get_hm_recipe(hm_id):
+    hm_id = int(hm_id)
+    herbal = herbals_data_collection.find_one({'hm_id': hm_id})
+    
+    if herbal:
+        return herbal.get('hm_recipe', 'ไม่พบตำรับยา')
+
+    return 'ไม่พบตำรับยา'
+
+def get_symptoms_for_herbal(hm_id):
+    hm_id = int(hm_id)
+    related_symptoms = hm_st_collection.find({'hm_id': hm_id})
+    
+    symptoms = []
+    for rel in related_symptoms:
+        st_id = rel['st_id']
+        symptom = symptoms_data_collection.find_one({'st_id': st_id})
+        if symptom:
+            symptom_name = symptom['st_name'].strip()  # ใช้ strip() เพื่อให้มั่นใจว่าไม่มีช่องว่างส่วนเกิน
+            if symptom_name:  # ตรวจสอบให้แน่ใจว่าไม่เป็นค่าว่าง
+                symptoms.append(symptom_name)
+    
+    return symptoms
+
+def get_warnings_for_herbal(hm_id):
+    hm_id = int(hm_id)
+    related_warnings = hm_wn_collection.find({'hm_id': hm_id})
+    
+    warnings = []
+    for rel in related_warnings:
+        wn_id = rel['wn_id']
+        warning = warnings_data_collection.find_one({'wn_id': wn_id})
+        if warning:
+            warning_name = warning['wn_name'].strip()  # ใช้ strip() เพื่อให้มั่นใจว่าไม่มีช่องว่างส่วนเกิน
+            if warning_name:  # ตรวจสอบให้แน่ใจว่าไม่เป็นค่าว่าง
+                warnings.append(warning_name)
+    
+    # แปลงคำเตือนแต่ละข้อให้แสดงในบรรทัดใหม่
+    formatted_warnings = "<br>".join(warnings)
+    
+    return formatted_warnings
+
 @app.route('/')
 def index():
-    # ดึงข้อมูลผู้ใช้ทั้งหมดจาก Collection
-    users = users_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
-    user_count = users_collection.count_documents({})  # ใช้ count_documents เพื่อนับจำนวนเอกสารใน Collection
-    return render_template('index.html', users=users, user_count=user_count)
+
+    return redirect(url_for('type_predict'))
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -188,7 +296,7 @@ def signin():
 def dashboard():
     # ตรวจสอบบทบาทของผู้ใช้ผ่าน current_user | current_user คือ object ของผู้ใช้ที่ login อยู่ /มาจาก object ของ UserMixin
     if current_user.role == 'admin':
-        return render_template('admin_dashboard.html')
+        return redirect(url_for('admin_dashboard'))
     elif current_user.role == 'member':
         return redirect(url_for('member_dashboard'))
     else:
@@ -1205,6 +1313,263 @@ def member_dashboard():
         return render_template('member_dashboard.html', user=user, bmi_result=bmi_result, water_result=water_result, sleep_result=sleep_result, chronics=chronics, medicines=medicines, allergys=allergys)
     else:
         return redirect(url_for('dashboard'))
+
+@app.route('/admin_dashboard')
+def admin_dashboard():
+
+    herbals_count = herbals_data_collection.count_documents({})
+    trains_count = trains_collection.count_documents({})
+    admins_count = users_collection.count_documents({'role': 'admin'})
+    members_count = users_collection.count_documents({'role': 'member'})
+    chronics_count = chronics_data_collection.count_documents({})
+    medicines_count = medicines_data_collection.count_documents({})
+    allergies_count = allergys_data_collection.count_documents({})
+    warnings_count = warnings_data_collection.count_documents({})
+
+    return render_template('admin_dashboard.html', herbals_count=herbals_count, trains_count=trains_count,
+                           admins_count=admins_count, members_count=members_count, chronics_count=chronics_count,
+                           medicines_count=medicines_count, allergies_count=allergies_count, warnings_count=warnings_count)
+
+@app.route('/type_predict')
+def type_predict():
+
+    # ตรวจสอบว่าผู้ใช้ล็อกอินหรือไม่
+    if current_user.is_authenticated:
+        return redirect(url_for('member_predict'))
+    else:
+        return redirect(url_for('general_predict'))
+
+@app.route('/general_predict')
+def general_predict():
+    # โค้ดของหน้า predict สำหรับคนที่ไม่ได้ล็อกอิน
+
+    chronics = chronics_data_collection.find()
+    medicines = medicines_data_collection.find()
+    allergys = allergys_data_collection.find()
+
+    return render_template('general_predict.html', chronics=chronics, medicines=medicines, allergys=allergys)
+
+@app.route('/member_predict')
+@login_required  # ใช้ @login_required เพื่อให้แน่ใจว่าเพจนี้สามารถเข้าถึงได้เฉพาะผู้ใช้ที่ล็อกอินแล้วเท่านั้น
+def member_predict():
+    # โค้ดของหน้า predict สำหรับสมาชิกที่ล็อกอินแล้ว
+    
+
+    return render_template('member_predict.html')
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    # ดึงข้อมูลจากฟอร์ม
+
+    dob_str = request.form['dob']    # แปลงวันเกิดเป็น datetime object
+    dob = datetime.strptime(dob_str, '%Y-%m-%d')
+    today = datetime.today()
+    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+    pregnant = int(request.form.get('pregnant', 0))
+    dizziness1 = int(request.form.get('dizziness1', 0))
+    Palpitations = int(request.form.get('Palpitations', 0))
+    squeamish = int(request.form.get('squeamish', 0))
+    vomit = int(request.form.get('vomit', 0))
+    dizziness2 = int(request.form.get('dizziness2', 0))
+    dizziness3 = int(request.form.get('dizziness3', 0))
+    dizziness4 = int(request.form.get('dizziness4', 0))
+    colic1 = int(request.form.get('colic1', 0))
+    tired = int(request.form.get('tired', 0))
+    cannot_sleep = int(request.form.get('cannot_sleep', 0))
+    flatulence = int(request.form.get('flatulence', 0))
+    stomach_ache = int(request.form.get('stomach_ache', 0))
+    constipation1 = int(request.form.get('constipation1', 0))
+    diarrhea1 = int(request.form.get('diarrhea1', 0))
+    hemorrhoids = int(request.form.get('hemorrhoids', 0))
+    menstruation = int(request.form.get('menstruation', 0))
+    Menstrual_cramps = int(request.form.get('Menstrual_cramps', 0))
+    postpartum_woman = int(request.form.get('postpartum_woman', 0))
+    Lochia = int(request.form.get('Lochia', 0))
+    Vaginal_Discharge = int(request.form.get('Vaginal_Discharge', 0))
+    Nourish_blood = int(request.form.get('Nourish_blood', 0))
+    fever1 = int(request.form.get('fever1', 0))
+    inner_heat = int(request.form.get('inner_heat', 0))
+    Measles = int(request.form.get('Measles', 0))
+    Chickenpox = int(request.form.get('Chickenpox', 0))
+    fever2 = int(request.form.get('fever2', 0))
+    fever3 = int(request.form.get('fever3', 0))
+    cough = int(request.form.get('cough', 0))
+    phlegm = int(request.form.get('phlegm', 0))
+    cold = int(request.form.get('cold', 0))
+    Allergic_Rhinitis = int(request.form.get('Allergic_Rhinitis', 0))
+    body_aches = int(request.form.get('body_aches', 0))
+    tendon = int(request.form.get('tendon', 0))
+    Tight_numb = int(request.form.get('Tight_numb', 0))
+    muscles_tendons = int(request.form.get('muscles_tendons', 0))
+    dizziness5 = int(request.form.get('dizziness5', 0))
+
+    selected_chronics = request.form.getlist('chronics')
+    selected_allergys = request.form.getlist('allergys')
+    selected_medicines = request.form.getlist('medicines')
+    breastfeeding = int(request.form.get('breastfeeding', 0))
+
+    # สร้าง DataFrame จากข้อมูลที่ได้รับ
+    input_data = pd.DataFrame({
+        'pregnant': [pregnant],
+        'dizziness1': [dizziness1],
+        'Palpitations': [Palpitations],
+        'squeamish': [squeamish],
+        'vomit': [vomit],
+        'dizziness2': [dizziness2],
+        'dizziness3': [dizziness3],
+        'dizziness4': [dizziness4],
+        'colic1': [colic1],
+        'tired': [tired],
+        'cannot_sleep': [cannot_sleep],
+        'flatulence': [flatulence],
+        'stomach_ache': [stomach_ache],
+        'constipation1': [constipation1],
+        'diarrhea1': [diarrhea1],
+        'hemorrhoids': [hemorrhoids],
+        'menstruation': [menstruation],
+        'Menstrual_cramps': [Menstrual_cramps],
+        'postpartum_woman': [postpartum_woman],
+        'Lochia': [Lochia],
+        'Vaginal_Discharge': [Vaginal_Discharge],
+        'Nourish_blood': [Nourish_blood],
+        'fever1': [fever1],
+        'inner_heat': [inner_heat],
+        'Measles': [Measles],
+        'Chickenpox': [Chickenpox],
+        'fever2': [fever2],
+        'fever3': [fever3],
+        'cough': [cough],
+        'phlegm': [phlegm],
+        'cold': [cold],
+        'Allergic_Rhinitis': [Allergic_Rhinitis],
+        'body_aches': [body_aches],
+        'tendon': [tendon],
+        'Tight_numb': [Tight_numb],
+        'muscles_tendons': [muscles_tendons],
+        'dizziness5': [dizziness5]
+    })
+
+    # ทำนายความน่าจะเป็น
+    probabilities = clf.predict_proba(input_data)[0]
+
+    # สร้างลิสต์ของ hm_id ที่ต้องการลบออกจากผลทำนาย
+    hm_ids_to_remove = set()
+
+    # ถ้า อายุ < 1 ลบ
+    if age < 1:
+        hm_ids_to_remove.update([312, 315, 316, 317, 340, 342, 343])
+
+    # ถ้า อายุ < 12 ลบ
+    if age < 12:
+        hm_ids_to_remove.update([315, 316, 340, 342, 343])
+
+    # ถ้า ตั้งครรภ์ ลบ
+    if pregnant == 1:
+        hm_ids_to_remove.update([303, 305, 306, 309, 310, 311, 312, 313, 314, 316, 317,
+                                 321, 322, 323, 324, 325, 340, 341, 342, 343, 344, 346])
+    
+    # ถ้า มีไข้ ลบ
+    if fever1 == 1:
+        hm_ids_to_remove.update([303, 306, 309, 310, 311, 312, 313, 314, 315, 316, 317,
+                                 321, 322, 323, 324, 325, 326, 340, 341, 343, 344, 346])
+    
+    # ถ้า คลื่นไส้ ลบ
+    if squeamish == 1:
+        hm_ids_to_remove.add(315)
+
+    # ถ้า อาเจียน ลบ
+    if vomit == 1:
+        hm_ids_to_remove.add(315)
+
+    # ถ้า ให้นมบุตร ลบ
+    if breastfeeding == 1:
+        hm_ids_to_remove.add(342)
+
+    # ถ้า cn_id = 101 (เบาหวาน) ลบ
+    if 101 in selected_chronics:
+        hm_ids_to_remove.add(334)
+
+    # ถ้า cn_id = 111 (ไซนัส) ลบ
+    if 111 in selected_chronics:
+        hm_ids_to_remove.add(340)
+
+    # ถ้า cn_id = 113 (ภาวะลำไส้อุดตัน) ลบ
+    if 113 in selected_chronics:
+        hm_ids_to_remove.add(315)
+
+    # ถ้า cn_id = 114 (โรคหัวใจ) ลบ
+    if 114 in selected_chronics:
+        hm_ids_to_remove.add(346)
+
+    # ถ้า cn_id = 115 (โรคแผลเปื่อยเพปติก) ลบ
+    if 115 in selected_chronics:
+        hm_ids_to_remove.add(346)
+
+    # ถ้า cn_id = 116 (กรดไหลย้อน) ลบ
+    if 116 in selected_chronics:
+        hm_ids_to_remove.add(346)
+
+    # ถ้า ag_id = 601 (แพ้ละอองเกสรดอกไม้) ลบ
+    if 601 in selected_allergys:
+        hm_ids_to_remove.update([301, 302, 303, 304, 305, 326, 327, 329, 330, 341, 342])
+
+    # ถ้า md_id = 401 (anticoagulant-ยาในกลุ่มสารกันเลือดเป็นลิ่ม) ลบ
+    if 401 in selected_medicines:
+        hm_ids_to_remove.update([301, 302, 303, 304, 305, 306, 312, 313, 314, 316, 317, 326,
+                                 330, 341, 342])
+    
+    # ถ้า md_id = 402 (antiplatelets-ยาต้านการจับตัวของเกล็ดเลือด) ลบ
+    if 402 in selected_medicines:
+        hm_ids_to_remove.update([301, 302, 303, 304, 305, 306, 312, 313, 314, 316, 317, 326,
+                                 330, 341, 342])
+        
+    # ถ้า md_id = 403 (phenytoin-ยาต้านชัก) ลบ
+    if 403 in selected_medicines:
+        hm_ids_to_remove.update([313, 315, 316, 322, 340, 344, 346])
+
+    # ถ้า md_id = 404 (propranolol-ยารักษาภาวะที่เกี่ยวกับหัวใจและระบบไหลเวียนโลหิต) ลบ
+    if 404 in selected_medicines:
+        hm_ids_to_remove.update([313, 315, 316, 322, 340, 344, 346])
+
+    # ถ้า md_id = 405 (theophylline-ยาในกลุ่มยารักษาโรคหอบหืด) ลบ
+    if 405 in selected_medicines:
+        hm_ids_to_remove.update([313, 315, 316, 322, 340, 344, 346])
+
+    # ถ้า md_id = 406 (rifampicin-ยารักษาวัณโรค รักษาการติดเชื้อในจมูกและลำคอ) ลบ
+    if 406 in selected_medicines:
+        hm_ids_to_remove.update([313, 315, 316, 322, 340, 344, 346])
+
+
+    # กรองผลลัพธ์ที่มีความน่าจะเป็นมากกว่า 0
+    predictions = []
+    for i, prob in enumerate(probabilities):
+        if prob > 0:
+            hm_id = clf.classes_[i]
+            hm_name = get_hm_name(hm_id)
+            hm_dosage = get_hm_dosage(hm_id)
+            hm_recipe = get_hm_recipe(hm_id)
+            symptoms = get_symptoms_for_herbal(hm_id)
+            warnings = get_warnings_for_herbal(hm_id)
+
+            # ตรวจสอบว่า hm_id อยู่ในลิสต์ที่ต้องการลบหรือไม่
+            if hm_id in hm_ids_to_remove:
+                # ถ้าอยู่ในลิสต์ที่ต้องการลบ ให้ข้ามไปยังผลทำนายถัดไป
+                continue
+
+            # เพิ่มข้อมูลยาลงใน list
+            predictions.append({
+                'hm_id': hm_id,
+                'probability': prob,
+                'hm_name': hm_name,
+                'hm_dosage': hm_dosage,
+                'hm_recipe': hm_recipe,
+                'symptoms': symptoms,
+                'warnings': warnings
+            })
+    
+    # ส่งผลลัพธ์ไปยัง template
+    return render_template('general_result.html', predictions=predictions)
 
 if __name__ == '__main__':
 
