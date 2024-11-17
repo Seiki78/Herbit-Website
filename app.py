@@ -990,7 +990,7 @@ def edit_medicine(medicine_id):
         medicines_data_collection.update_one({'_id': ObjectId(medicine_id)}, {'$set': {'md_nameEN': md_nameEN, 'md_nameTH': md_nameTH}})
         
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
-        return redirect(url_for('manage_chrosymps'))
+        return redirect(url_for('manage_medicines'))
     
     # ดึงข้อมูลโรคที่ต้องการแก้ไข
     medicine = medicines_data_collection.find_one({'_id': ObjectId(medicine_id)})
