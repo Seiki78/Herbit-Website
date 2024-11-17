@@ -206,7 +206,7 @@
                                 {% for chronic in chronics %}
                                     {% if chronic['cn_id'] in existing_cn_ids %}
                                     <tr data-value="{{ chronic['cn_id'] }}">
-                                        <td>{{ chronic['cn_id'] }} - {{ chronic['cn_name'] }}</td>
+                                        <td>{{ chronic['cn_name'] }}</td>
                                         <td>
                                             <button type="button" onclick="removeItem(this)">ลบ</button>
 
@@ -223,7 +223,7 @@
                     <select id="chronics" name="chronics" multiple>
                         <option value="">-- เลือก --</option>
                         {% for chronic in chronics %}
-                            <option value="{{ chronic['cn_id'] }}" title="{{ chronic['cn_name'] }}">{{ chronic['cn_id'] }} - {{ chronic['cn_name'] | truncate(40, True) }}</option>
+                            <option value="{{ chronic['cn_id'] }}" title="{{ chronic['cn_name'] }}">{{ chronic['cn_name'] | truncate(40, True) }}</option>
                         {% endfor %}    
                     </select>
                     <button type="button" onclick="addSelected('chronics')">เพิ่มโรคประจำตัว</button>
@@ -239,7 +239,7 @@
                                 {% for medicine in medicines %}
                                     {% if medicine['md_id'] in existing_md_ids %}
                                     <tr data-value="{{ medicine['md_id'] }}">
-                                        <td>{{ medicine['md_id'] }} - {{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</td>
+                                        <td>{{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</td>
                                         <td>
                                             <button type="button" onclick="removeItem(this)">ลบ</button>
 
@@ -256,7 +256,7 @@
                     <select id="medicines" name="medicines" multiple>
                         <option value="">-- เลือก --</option>
                         {% for medicine in medicines %}
-                            <option value="{{ medicine['md_id'] }}">{{ medicine['md_id'] }} - {{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</option>
+                            <option value="{{ medicine['md_id'] }}">{{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</option>
                         {% endfor %}    
                     </select>
                     <button type="button" onclick="addSelected('medicines')">เพิ่มยาที่ใช้</button>
@@ -272,7 +272,7 @@
                                 {% for allergy in allergys %}
                                     {% if allergy['ag_id'] in existing_ag_ids %}
                                     <tr data-value="{{ allergy['ag_id'] }}">
-                                        <td>{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</td>
+                                        <td>{{ allergy['ag_name'] }}</td>
                                         <td>
                                             <button type="button" onclick="removeItem(this)">ลบ</button>
 
@@ -289,7 +289,7 @@
                     <select id="allergys" name="allergys" multiple>
                         <option value="">-- เลือก --</option>
                         {% for allergy in allergys %}
-                            <option value="{{ allergy['ag_id'] }}">{{ allergy['ag_id'] }} - {{ allergy['ag_name'] }}</option>
+                            <option value="{{ allergy['ag_id'] }}">{{ allergy['ag_name'] }}</option>
                         {% endfor %}    
                     </select>
                     <button type="button" onclick="addSelected('allergys')">เพิ่มข้อมูลการแพ้</button>

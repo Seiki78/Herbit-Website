@@ -91,7 +91,7 @@
 	
 				<div class="content">
 					<div class="text-container">
-						<h4 style="display: inline;">เลือก<span style="color: var(--blue);">อาการ</span>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(อย่างน้อย 1 รายการ)</p><br>
+						<h4 style="display: inline;">เลือก<span style="color: var(--blue);"> อาการ</span>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(อย่างน้อย 1 รายการ)</p><br>
 						<br>
 						<h3>จากนั้น<span style="color: var(--blue);"> กดยืนยันข้อมูล</span> เพื่อเริ่มวิเคราะห์ยาสมุนไพร</h3>
 					</div>
@@ -100,10 +100,22 @@
 			</div>
 	
 			<div class="layout-box box-right-top">
+				<div class="content">
+					<div class="text-container">
+						<h3 style="display: inline;">ข้อมูลสุขภาพ<span style="color: rgb(47, 54, 144);"> คุณ{{ user['fname'] }}</span>&nbsp;</h3><p style="display: inline; color: rgb(161, 193, 226);">(ที่มีในระบบ)</p>
+						<br>
+						<h4>เพศ<span style="color: rgb(47, 54, 144);"> {{ gender_name }}</span>&nbsp;&nbsp;อายุ<span style="color: rgb(47, 54, 144);"> {{ age }}</span></h4>
+						<br>
+						<div class="FemaleField" style="display: none;">
+							<img src="{{ url_for('static', filename='pregnant_4370507.png') }}" class="icon-mini" alt="Menu Icon">&nbsp; {{ pregnant_name }} <br>
+							<img src="{{ url_for('static', filename='breastfeeding.png') }}" class="icon-mini" alt="Menu Icon">&nbsp; {{ breastfeeding_name }}
+						</div>
 
-	
-	
+					</div>
+				</div>
+
 			</div>
+
 			<div class="layout-box box-left-bottom">
 				<h4>กดเลือกหมวดหมู่เพื่อดูรายการเพิ่มเติม</h4><p style="display: inline; color: rgb(161, 193, 226);">(กดอีกครั้งเพื่อซ่อน และการเลือกจะไม่หายไป)</p>
 
@@ -398,6 +410,55 @@
 			</div>
 	
 			<div class="layout-box box-right-bottom">
+
+				<div class="order">
+
+					<!-- แสดงโรคประจำตัว -->
+					<div class="selected-list">
+						<h5>โรคประจำตัว</h5>
+						<table class="chronicTable">
+							<thead><tr><th></th></tr></thead>
+							<tbody id="selectedChronicsList">
+								{% for chronic in chronics %}
+								<tr><td>{{ chronic['cn_name'] }}</td></tr>
+								{% else %}
+								<tr><td colspan="2">ไม่มีข้อมูลโรคประจำตัว</td></tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div><br>
+		
+					<!-- แสดงยาที่ใช้ -->
+					<div class="selected-list">
+						<h5>ยาที่ใช้</h5>
+						<table class="medicineTable">
+							<thead><tr><th></th></tr></thead>
+							<tbody id="selectedMedicinesList">
+								{% for medicine in medicines %}
+								<tr><td>{{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</td></tr>
+								{% else %}
+								<tr><td colspan="2">ไม่มีข้อมูลยาที่ใช้</td></tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div><br>
+		
+					<!-- แสดงข้อมูลการแพ้ -->
+					<div class="selected-list">
+						<h5>ข้อมูลการแพ้</h5>
+						<table class="allergyTable">
+							<thead><tr><th></th></tr></thead>
+							<tbody id="selectedAllergysList">
+								{% for allergy in allergys %}
+								<tr><td>{{ allergy['ag_name'] }}</td></tr>
+								{% else %}
+								<tr><td colspan="2">ไม่มีข้อมูลการแพ้</td></tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				
+				</div>
 				
 				<div>
 					
@@ -422,6 +483,21 @@
 
 
     <script>
+
+		document.addEventListener('DOMContentLoaded', function() {
+            var genderName = "{{ gender_name }}";
+            var femaleFields = document.querySelectorAll('.FemaleField');
+
+            if (genderName === "หญิง") {
+                femaleFields.forEach(function(field) {
+                    field.style.display = "table-row";
+                });
+            } else {
+                femaleFields.forEach(function(field) {
+                    field.style.display = "none";
+                });
+            }
+        });
 
 		function validateForm() {
 			const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
