@@ -154,7 +154,7 @@
                 <label for="cn_name">ชื่อโรค/อาการ (ภาษาไทย)</label>
                 <input type="text" id="cn_name" name="cn_name" required><br>
                 <label for="cn_name">ชื่อโรค/อาการ (ภาษาอังกฤษ)</label>
-                <input type="text" id="cn_nameEN" name="cn_nameEN"><br>
+                <input type="text" id="cn_nameEN" name="cn_nameEN">
                 <button type="submit" class="btn-submit">เพิ่ม</button>
             </form>
         
@@ -199,8 +199,10 @@
             </table>
             <br>
             <form action="{{ url_for('add_symptom') }}" method="POST">
-                <label for="st_name">ชื่อโรค/อาการ</label>
-                <input type="text" id="st_name" name="st_name" required>
+                <label for="st_name">ชื่อโรค/อาการ (ภาษาไทย)</label>
+                <input type="text" id="st_name" name="st_name" required><br>
+                <label for="st_nameEN">ชื่อโรค/อาการ (ภาษาอังกฤษ)</label>
+                <input type="text" id="st_nameEN" name="st_nameEN" required>
                 <button type="submit" class="btn-submit">เพิ่ม</button>
             </form>
         
