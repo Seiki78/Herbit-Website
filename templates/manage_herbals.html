@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <title>วิเคราะห์ยาสมุนไพร</title>
+    <title>จัดการข้อมูลยาสมุนไพร</title>
 </head> 
 <body>
     
@@ -20,13 +20,13 @@
     {% endwith %}
 
     <section id="sidebar">
-        <a href="" class="brand">
+        <a href="{{ url_for('dashboard') }}" class="brand">
             <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
-			<span class="text">Mongo</span>
+			<span class="text">Herbit</span>
 		</a>
 		<ul class="side-menu top">
 			<li>
-				<a href="">
+				<a href="{{ url_for('dashboard') }}">
 					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">แดชบอร์ด</span>
 				</a>
@@ -94,6 +94,11 @@
         </div>
     </div>
 
+    <!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
+    <a href="{{ url_for('dashboard') }}" class="profile">
+        <img src="{{ url_for('static', filename='user_admin.png') }}">
+    </a>
+
 </nav>
 <!-- NAVBAR -->
 
@@ -104,110 +109,115 @@
             <h2>ข้อมูลยาสมุนไพร</h2>
             <!-- <ul class="breadcrumb">
                 <li>
-                    <a href="{{ url_for('manage_herbals') }}" class="active">จัดการข้อมูล</a>
+                    <a href="" class="active">เพิ่มยาสมุนไพร</a>
                 </li>
             </ul> -->
         </div>
+        <a href="" class="btn-download" id="toggleAddHerbalsLink">เพิ่มยาสมุนไพร</a>
         <a href="{{ url_for('manage_warnings') }}" class="btn-download">รายการคำเตือน</a>
 
-    </div><br>
+    </div>
 
-    <form action="{{ url_for('add_herbal') }}" method="POST">
+    <div id="addnewHerbal" style="display:none;">
+        <form action="{{ url_for('add_herbal') }}" method="POST">
 
-        <div class="table-data">
-        
-            <div class="order">
-                <table>
-                    <tr>
-                        <th>
-                            <label for="hm_name">ชื่อยาสมุนไพร</label>
-                        </th>
-                        <td>
-                            <input type="text" name="hm_name" placeholder="กรอกชื่อยาสมุนไพร" required>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <label for="hm_recipe">ตำรับยา</label>
-                        </th>
-                        <td>
-                            <input type="text" name="hm_recipe" placeholder="กรอกรายละเอียด" >
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <label for="hm_dosage">วิธีใช้</label>
-                        </th>
-                        <td>
-                            <input type="text" name="hm_dosage" placeholder="กรอกวิธีใช้ยาใหม่(ถ้ามี)" >
-                        </td>
-                    </tr>
-
-                </table><br>
-
-                <div class="head">
-                    <div class="selected-list">
-
-                        <table class="warningTable" id="selectedWarningsList">
-                            <thead>
-                                <tr>
-                                    <th>คำเตือน</th>
-    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Selected items will be displayed here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                </div>
-                <div class="head">
-                    <select id="warnings" name="warnings" multiple>
-                        <option value="">-- เลือก --</option>
-                        {% for warning in warnings %}
-                            <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
-                        {% endfor %}    
-                    </select>
-                    <button type="button" onclick="addSelected('warnings')">เพิ่มคำเตือน</button>
-                </div>
-                <br>
-
-                <div class="head">
-                    <div class="selected-list">
-
-                        <table class="symptomTable" id="selectedSymptomsList">
-                            <thead>
-                                <tr>
-                                    <th>อาการที่เกี่ยวข้อง</th>
-    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Selected items will be displayed here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                </div>
-                <div class="head">
-                    <select id="symptoms" name="symptoms" multiple>
-                        <option value="">-- เลือก --</option>
-                        {% for symptom in symptoms %}
-                            <option value="{{ symptom['st_id'] }}" title="{{ symptom['st_name'] }}">{{ symptom['st_id'] }}-{{ symptom['st_name'] | truncate(40, True) }}</option>
-                        {% endfor %}    
-                    </select>
-                    <button type="button" onclick="addSelected('symptoms')">เพิ่มอาการ</button>
-                </div>
-
-
-                <button type="submit" class="btn-submit">เพิ่มยาสมุนไพร</button>
-
-            </div>
-    
+            <div class="table-data">
             
-        </div>
-    </form>
+                <div class="order">
+                    <table>
+                        <tr>
+                            <th>
+                                <label for="hm_name">ชื่อยาสมุนไพร</label>
+                            </th>
+                            <td>
+                                <input type="text" name="hm_name" placeholder="กรอกชื่อยาสมุนไพร" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="hm_recipe">ตำรับยา</label>
+                            </th>
+                            <td>
+                                <input type="text" name="hm_recipe" placeholder="กรอกรายละเอียด" >
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="hm_dosage">วิธีใช้</label>
+                            </th>
+                            <td>
+                                <input type="text" name="hm_dosage" placeholder="กรอกวิธีใช้ยาใหม่(ถ้ามี)" >
+                            </td>
+                        </tr>
+    
+                    </table><br>
+    
+                    <div class="head">
+                        <div class="selected-list">
+    
+                            <table class="warningTable" id="selectedWarningsList">
+                                <thead>
+                                    <tr>
+                                        <th>คำเตือน</th>
+        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Selected items will be displayed here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                    <div class="head">
+                        <select id="warnings" name="warnings" multiple>
+                            <option value="">-- เลือก --</option>
+                            {% for warning in warnings %}
+                                <option value="{{ warning['wn_id'] }}" title="{{ warning['wn_name'] }}">{{ warning['wn_id'] }}-{{ warning['wn_name'] | truncate(40, True) }}</option>
+                            {% endfor %}    
+                        </select>
+                        <button type="button" onclick="addSelected('warnings')">เพิ่มคำเตือน</button>
+                    </div>
+                    <br>
+    
+                    <div class="head">
+                        <div class="selected-list">
+    
+                            <table class="symptomTable" id="selectedSymptomsList">
+                                <thead>
+                                    <tr>
+                                        <th>อาการที่เกี่ยวข้อง</th>
+        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Selected items will be displayed here -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                    <div class="head">
+                        <select id="symptoms" name="symptoms" multiple>
+                            <option value="">-- เลือก --</option>
+                            {% for symptom in symptoms %}
+                                <option value="{{ symptom['st_id'] }}" title="{{ symptom['st_name'] }}">{{ symptom['st_id'] }}-{{ symptom['st_name'] | truncate(40, True) }}</option>
+                            {% endfor %}    
+                        </select>
+                        <button type="button" onclick="addSelected('symptoms')">เพิ่มอาการ</button>
+                    </div>
+    
+    
+                    <button type="submit" class="btn-submit">เพิ่มยาสมุนไพร</button>
+    
+                </div>
+        
+                
+            </div>
+        </form>
+
+    </div>
+
     <br>
 
     <div class="table-data">
@@ -274,6 +284,18 @@
 
     
     <script>
+
+        document.getElementById('toggleAddHerbalsLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var addnewHerbal = document.getElementById('addnewHerbal');
+            if (addnewHerbal.style.display === 'none') {
+                addnewHerbal.style.display = 'block'; // แสดง div
+            } else {
+                addnewHerbal.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+
         document.addEventListener("DOMContentLoaded", function() {
             var recipeElements = document.querySelectorAll('.hm-warnings');
             

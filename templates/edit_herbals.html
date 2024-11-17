@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <title>Trainning Model</title>
+    <title>แก้ไขข้อมูลยาสมุนไพร</title>
 </head> 
 <body>
     
@@ -20,13 +20,13 @@
     {% endwith %}
 
     <section id="sidebar">
-        <a href="" class="brand">
+        <a href="{{ url_for('dashboard') }}" class="brand">
             <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
-			<span class="text">Mongo</span>
+			<span class="text">Herbit</span>
 		</a>
 		<ul class="side-menu top">
 			<li>
-				<a href="">
+				<a href="{{ url_for('dashboard') }}">
 					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">แดชบอร์ด</span>
 				</a>
@@ -93,6 +93,11 @@
             <p style="color: rgb(161, 193, 226);">เป็นเพียงการให้ความรู้เกี่ยวกับยาสมุนไพร โดยอ้างอิงข้อมูลจาก NLEM:บัญชียาหลักแห่งชาติ (ฉบับที่ 2) พ.ศ. 2555 ประกาศ ณ วันที่ 21 สิงหาคม พ.ศ. 2555 เท่านั้น ไม่ใช่การรักษาโรคแต่อย่างใด หากป่วยควรพบแพทย์ผู้เชี่ยวชาญเพื่อรับการรักษาต่อไป</p>
         </div>
     </div>
+
+    <!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
+    <a href="{{ url_for('dashboard') }}" class="profile">
+        <img src="{{ url_for('static', filename='user_admin.png') }}">
+    </a>
 
 </nav>
 <!-- NAVBAR -->

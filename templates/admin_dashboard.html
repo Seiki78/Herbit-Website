@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <title>แดชบอร์ดแอดมิน</title>
+    <title>แดชบอร์ด</title>
 </head> 
 <body>
     
@@ -20,13 +20,13 @@
     {% endwith %}
 
     <section id="sidebar">
-        <a href="" class="brand">
+        <a href="{{ url_for('dashboard') }}" class="brand">
             <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
-			<span class="text">Mongo</span>
+			<span class="text">Herbit</span>
 		</a>
 		<ul class="side-menu top">
 			<li class="active">
-				<a href="">
+				<a href="{{ url_for('dashboard') }}">
 					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<span class="text">แดชบอร์ด</span>
 				</a>
@@ -89,6 +89,12 @@
     <i class='bx bx-menu'>
         <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
     </i>
+
+    <div class="marquee-container">
+        <div class="marquee">
+            <p style="color: rgb(161, 193, 226);">เป็นเพียงการให้ความรู้เกี่ยวกับยาสมุนไพร โดยอ้างอิงข้อมูลจาก NLEM:บัญชียาหลักแห่งชาติ (ฉบับที่ 2) พ.ศ. 2555 ประกาศ ณ วันที่ 21 สิงหาคม พ.ศ. 2555 เท่านั้น ไม่ใช่การรักษาโรคแต่อย่างใด หากป่วยควรพบแพทย์ผู้เชี่ยวชาญเพื่อรับการรักษาต่อไป</p>
+        </div>
+    </div>
   
     <!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
     <a href="" class="profile">
@@ -101,14 +107,99 @@
 <main>
     <div class="head-title">
         <div class="left">
-            <h1>แดชบอร์ดแอดมิน (ทดสอบ)</h1>
-            <ul class="breadcrumb">
+            <h1>แดชบอร์ด</h1>
+            <!-- <ul class="breadcrumb">
                 <li>
                     <a href="{{ url_for('dashboard') }}" class="active">หน้าหลัก</a>
                 </li>
-            </ul>
+            </ul> -->
         </div>
     </div>
+
+
+	<ul class="box-info">
+        <a href="{{ url_for('manage_members') }}">
+            <li style="background-color: rgb(47, 54, 144);">
+                <span class="text">
+                    <h3 style="color: white;">ผู้ดูแลระบบ</h3>
+                    <p style="color: white;">{{ admins_count }} บัญชีผู้ใช้</p>
+                </span>
+            </li> 
+        </a>
+        <a href="{{ url_for('manage_herbals') }}">
+            <li style="background-color: rgb(47, 54, 144);">
+                <span class="text">
+                    <h3 style="color: white;">ยาสมุนไพร</h3>
+                    <p style="color: white;">{{ herbals_count }} ชนิด</p>
+                </span>
+            </li>
+        </a>
+        <a href="{{ url_for('manage_chrosymps') }}">
+            <li style="background-color: rgb(47, 54, 144);">
+                <span class="text">
+                    <h3 style="color: white;">โรค (ประจำตัว)</h3>
+                    <p style="color: white;">{{ chronics_count }} รายการ</p>
+                </span>
+            </li>    
+        </a>
+        
+    </ul>
+
+	<ul class="box-info">
+        <a href="{{ url_for('manage_members') }}">
+            <li style="background-color: rgb(47, 54, 144);">
+                <span class="text">
+                    <h3 style="color: white;">สมาชิก</h3>
+                    <p style="color: white;">{{ members_count }} บัญชีผู้ใช้</p>
+                </span>
+            </li>
+        </a>
+        <a href="{{ url_for('manage_warnings') }}">
+            <li style="background-color: rgb(47, 54, 144);">
+                <span class="text">
+                    <h3 style="color: white;">คำเตือน (ใช้ยาสมุนไพร)</h3>
+                    <p style="color: white;">{{ warnings_count }} รายการ</p>
+                </span>
+            </li>    
+        </a>
+        <a href="{{ url_for('manage_chrosymps') }}">
+            <li style="background-color: rgb(47, 54, 144);">
+                <span class="text">
+                    <h3 style="color: white;">อาการต่าง ๆ</h3>
+                    <p style="color: white;">{{ members_count }} รายการ</p>
+                </span>
+            </li>    
+        </a>
+        
+    </ul>
+
+	<ul class="box-info">
+        <a href="{{ url_for('manage_trains') }}">
+            <li style="background-color: rgb(47, 54, 144);">
+                <span class="text">
+                    <h3 style="color: white;">ข้อมูล Training</h3>
+                    <p style="color: white;">{{ trains_count }} รายการ</p>
+                </span>
+            </li>     
+        </a>
+        <a href="{{ url_for('manage_medicines') }}">
+            <li style="background-color: rgb(47, 54, 144);">
+                <span class="text">
+                    <h3 style="color: white;">ยา (ที่ใช้)</h3>
+                    <p style="color: white;">{{ medicines_count }} ชนิด</p>
+                </span>
+            </li>    
+        </a>
+        <a href="{{ url_for('manage_allergys') }}">
+            <li style="background-color: rgb(47, 54, 144);">
+                <span class="text">
+                    <h3 style="color: white;">ข้อมูลการแพ้</h3>
+                    <p style="color: white;">{{ allergies_count }} รายการ</p>
+                </span>
+            </li>    
+        </a>
+        
+    </ul>
 
 
 </main>

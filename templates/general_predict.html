@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 	<link rel="icon" href="{{ url_for('static', filename='leafe_oo.png') }}" type="image/png">
 	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <title>หน้าหลัก</title>
+    <title>วิเคราะห์ยาสมุนไพร</title>
 </head> 
 <body>
     
@@ -21,34 +21,28 @@
     {% endwith %}
 
     <section id="sidebar">
-        <a href="" class="brand">
+        <a href="{{ url_for('index') }}"" class="brand">
             <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
-			<span class="text">Mongo</span>
+			<span class="text">Herbit</span>
 		</a>
 		<ul class="side-menu top">
             <li  class="active">
 				<a href="{{ url_for('index') }}">
 					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">Mongo test</span>
-				</a>
-			</li>
-			<li>
-				<a href="">
-					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='plant.png') }}" class="icon-mini" alt="Menu Icon"></i>
-					<span class="text">จัดการโรคประจำตัว</span>
+					<span class="text">วิเคราะห์ยาสมุนไพร</span>
 				</a>
 			</li>
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="{{ url_for('signin') }}" class="btn-open-modal btn-changepass" id="">
+				<a href="" class="btn-open-modal btn-changepass" id="" data-modal="login-modal">
 					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<p class="text">เข้าสู่ระบบ</p>
 				</a>
 			</li>
 			<li>
-				<a href="{{ url_for('signup') }}" class="btn-open-modal btn-changepass" id="">
-					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='enter.png') }}" class="icon-mini" alt="Menu Icon"></i>
+				<a href="" class="btn-open-modal btn-changepass" id="" data-modal="register-modal">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='add_herb.png') }}" class="icon-mini" alt="Menu Icon"></i>
 					<p class="text">สมัครสมาชิก</p>
 				</a>
 			</li>
@@ -82,7 +76,7 @@
 	<div class="modal-overlay"></div>
 
 	<!-- Modal เข้าสู่ระบบ -->
-	<div class="modal">
+	<div class="modal" id="login-modal">
 		<h2>เข้าสู่ระบบ</h2>
 			<form action="{{ url_for('signin') }}" method="POST">
 			<div class="form-group">
@@ -104,7 +98,7 @@
 	</div>
 
 	<!-- Modal สมัครสมาชิก -->
-	<div class="modal">
+	<div class="modal" id="register-modal">
 		<h2>สมัครสมาชิก</h2>
 			<form action="{{ url_for('signup') }}" method="POST">
 			<div class="form-group">
@@ -123,6 +117,41 @@
 					<input type="password" id="password" name="password" required>
 				</div>
 
+				<div class="form-group-horizontal2">
+					<label>ชื่อ-นามสกุล</label>
+					<input type="text" id="fname" name="fname" placeholder="ชื่อ" required>
+					<input type="text" id="lname" name="lname" placeholder="นามสกุล" required>
+				</div>
+				<div class="form-group-horizontal2">
+					<label for="dob">วัน/เดือน/ปีเกิด</label>
+					<input type="date" name="dob" id="" required>
+				</div>
+				<div class="form-group-horizontal2">
+					<label for="gender">เพศ</label>
+					<select name="gender" id="gender" onchange="toggleFemaleField()" required>
+						<option value="">--เลือก--</option>
+						<option value="0">ชาย</option>
+						<option value="1">หญิง</option>
+					</select>
+				</div>
+				<div id="FemaleField" style="display: none;">
+					<div class="form-group-horizontal2">
+						<label for="pregnant">การตั้งครรภ์</label>
+						<input type="checkbox" id="pregnant" name="pregnant" value="1"/>
+
+						<label for="breastfeeding">การให้นมบุตร</label>
+						<input type="checkbox" id="breastfeeding" name="breastfeeding" value="1"/>
+					</div>
+				</div>
+				
+				<div class="form-group-horizontal2">
+					<label for="weight">น้ำหนัก</label>
+					<input type="int" name="weight" id="" placeholder="กก." required>
+					<label for="height">&nbsp;&nbsp;ส่วนสูง</label>
+					<input type="int" name="height" id="" placeholder="ซม." required>
+				</div>
+
+
 			</div>
 
 			<button type="submit" class="btn-submit">ยืนยัน</button><br>
@@ -130,15 +159,474 @@
 		</form>
 	</div>
 
-
-	<div class="head-title"></div>
-        <div class="left">
-            <h1>general_predict</h1>
-        </div>
-    </div>
-
-	<br>
 	
+
+
+	<form action="{{ url_for('predict') }}" method="POST">
+		
+		<div class="layout-container">
+			<div class="layout-box box-left-top">
+	
+				<div class="content">
+					<div class="text-container">
+						<h4 style="display: inline;">ขั้นที่ 1 <span style="color: var(--blue);">เลือก อาการ</span>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(อย่างน้อย 1 รายการ)</p><br>
+						<h4 style="display: inline;">ขั้นที่ 2 <span style="color: var(--blue);">ระบุวัน/เดือน/ปีเกิด</span>&nbsp;</h4><p style="display: inline; color: rgb(223, 103, 82);">(จำเป็น)</p><br>
+						<h4 style="display: inline;">ขั้นที่ 3 <span style="color: var(--blue);">เลือกข้อมูลสุขภาพ</span>&nbsp;</h4><p style="display: inline;">เช่น โรคประจำตัว การตั้งครรภ์ (หากมี)</p><br>
+						<br>
+						<h3>ขั้นสุดท้าย <span style="color: var(--blue);">กดยืนยันข้อมูล</span> เพื่อเริ่มวิเคราะห์ยาสมุนไพร</h3>
+					</div>
+				</div>	
+	
+			</div>
+	
+			<div class="layout-box box-right-top">
+				<div>
+	
+					<div>
+						<div class="content">
+							<div class="text-container">
+								<h2 style="display: inline;">วัน/เดือน/ปีเกิด</h2>&nbsp;<p style="display: inline; color: rgb(223, 103, 82);">(จำเป็น)</p>
+							</div>
+						</div><br>
+						<input type="date" name="dob" id="" required>
+	
+					</div><br>
+	
+				</div>
+	
+	
+			</div>
+			<div class="layout-box box-left-bottom">
+				<h4>กดเลือกหมวดหมู่เพื่อดูรายการเพิ่มเติม</h4><p style="display: inline; color: rgb(161, 193, 226);">(กดอีกครั้งเพื่อซ่อน และการเลือกจะไม่หายไป)</p>
+
+				<ul class="box-info">
+					<a href="" id="toggleDizzinessLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: หน้ามืด วิงเวียน</h3>
+							</span>
+						</li> 
+					</a>  
+					
+					<div id="typeDizziness" style="display:none;">
+	
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="dizziness1" id="" value="1">
+									<span>เวียนหัว</span>
+								</label>
+								<label>
+									<input type="checkbox" name="dizziness2" id="" value="1">
+									<span>หน้ามืด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="dizziness3" id="" value="1">
+									<span>ตาลาย</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="tired" id="" value="1">
+									<span>อ่อนเพลีย</span>
+								</label>
+								<label>
+									<input type="checkbox" name="cannot_sleep" id="" value="1">
+									<span>นอนไม่หลับ</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="dizziness4" id="" value="1">
+									<span>ลมปลายไข้</span>
+									
+								</label>
+								<div class="tooltip-container">
+									<img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+									<span class="tooltip-text">หลังฟื้นไข้แล้วยังมีอาการ เช่น คลื่นไส้ วิงเวียน เบื่ออาหาร ท้องอืด และอ่อนเพลีย</span>
+								</div>
+								<label>
+									<input type="checkbox" name="dizziness5" id="" value="1">
+									<span>ลมกองหยาบ</span>
+								</label>
+								<div class="tooltip-container">
+									<img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+									<span class="tooltip-text">อาการท้องอืด แน่นท้อง แน่นหน้าอก หน้ามืด และเวียนศีรษะ เคลื่อนไปตามส่วนต่าง ๆ ของร่างกาย</span>
+								</div>
+							</div>
+		
+						</div>
+					</div>
+
+					<a href="" id="toggleColicLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: ทรวงอก หัวใจ และอื่น ๆ</h3>
+							</span>
+						</li> 
+					</a>
+					<div id="typeColic" style="display:none;">
+	
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="colic1" id="" value="1">
+									<span>จุกเสียด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Palpitations" id="" value="1">
+									<span>ใจสั่น/ใจหวิว</span>
+								</label>
+							</div>
+						</div>
+		
+					</div>  
+
+					<a href="" id="toggleStomachLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: ทางเดินอาหาร ระบบขับถ่าย</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeStomach" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="squeamish" id="" value="1">
+									<span>คลื่นไส้</span>
+								</label>
+								<label>
+									<input type="checkbox" name="vomit" id="" value="1">
+									<span>อาเจียน</span>
+								</label>
+								<label>
+									<input type="checkbox" name="flatulence" id="" value="1">
+									<span>ท้องอืด ท้องเฟ้อ</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="stomach_ache" id="" value="1">
+									<span>ปวดท้อง</span>
+								</label>
+								<label>
+									<input type="checkbox" name="constipation1" id="" value="1">
+									<span>ท้องผูก</span>
+								</label>
+								<label>
+									<input type="checkbox" name="diarrhea1" id="" value="1">
+									<span>ท้องเสีย</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="hemorrhoids" id="" value="1">
+									<span>ริดสีดวงทวาร</span>
+								</label>
+							</div>
+	
+						</div>
+
+					</div>
+
+					<a href="" id="toggleWomanLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: นรีเวช</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeWoman" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="menstruation" id="" value="1">
+									<span>ประจำเดือนมาไม่สม่ำเสมอ</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="Menstrual_cramps" id="" value="1">
+									<span>ปวดประจำเดือน</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="Lochia" id="" value="1">
+									<span>น้ำคาวปลา</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Vaginal_Discharge" id="" value="1">
+									<span>ตกขาว</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="postpartum_woman" id="" value="1">
+									<span>หญิงหลังคลอด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Nourish_blood" id="" value="1">
+									<span>บำรุงเลือด</span>
+								</label>
+							</div>
+						</div>
+
+					</div>
+
+					<a href="" id="toggleFeverLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: ไข้ หวัด และอื่น ๆ</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeFever" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="fever1" id="" value="1">
+									<span>ไข้</span>
+								</label>
+								<label>
+									<input type="checkbox" name="cold" id="" value="1">
+									<span>หวัด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Allergic_Rhinitis" id="" value="1">
+									<span>แพ้อากาศ</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="cough" id="" value="1">
+									<span>ไอ</span>
+								</label>
+								<label>
+									<input type="checkbox" name="phlegm" id="" value="1">
+									<span>เสมหะ</span>
+								</label>
+								<label>
+									<input type="checkbox" name="inner_heat" id="" value="1">
+									<span>ร้อนใน</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="Measles" id="" value="1">
+									<span>พิษหัด</span>
+								</label>
+								<label>
+									<input type="checkbox" name="Chickenpox" id="" value="1">
+									<span>พิษอีสุกอีใส</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="fever2" id="" value="1">
+									<span>ไข้ตานซาง</span>
+								</label>
+								<div class="tooltip-container">
+									<img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+									<span class="tooltip-text">ไข้ตานซาง(สำหรับเด็ก) มีไข้ มีตุ่มใสขึ้นภายในปากกลืนนัำลายลำบาก ไม่ยอมดื่มนม มีผื่นสีแดงขึ้นบริเวณผิวหนังทั่วร่างกาย ผื่นมีลักษณะเหมือนหนังปลากระเบน และมีอาการท้องผูก</span>
+								</div>
+								<label>
+									<input type="checkbox" name="fever3" id="" value="1">
+									<span>ไข้กาฬ</span>
+								</label>
+								<div class="tooltip-container">
+									<img src="{{ url_for('static', filename='information.png') }}" class="tooltip-icon" alt="info">
+									<span class="tooltip-text">มีไข้สูง และอาเจียน มีผื่นสีคล้ำเกิดขึ้นตามร่างกาย บางรายอาจมีอาการคอแข็ง และหลังแอ่น</span>
+								</div>
+							</div>
+		
+						</div>
+
+					</div>
+
+					<a href="" id="toggleMusclesLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: กล้ามเนื้อ เส้นเอ็น</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeMuscles" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="body_aches" id="" value="1">
+									<span>ปวดเมื่อยตามร่างกาย</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="tendon" id="" value="1">
+									<span>ปวดตามเส้นเอ็น</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="Tight_numb" id="" value="1">
+									<span>กล้ามเนื้อมือ เท้า ตึงหรือชา</span>
+								</label><br>
+								<label>
+									<input type="checkbox" name="muscles_tendons" id="" value="1">
+									<span>กษัยเส้น</span>
+								</label>
+							</div>
+		
+						</div>
+
+					</div>
+
+				</ul>
+
+	
+				
+				
+			</div>
+	
+			<div class="layout-box box-right-bottom">
+	
+				<div>
+					<div class="content">
+						<div class="text-container">
+							<h2 style="display: inline;">ข้อมูลสุขภาพ</h2>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(มีผลต่อการวิเคราะห์ข้อมูล)</p>
+						</div>
+					</div>
+	
+				</div><br>
+	
+				<div>
+					<div class="content">
+						<div class="text-container">
+							<h3><img src="{{ url_for('static', filename='pregnant_4370507.png') }}" class="bunny" alt="Menu Icon">การตั้งครรภ์</h3>
+							
+							<input id="pregnant" name="pregnant" type="checkbox" value="1"/>
+							<label style="color: rgb(161, 193, 226);">(เลือกหากกำลังตั้งครรภ์)</label>
+						</div>&nbsp;
+						<div class="text-container">
+							<h3><img src="{{ url_for('static', filename='breastfeeding.png') }}" class="bunny" alt="Menu Icon">ให้นมบุตร</h3>
+							
+							<input id="breastfeeding" name="breastfeeding" type="checkbox" value="1"/>
+							<label style="color: rgb(161, 193, 226);">(เลือกหากกำลังให้นมบุตร)</label>
+						</div>
+					</div>
+	
+				</div>
+				<br>
+				<div class="underline"></div><br>
+	
+				<div>
+					<div class="content">
+						<div class="text-container">
+							<h3 style="display: inline;">โรคประจำตัว &nbsp;</h3><p style="display: inline; color: rgb(161, 193, 226);">(เลือกแล้วกดเพิ่ม)</p>
+						</div>
+					</div>
+	
+				</div><br>
+	
+				<div>
+					<div class="order">
+	
+						<div class="head">
+							<div class="selected-list">
+		
+								<table class="chronicsTable" id="selectedChronicsList">
+
+								<tbody>
+									 <!-- Selected items will be displayed here -->
+								</tbody>
+							</table>
+							</div>
+							
+						</div>
+				  
+						<div class="head">
+							<select id="chronics" name="chronics" multiple>
+								<option value="">-- เลือก --</option>
+								{% for chronic in chronics %}
+									<option value="{{ chronic['cn_id'] }}">{{ chronic['cn_name'] }}</option> 
+								{% endfor %}
+							</select>
+							<button type="button" onclick="addSelected('chronics')">เพิ่มข้อมูล</button>
+						</div>
+	
+	
+					</div>		
+				</div>
+	
+	
+				<div class="underline"></div><br>
+	
+				<div>
+					<div class="content">
+						<div class="text-container">
+							<h3 style="display: inline;">ข้อมูลการแพ้ &nbsp;</h3><p style="display: inline; color: rgb(161, 193, 226);">(เลือกแล้วกดเพิ่ม)</p>
+						</div>
+					</div>
+	
+				</div><br>
+	
+				<div>
+					<div class="order">
+	
+						<div class="head">
+							<div class="selected-list">
+		
+								<table class="allergysTable" id="selectedAllergysList">
+
+								<tbody>
+									 <!-- Selected items will be displayed here -->
+								</tbody>
+							</table>
+							</div>
+							
+						</div>
+				
+						<div class="head">
+							<select id="allergys" name="allergys" multiple>
+								<option value="">-- เลือก --</option>
+								{% for allergy in allergys %}
+									<option value="{{ allergy['ag_id'] }}">{{ allergy['ag_name'] }}</option> 
+								{% endfor %}
+							</select>
+							<button type="button" onclick="addSelected('allergys')">เพิ่มข้อมูล</button>
+						</div>
+	
+					</div>		
+				</div>
+	
+				<div class="underline"></div>
+
+				<div>
+					<div class="content">
+						<div class="text-container">
+							<h3 style="display: inline;">ข้อมูลการใช้ยา &nbsp;</h3><p style="display: inline; color: rgb(161, 193, 226);">(เลือกแล้วกดเพิ่ม)</p>
+						</div>
+					</div>
+	
+				</div><br>
+
+				<div class="head">
+					<div class="selected-list">
+
+						<table class="medicinesTable" id="selectedMedicinesList">
+						<tbody>
+							 <!-- Selected items will be displayed here -->
+						</tbody>
+					</table>
+					</div>
+					
+				</div>
+
+				<div class="head">
+					<select id="medicines" name="medicines" multiple>
+						<option value="">-- เลือก --</option>
+						{% for medicine in medicines %}
+							<option value="{{ medicine['md_id'] }}">{{ medicine['md_nameEN'] }} - {{ medicine['md_nameTH'] }}</option> 
+						{% endfor %}
+					</select>
+					<button type="button" onclick="addSelected('medicines')">เพิ่มข้อมูล</button>
+				</div>
+	
+				<div>
+					
+					<div class="bot2">
+						<button type="submit" class="btn1">
+							<span class="text"><h3>ยืนยันข้อมูล</h3></span>
+						</button>
+					</div>
+					<label style="color: rgb(161, 193, 226);">(กดเพื่อเริ่มวิเคราะห์ยาสมุนไพร)</label>
+				</div>
+	
+					
+			</div>
+		</div>
+		
+	</form> 
 
 </main>
 <!-- MAIN -->
@@ -147,26 +635,156 @@
 
 
     <script>
+		document.getElementById('toggleDizzinessLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeDizziness = document.getElementById('typeDizziness');
+            if (typeDizziness.style.display === 'none') {
+                typeDizziness.style.display = 'block'; // แสดง div
+            } else {
+                typeDizziness.style.display = 'none'; // ซ่อน div
+            }
+        });
 
-			// Modal
-			const modal = document.querySelector('.modal');
+		document.getElementById('toggleColicLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeColic = document.getElementById('typeColic');
+            if (typeColic.style.display === 'none') {
+                typeColic.style.display = 'block'; // แสดง div
+            } else {
+                typeColic.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleStomachLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeStomach = document.getElementById('typeStomach');
+            if (typeStomach.style.display === 'none') {
+                typeStomach.style.display = 'block'; // แสดง div
+            } else {
+                typeStomach.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleWomanLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeWoman = document.getElementById('typeWoman');
+            if (typeWoman.style.display === 'none') {
+                typeWoman.style.display = 'block'; // แสดง div
+            } else {
+                typeWoman.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleFeverLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeFever = document.getElementById('typeFever');
+            if (typeFever.style.display === 'none') {
+                typeFever.style.display = 'block'; // แสดง div
+            } else {
+                typeFever.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleMusclesLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeMuscles = document.getElementById('typeMuscles');
+            if (typeMuscles.style.display === 'none') {
+                typeMuscles.style.display = 'block'; // แสดง div
+            } else {
+                typeMuscles.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+
+		function addSelected(type) {
+            const select = document.getElementById(type);
+            const selectedList = document.getElementById(`selected${type.charAt(0).toUpperCase() + type.slice(1)}List`);
+
+            const selectedOptions = Array.from(select.selectedOptions);
+
+            selectedOptions.forEach(option => {
+                // ตรวจสอบว่ามีรายการนี้อยู่แล้วในรายการที่เลือกหรือไม่
+                if (!Array.from(selectedList.children).some(tr => tr.dataset.value === option.value)) {
+                    const tr = document.createElement('tr');
+                    const tdText = document.createElement('td');
+                    tdText.textContent = option.textContent;
+                    const tdAction = document.createElement('td');
+                    
+                    // สร้างปุ่มลบ
+                    const removeButton = document.createElement('button');
+                    removeButton.type = 'button'; // Prevent form submission
+                    removeButton.textContent = 'ลบ';
+                    removeButton.onclick = () => {
+                        selectedList.querySelector(`tr[data-value="${option.value}"]`).remove();
+                        document.querySelector(`input[name="${type}"][value="${option.value}"]`).remove();
+                    };
+                    tdAction.appendChild(removeButton);
+
+                    tr.appendChild(tdText);
+                    tr.appendChild(tdAction);
+
+                    tr.dataset.value = option.value; // Store value in dataset
+
+                    selectedList.querySelector('tbody').appendChild(tr);
+
+                    // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = type;
+                    hiddenInput.value = option.value;
+                    document.querySelector('form').appendChild(hiddenInput);
+                }
+                option.selected = false; // Deselect the option after adding
+            });
+        }
+
+
+		document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
+            checkbox.addEventListener('change', (event) => {
+                event.target.value = event.target.checked ? "1" : "0";
+            });
+        }); // เพิ่ม event listener เมื่อค่า checkbox เปลี่ยนแปลง
+
+        // ฟังก์ชัน toggleFemaleField() 
+        function toggleFemaleField() {
+            var genderSelect = document.getElementById("gender");
+            var selectedValue = genderSelect.options[genderSelect.selectedIndex].value;
+            var FemaleField = document.getElementById("FemaleField");
+            if (selectedValue == "1") {
+                FemaleField.style.display = "block";
+            } else {
+                FemaleField.style.display = "none";
+            }
+        }
+
+
+		document.addEventListener('DOMContentLoaded', () => {
+			const modals = document.querySelectorAll('.modal');
 			const overlay = document.querySelector('.modal-overlay');
-			const openModalBtn = document.querySelector('.btn-open-modal');
+			const openModalBtns = document.querySelectorAll('.btn-open-modal');
 
-			if (modal && overlay && openModalBtn) {
-				// เปิด modal เมื่อคลิกปุ่ม
-				openModalBtn.addEventListener('click', function(e) {
-					e.preventDefault();
-					modal.classList.add('active');
-					overlay.classList.add('active');
-				});
+			// ฟังก์ชันเปิด Modal
+			openModalBtns.forEach(btn => {
+				btn.addEventListener('click', event => {
+					event.preventDefault();
+					const modalId = btn.getAttribute('data-modal');
+					const modal = document.getElementById(modalId);
 
-				// ปิด modal เมื่อคลิกที่พื้นหลังโปร่งแสง overlay
-				overlay.addEventListener('click', function() {
-					modal.classList.remove('active');
-					overlay.classList.remove('active');
+					if (modal) {
+						modal.classList.add('active');
+						overlay.classList.add('active');
+					}
 				});
-			}
+			});
+
+			// ฟังก์ชันปิด Modal เมื่อคลิกที่ overlay
+			overlay.addEventListener('click', () => {
+				modals.forEach(modal => modal.classList.remove('active'));
+				overlay.classList.remove('active');
+			});
+		});
+
+		
 
     </script>
 	  
