@@ -1385,7 +1385,7 @@ def member_predict(user_id):
     if not user:
         return redirect(url_for('index'))
 
-    return render_template('member_predict.html')
+    return render_template('member_predict.html', user=user)
 
 @app.route('/mb_predict/<user_id>')
 @login_required
