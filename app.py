@@ -1387,7 +1387,7 @@ def member_predict(user_id):
 
     return render_template('member_predict.html', user=user)
 
-@app.route('/mb_predict/<user_id>')
+@app.route('/mb_predict/<user_id>', methods=['POST'])
 @login_required
 def mb_predict(user_id):
 
