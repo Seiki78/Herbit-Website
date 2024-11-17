@@ -133,6 +133,7 @@
                     <tr>
                         <td>{{ chronic['cn_id'] }}</td>
                         <td>{{ chronic['cn_name'] }}</td>
+                        <td>{{ chronic['cn_nameEN'] }}</td>
                         <td>
                             <a href="">แก้ไข</a>
                             <form action="{{ url_for('delete_chronic', chronic_id=chronic['_id']) }}" method="POST" style="display:inline;">
@@ -142,7 +143,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="2">ไม่พบข้อมูล</td>
+                        <td colspan="3">ไม่พบข้อมูล</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -150,8 +151,10 @@
             </table>
             <br>
             <form action="{{ url_for('add_chronic') }}" method="POST">
-                <label for="cn_name">ชื่อโรค/อาการ</label>
-                <input type="text" id="cn_name" name="cn_name" required>
+                <label for="cn_name">ชื่อโรค/อาการ (ภาษาไทย)</label>
+                <input type="text" id="cn_name" name="cn_name" required><br>
+                <label for="cn_name">ชื่อโรค/อาการ (ภาษาอังกฤษ)</label>
+                <input type="text" id="cn_nameEN" name="cn_nameEN" required><br>
                 <button type="submit" class="btn-submit">เพิ่ม</button>
             </form>
         

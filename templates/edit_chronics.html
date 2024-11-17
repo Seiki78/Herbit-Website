@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <title>แก้ไขข้อมูลโรค</title>
+    <title>แก้ไขข้อมูลยาสมุนไพร</title>
 </head> 
 <body>
     
@@ -94,7 +94,7 @@
         </div>
     </div>
 
-	<!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
+    <!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
     <a href="{{ url_for('dashboard') }}" class="profile">
         <img src="{{ url_for('static', filename='user_admin.png') }}">
     </a>
@@ -107,27 +107,62 @@
 
 	<div class="head-title">
         <div class="left">
-            <h2>โรคประจำตัว</h2>
+            <h2>ข้อมูลโรคและอาการ</h2>
             <ul class="breadcrumb">
                 <li>
-                    <a href="{{ url_for('manage_chronics') }}">จัดการข้อมูล</a>
+                    <a href="{{ url_for('manage_chrosymps') }}">หน้าหลัก</a>
                 </li>
 				<li><i class='bx bx-chevron-right' ></i></li>
                 <li>
-                    <a class="active" href="">แก้ไขข้อมูล</a>
+                    <a class="active" href="{{ url_for('edit_chronic', chronic_id=chronic['_id']) }}">แก้ไขข้อมูล</a>
                 </li>
             </ul>
         </div>
 
+    </div><br>
+
+    <form action="{{ url_for('edit_chronic', chronic_id=chronic['_id']) }}" method="POST">
+
+    <div>
+        <div class="content">
+            <div class="text-container">
+                <span><h2 style="align-items: center;">แก้ไขข้อมูล</h2>&nbsp;<p>รหัสโรค - {{ chronic['cn_id'] }}</p></span>
+            </div>
+
+        </div>
+
     </div>
-	
-	<h4>แก้ไขข้อมูลโรคประจำตัว</h4>
-	<form action="{{ url_for('edit_chronic', chronic_id=chronic['_id']) }}" method="POST">
-		<label for="cn_n">ชื่อโรค</label>
-		<input type="text" id="cn_n" name="cn_n" value="{{ chronic['cn_n'] }}" required>
-		<br>
-		<button type="submit" class="btn-submit">บันทึกการแก้ไข</button>
-	</form>
+
+        <div class="table-data">
+        
+            <div class="order">
+                <table>
+                    <tr>
+                        <th>
+                            <label for="cn_name">ชื่อโรค (ภาษาไทย)</label>
+                        </th>
+                        <td>
+                            <input type="text" name="cn_name" value="{{ chronic['cn_name'] }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label for="cn_nameEN">ชื่อโรค (ภาษาอังกฤษ)</label>
+                        </th>
+                        <td>
+                            <input type="text" name="cn_nameEN" value="{{ chronic['cn_nameEN'] }}">
+                        </td>
+                    </tr>
+
+                </table><br>
+
+                <button type="submit" class="btn-submit">บันทึกการแก้ไข</button>
+
+            </div>
+     
+        </div>
+
+    </form>
 	
 
 </main>
@@ -137,7 +172,8 @@
 
 
     <script>
-    
+
+        
     </script>
     
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

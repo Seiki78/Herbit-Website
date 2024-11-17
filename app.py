@@ -1042,9 +1042,10 @@ def add_chronic():
     else:
         cn_id = 101  # กำหนดค่าเริ่มต้นเป็น 101 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
     cn_name = request.form['cn_name']
+    cn_nameEN = request.form['cn_nameEN']
     
     # เพิ่มข้อมูลใหม่ลงใน Collection chronic
-    chronics_data_collection.insert_one({'cn_id': cn_id, 'cn_name': cn_name})
+    chronics_data_collection.insert_one({'cn_id': cn_id, 'cn_name': cn_name, 'cn_nameEN': cn_nameEN})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_chrosymps'))
@@ -1057,28 +1058,22 @@ def delete_chronic(chronic_id):
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_chrosymps'))
 
-# @app.route('/edit_chronic/<chronic_id>', methods=['GET', 'POST'])
-# def edit_chronic(chronic_id):
-#     if request.method == 'POST':
-#         cn_n = request.form['cn_n']
+@app.route('/edit_chronic/<chronic_id>', methods=['GET', 'POST'])
+def edit_chronic(chronic_id):
+    if request.method == 'POST':
+        cn_name = request.form['cn_name']
+        cn_nameEN = request.form['cn_nameEN']
         
-#         # อัปเดตเฉพาะชื่อโรคใน MongoDB
-#         chronics_data_collection.update_one({'_id': ObjectId(chronic_id)}, {'$set': {'cn_n': cn_n}})
+        # อัปเดตเฉพาะชื่อโรคใน MongoDB
+        chronics_data_collection.update_one({'_id': ObjectId(chronic_id)}, {'$set': {'cn_name': cn_name, 'cn_nameEN': cn_nameEN}})
         
-#         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
-#         return redirect(url_for('manage_chronics'))
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_chrosymps'))
     
-#     # ดึงข้อมูลโรคที่ต้องการแก้ไข
-#     chronic = chronics_data_collection.find_one({'_id': ObjectId(chronic_id)})
-#     return render_template('edit_chronics.html', chronic=chronic)
+    # ดึงข้อมูลโรคที่ต้องการแก้ไข
+    chronic = chronics_data_collection.find_one({'_id': ObjectId(chronic_id)})
 
-# @app.route('/manage_symptoms')
-# def manage_symptoms():
-
-#     # ดึงข้อมูลทั้งหมดจาก Collection
-#     symptoms = symptoms_data_collection.find()  # `find()` จะดึงเอกสารทั้งหมด
-
-#     return render_template('manage_chrosymps.html', symptoms=symptoms)
+    return render_template('edit_chronics.html', chronic=chronic)
 
 @app.route('/add_symptom', methods=['POST'])
 def add_symptom():
