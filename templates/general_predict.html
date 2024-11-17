@@ -162,7 +162,7 @@
 	
 
 
-	<form action="{{ url_for('predict') }}" method="POST">
+	<form action="{{ url_for('predict') }}" method="POST" onsubmit="return validateForm()">
 		
 		<div class="layout-container">
 			<div class="layout-box box-left-top">
@@ -635,6 +635,23 @@
 
 
     <script>
+
+		function validateForm() {
+
+		const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+		const symptomCheckboxes = Array.from(allCheckboxes).filter(checkbox => checkbox.name !== 'pregnant' && checkbox.name !== 'breastfeeding');
+
+		const isSymptomChecked = symptomCheckboxes.some(checkbox => checkbox.checked);
+
+		if (!isSymptomChecked) {
+		alert('กรุณาเลือกอย่างน้อย 1 อาการ');
+		return false;
+		}
+
+		return true;
+		}
+
+
 		document.getElementById('toggleDizzinessLink').addEventListener('click', function(e) {
             e.preventDefault(); // ป้องกันการทำงานของลิงก์
             var typeDizziness = document.getElementById('typeDizziness');
