@@ -1406,24 +1406,17 @@ def mb_predict(user_id):
     breastfeeding = user.get('breastfeeding')
 
     user_u_id = user['u_id']
-        
-    # ดึงข้อมูลโรคประจำตัวจาก u_cn_collection โดยใช้ u_id
-    existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user_u_id})]
-        
-    # ดึงข้อมูลยาที่ใช้จาก u_md_collection โดยใช้ u_id
-    existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user_u_id})]
-        
-    # ดึงข้อมูลการแพ้จาก u_ag_collection โดยใช้ u_id
-    existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user_u_id})]
-        
-    # ดึงข้อมูลโรคประจำตัวจาก collection chronics_data
-    selected_chronics = list(chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}}))
-        
-    # ดึงข้อมูลยาที่ใช้จาก collection medicines_data
-    selected_medicines = list(medicines_data_collection.find({'md_id': {'$in': existing_md_ids}}))
-        
-    # ดึงข้อมูลการแพ้จาก collection allergys_data
-    selected_allergys = list(allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}}))
+    print(f'user_u_id: {user_u_id}')
+
+    # ตรวจสอบค่า (ที่ดึงมา)
+    selected_chronics = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user_u_id})]
+    print(f'existing_cn_ids: {selected_chronics}')
+
+    selected_medicines = [rel['md_id'] for rel in u_md_collection.find({'u_id': user_u_id})]
+    print(f'existing_md_ids: {selected_medicines}')
+
+    selected_allergys = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user_u_id})]
+    print(f'existing_ag_ids: {selected_allergys}')
 
     dizziness1 = int(request.form.get('dizziness1', 0))
     Palpitations = int(request.form.get('Palpitations', 0))
