@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>ผลการวิเคราะห์ยาสมุนไพร</title>
+</head> 
+<body>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-overlay alert-{{ category }} hidden">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <section id="sidebar">
+        <a href="{{ url_for('dashboard') }}" class="brand">
+            <i class='bx bxs-smile'><img src="{{ url_for('static', filename='herbs_icon01.png') }}" class="icon-mini" alt="Menu Icon"></i>
+			<span class="text">Herbit</span>
+		</a>
+		<ul class="side-menu top">
+			<li>
+				<a href="{{ url_for('dashboard') }}">
+					<i class='bx bxs-dashboard' ><img src="{{ url_for('static', filename='dashboard.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">แดชบอร์ด</span>
+				</a>
+			</li>
+			<li>
+				<a href="{{ url_for('profile') }}">
+					<i class='bx bxs-shopping-bag-alt' ><img src="{{ url_for('static', filename='health-report.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">โปรไฟล์</span>
+				</a>
+			</li>
+			<li class="active">
+				<a href="">
+					<i class='bx bxs-message-dots' ><img src="{{ url_for('static', filename='medical.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">วิเคราะห์ยาสมุนไพร</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="side-menu">
+			<li>
+				<a href="{{ url_for('logout') }}" class="logout">
+					<i class='bx bxs-log-out-circle' ><img src="{{ url_for('static', filename='logout.png') }}" class="icon-mini" alt="Menu Icon"></i>
+					<span class="text">ออกจากระบบ</span>
+				</a>
+			</li>
+		</ul>
+
+    </section>
+
+
+
+
+    <section id="content">
+<!-- NAVBAR -->
+<nav>
+    <!-- เมนูไอคอนอยู่ชิดซ้าย -->
+    <i class='bx bx-menu'>
+        <img src="{{ url_for('static', filename='menu-regular-24.png') }}" alt="Menu Icon">
+    </i>
+
+    <div class="marquee-container">
+        <div class="marquee">
+            <p style="color: rgb(161, 193, 226);">เป็นเพียงการให้ความรู้เกี่ยวกับยาสมุนไพร โดยอ้างอิงข้อมูลจาก NLEM:บัญชียาหลักแห่งชาติ (ฉบับที่ 2) พ.ศ. 2555 ประกาศ ณ วันที่ 21 สิงหาคม พ.ศ. 2555 เท่านั้น ไม่ใช่การรักษาโรคแต่อย่างใด หากป่วยควรพบแพทย์ผู้เชี่ยวชาญเพื่อรับการรักษาต่อไป</p>
+        </div>
+    </div>
+
+	<!-- โปรไฟล์ไอคอนอยู่ชิดขวา -->
+    <a href="{{ url_for('profile') }}" class="profile">
+        <img src="{{ url_for('static', filename='user.png') }}">
+    </a>
+
+  
+  </nav>
+<!-- NAVBAR -->
+
+<!-- MAIN -->
+<main>
+
+    <div class="head-title">
+        <div class="left">
+            <h1>ผลการวิเคราะห์ยาสมุนไพร</h1>          
+        </div>
+    </div>
+
+
+<div class="table-data">
+
+    <ul>
+        {% for prediction in predictions %}
+                <li class="medication">
+                    <div class="medication-name" onclick="toggleDetails(this)">
+						<h3>{{ prediction.hm_name }}</h3>
+                        
+                        <div class="medication-info">
+
+                            <div class="meds-info">
+                                <span class="info-title">อาการที่เกี่ยวข้อง:</span><div class="hm-symptoms">
+								{% if prediction.symptoms %}
+									{{ prediction.symptoms | join(", ") }}
+								{% else %}
+									-
+								{% endif %}
+								</div>
+                            </div>
+                            <div class="meds-info">
+                                <span class="info-title">ตำรับยา:</span><div class="hm-recipes">{{ prediction.hm_recipe }}</div>
+                            </div>
+                            <div class="meds-info">
+                                <span class="info-title">วิธีใช้ยา:</span><div class="hm-dosages">{{ prediction.hm_dosage }}</div>
+                            </div>
+                            <div class="meds-info">
+                                <span class="info-title">คำเตือน:</span><div class="medication-warning">
+								{% if prediction.warnings %}
+									{{ prediction.warnings | safe }}
+								{% else %}
+									-
+								{% endif %}
+								</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+		{% endfor %}
+    </ul>
+
+    
+</div>
+
+</main>
+<!-- MAIN -->
+
+    </section>
+
+
+    <script>
+		
+		function toggleDetails(element) {
+            var info = element.querySelector('.medication-info');
+            if (info.style.display === 'none' || info.style.display === '') {
+                info.style.display = 'block';
+            } else {
+                info.style.display = 'none';
+            }
+        }
+
+
+		document.addEventListener("DOMContentLoaded", function() {
+			var recipeElements = document.querySelectorAll('.hm-recipes');
+			recipeElements.forEach(function(element) {
+				var rawText = element.textContent || element.innerText;
+				var formattedText = formatRecipeText(rawText);
+				element.innerHTML = formattedText;
+			});
+
+			var dosagesElements = document.querySelectorAll('.hm-dosages');
+			dosagesElements.forEach(function(element) {
+				var rawText = element.textContent || element.innerText;
+				var formattedText = formatDosageText(rawText);
+				element.innerHTML = formattedText;
+			});
+
+			var symptomElements = document.querySelectorAll('.hm-symptoms');
+			symptomElements.forEach(function(element) {
+				var rawText = element.textContent || element.innerText;
+				var formattedText = formatSymptomText(rawText);
+				element.innerHTML = formattedText;
+			});
+		});
+
+		// ฟังก์ชันสำหรับตำรับยา
+		function formatRecipeText(text) {
+			var formattedText = text.replace(/,/g, '<br>');  // แยกตำรับยาเป็นบรรทัดใหม่
+			return formattedText;
+		}
+
+		// ฟังก์ชันสำหรับวิธีการใช้ยา
+		function formatDosageText(text) {
+			var formattedText = text.replace(/,/g, '<br>');  // แยกวิธีการใช้ยาเป็นบรรทัดใหม่
+			return formattedText;
+		}
+
+		// ฟังก์ชันสำหรับอาการที่เกี่ยวข้อง
+		function formatSymptomText(text) {
+			var formattedText = text.replace(/,/g, '&nbsp;');  // แยกอาการที่เกี่ยวข้องด้วยเว้นวรรค
+			return formattedText;
+		}
+
+        
+    </script>       
+              
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

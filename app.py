@@ -1365,13 +1365,239 @@ def general_predict():
 
     return render_template('general_predict.html', chronics=chronics, medicines=medicines, allergys=allergys)
 
-@app.route('/member_predict')
+@app.route('/member_predict/<user_id>')
 @login_required  # ใช้ @login_required เพื่อให้แน่ใจว่าเพจนี้สามารถเข้าถึงได้เฉพาะผู้ใช้ที่ล็อกอินแล้วเท่านั้น
-def member_predict():
-    # โค้ดของหน้า predict สำหรับสมาชิกที่ล็อกอินแล้ว
-    
+def member_predict(user_id):
 
-    return render_template('member_predict.html')
+    # predict สำหรับสมาชิกที่ล็อกอินแล้ว
+
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
+
+    dob = user.get('dob')
+    today = datetime.today()
+    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+    pregnant = user.get('pregnant')
+    breastfeeding = user.get('breastfeeding')
+
+    user_u_id = user['u_id']
+        
+    # ดึงข้อมูลโรคประจำตัวจาก u_cn_collection โดยใช้ u_id
+    existing_cn_ids = [rel['cn_id'] for rel in u_cn_collection.find({'u_id': user_u_id})]
+        
+    # ดึงข้อมูลยาที่ใช้จาก u_md_collection โดยใช้ u_id
+    existing_md_ids = [rel['md_id'] for rel in u_md_collection.find({'u_id': user_u_id})]
+        
+    # ดึงข้อมูลการแพ้จาก u_ag_collection โดยใช้ u_id
+    existing_ag_ids = [rel['ag_id'] for rel in u_ag_collection.find({'u_id': user_u_id})]
+        
+    # ดึงข้อมูลโรคประจำตัวจาก collection chronics_data
+    selected_chronics = list(chronics_data_collection.find({'cn_id': {'$in': existing_cn_ids}}))
+        
+    # ดึงข้อมูลยาที่ใช้จาก collection medicines_data
+    selected_medicines = list(medicines_data_collection.find({'md_id': {'$in': existing_md_ids}}))
+        
+    # ดึงข้อมูลการแพ้จาก collection allergys_data
+    selected_allergys = list(allergys_data_collection.find({'ag_id': {'$in': existing_ag_ids}}))
+
+    dizziness1 = int(request.form.get('dizziness1', 0))
+    Palpitations = int(request.form.get('Palpitations', 0))
+    squeamish = int(request.form.get('squeamish', 0))
+    vomit = int(request.form.get('vomit', 0))
+    dizziness2 = int(request.form.get('dizziness2', 0))
+    dizziness3 = int(request.form.get('dizziness3', 0))
+    dizziness4 = int(request.form.get('dizziness4', 0))
+    colic1 = int(request.form.get('colic1', 0))
+    tired = int(request.form.get('tired', 0))
+    cannot_sleep = int(request.form.get('cannot_sleep', 0))
+    flatulence = int(request.form.get('flatulence', 0))
+    stomach_ache = int(request.form.get('stomach_ache', 0))
+    constipation1 = int(request.form.get('constipation1', 0))
+    diarrhea1 = int(request.form.get('diarrhea1', 0))
+    hemorrhoids = int(request.form.get('hemorrhoids', 0))
+    menstruation = int(request.form.get('menstruation', 0))
+    Menstrual_cramps = int(request.form.get('Menstrual_cramps', 0))
+    postpartum_woman = int(request.form.get('postpartum_woman', 0))
+    Lochia = int(request.form.get('Lochia', 0))
+    Vaginal_Discharge = int(request.form.get('Vaginal_Discharge', 0))
+    Nourish_blood = int(request.form.get('Nourish_blood', 0))
+    fever1 = int(request.form.get('fever1', 0))
+    inner_heat = int(request.form.get('inner_heat', 0))
+    Measles = int(request.form.get('Measles', 0))
+    Chickenpox = int(request.form.get('Chickenpox', 0))
+    fever2 = int(request.form.get('fever2', 0))
+    fever3 = int(request.form.get('fever3', 0))
+    cough = int(request.form.get('cough', 0))
+    phlegm = int(request.form.get('phlegm', 0))
+    cold = int(request.form.get('cold', 0))
+    Allergic_Rhinitis = int(request.form.get('Allergic_Rhinitis', 0))
+    body_aches = int(request.form.get('body_aches', 0))
+    tendon = int(request.form.get('tendon', 0))
+    Tight_numb = int(request.form.get('Tight_numb', 0))
+    muscles_tendons = int(request.form.get('muscles_tendons', 0))
+    dizziness5 = int(request.form.get('dizziness5', 0))
+    balancing = int(request.form.get('balancing', 0))
+
+    input_data = pd.DataFrame({
+        'pregnant': [pregnant],
+        'dizziness1': [dizziness1],
+        'Palpitations': [Palpitations],
+        'squeamish': [squeamish],
+        'vomit': [vomit],
+        'dizziness2': [dizziness2],
+        'dizziness3': [dizziness3],
+        'dizziness4': [dizziness4],
+        'colic1': [colic1],
+        'tired': [tired],
+        'cannot_sleep': [cannot_sleep],
+        'flatulence': [flatulence],
+        'stomach_ache': [stomach_ache],
+        'constipation1': [constipation1],
+        'diarrhea1': [diarrhea1],
+        'hemorrhoids': [hemorrhoids],
+        'menstruation': [menstruation],
+        'Menstrual_cramps': [Menstrual_cramps],
+        'postpartum_woman': [postpartum_woman],
+        'Lochia': [Lochia],
+        'Vaginal_Discharge': [Vaginal_Discharge],
+        'Nourish_blood': [Nourish_blood],
+        'fever1': [fever1],
+        'inner_heat': [inner_heat],
+        'Measles': [Measles],
+        'Chickenpox': [Chickenpox],
+        'fever2': [fever2],
+        'fever3': [fever3],
+        'cough': [cough],
+        'phlegm': [phlegm],
+        'cold': [cold],
+        'Allergic_Rhinitis': [Allergic_Rhinitis],
+        'body_aches': [body_aches],
+        'tendon': [tendon],
+        'Tight_numb': [Tight_numb],
+        'muscles_tendons': [muscles_tendons],
+        'dizziness5': [dizziness5],
+        'balancing': [balancing]
+    })
+
+    # ทำนายความน่าจะเป็น
+    probabilities = clf.predict_proba(input_data)[0]
+
+    # สร้างลิสต์ของ hm_id ที่ต้องการลบออกจากผลทำนาย
+    hm_ids_to_remove = set()
+
+    # ถ้า อายุ < 1 ลบ
+    if age < 1:
+        hm_ids_to_remove.update([312, 315, 316, 317, 340, 342, 343])
+
+    # ถ้า อายุ < 12 ลบ
+    if age < 12:
+        hm_ids_to_remove.update([315, 316, 340, 342, 343])
+
+    # ถ้า ตั้งครรภ์ ลบ
+    if pregnant == 1:
+        hm_ids_to_remove.update([303, 305, 306, 309, 310, 311, 312, 313, 314, 316, 317,
+                                 321, 322, 323, 324, 325, 340, 341, 342, 343, 344, 346])
+    
+    # ถ้า มีไข้ ลบ
+    if fever1 == 1:
+        hm_ids_to_remove.update([303, 306, 309, 310, 311, 312, 313, 314, 315, 316, 317,
+                                 321, 322, 323, 324, 325, 326, 340, 341, 343, 344, 346])
+    
+    # ถ้า คลื่นไส้ ลบ
+    if squeamish == 1:
+        hm_ids_to_remove.add(315)
+
+    # ถ้า อาเจียน ลบ
+    if vomit == 1:
+        hm_ids_to_remove.add(315)
+
+    # ถ้า ให้นมบุตร ลบ
+    if breastfeeding == 1:
+        hm_ids_to_remove.add(342)
+
+    # ถ้า cn_id = 101 (เบาหวาน) ลบ
+    if 101 in selected_chronics:
+        hm_ids_to_remove.add(334)
+
+    # ถ้า cn_id = 111 (ไซนัส) ลบ
+    if 111 in selected_chronics:
+        hm_ids_to_remove.add(340)
+
+    # ถ้า cn_id = 113 (ภาวะลำไส้อุดตัน) ลบ
+    if 113 in selected_chronics:
+        hm_ids_to_remove.add(315)
+
+    # ถ้า cn_id = 114 (โรคหัวใจ) ลบ
+    if 114 in selected_chronics:
+        hm_ids_to_remove.add(346)
+
+    # ถ้า cn_id = 115 (โรคแผลเปื่อยเพปติก) ลบ
+    if 115 in selected_chronics:
+        hm_ids_to_remove.add(346)
+
+    # ถ้า cn_id = 116 (กรดไหลย้อน) ลบ
+    if 116 in selected_chronics:
+        hm_ids_to_remove.add(346)
+
+    # ถ้า ag_id = 601 (แพ้ละอองเกสรดอกไม้) ลบ
+    if 601 in selected_allergys:
+        hm_ids_to_remove.update([301, 302, 303, 304, 305, 326, 327, 329, 330, 341, 342])
+
+    # ถ้า md_id = 401 (anticoagulant-ยาในกลุ่มสารกันเลือดเป็นลิ่ม) ลบ
+    if 401 in selected_medicines:
+        hm_ids_to_remove.update([301, 302, 303, 304, 305, 306, 312, 313, 314, 316, 317, 326,
+                                 330, 341, 342])
+    
+    # ถ้า md_id = 402 (antiplatelets-ยาต้านการจับตัวของเกล็ดเลือด) ลบ
+    if 402 in selected_medicines:
+        hm_ids_to_remove.update([301, 302, 303, 304, 305, 306, 312, 313, 314, 316, 317, 326,
+                                 330, 341, 342])
+        
+    # ถ้า md_id = 403 (phenytoin-ยาต้านชัก) ลบ
+    if 403 in selected_medicines:
+        hm_ids_to_remove.update([313, 315, 316, 322, 340, 344, 346])
+
+    # ถ้า md_id = 404 (propranolol-ยารักษาภาวะที่เกี่ยวกับหัวใจและระบบไหลเวียนโลหิต) ลบ
+    if 404 in selected_medicines:
+        hm_ids_to_remove.update([313, 315, 316, 322, 340, 344, 346])
+
+    # ถ้า md_id = 405 (theophylline-ยาในกลุ่มยารักษาโรคหอบหืด) ลบ
+    if 405 in selected_medicines:
+        hm_ids_to_remove.update([313, 315, 316, 322, 340, 344, 346])
+
+    # ถ้า md_id = 406 (rifampicin-ยารักษาวัณโรค รักษาการติดเชื้อในจมูกและลำคอ) ลบ
+    if 406 in selected_medicines:
+        hm_ids_to_remove.update([313, 315, 316, 322, 340, 344, 346])
+
+
+    # กรองผลลัพธ์ที่มีความน่าจะเป็นมากกว่า 0
+    predictions = []
+    for i, prob in enumerate(probabilities):
+        if prob > 0:
+            hm_id = clf.classes_[i]
+            hm_name = get_hm_name(hm_id)
+            hm_dosage = get_hm_dosage(hm_id)
+            hm_recipe = get_hm_recipe(hm_id)
+            symptoms = get_symptoms_for_herbal(hm_id)
+            warnings = get_warnings_for_herbal(hm_id)
+
+            # ตรวจสอบว่า hm_id อยู่ในลิสต์ที่ต้องการลบหรือไม่
+            if hm_id in hm_ids_to_remove:
+                # ถ้าอยู่ในลิสต์ที่ต้องการลบ ให้ข้ามไปยังผลทำนายถัดไป
+                continue
+
+            # เพิ่มข้อมูลยาลงใน list
+            predictions.append({
+                'hm_id': hm_id,
+                'probability': prob,
+                'hm_name': hm_name,
+                'hm_dosage': hm_dosage,
+                'hm_recipe': hm_recipe,
+                'symptoms': symptoms,
+                'warnings': warnings
+            })
+
+    return render_template('member_result.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
