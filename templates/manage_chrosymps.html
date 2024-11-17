@@ -105,12 +105,26 @@
 
 <!-- MAIN -->
 <main>
+    
     <div class="head-title">
         <div class="left">
             <h1>ข้อมูลโรคและอาการ</h1>          
         </div>
     </div>
 
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('manage_chrosymps', page=page-1) }}">ก่อนหน้า</a>
+        {% endif %}
+    
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('manage_chrosymps', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+        {% endfor %}
+    
+        {% if page < total_pages %}
+            <a href="{{ url_for('manage_chrosymps', page=page+1) }}">ถัดไป</a>
+        {% endif %}
+    </div>
 
     <div class="table-data">
         <div class="order">
@@ -124,8 +138,8 @@
                 <thead>
                     <tr>
                         <th>รหัส</th>
-                        <th>ชื่อโรค/อาการ</th>
-                        <th></th>
+                        <th>ชื่อโรค/อาการ (ภาษาไทย)</th>
+                        <th>ชื่อโรค/อาการ (ภาษาอังกฤษ)</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -158,8 +172,10 @@
                 <input type="text" id="cn_nameEN" name="cn_nameEN">
                 <button type="submit" class="btn-submit">เพิ่ม</button>
             </form>
+            
         
     </div>
+    
 
     <div class="table-data">
         <div class="order">
@@ -174,8 +190,8 @@
                 <thead>
                     <tr>
                         <th>รหัส</th>
-                        <th>ชื่อโรค/อาการ</th>
-                        <th></th>
+                        <th>ชื่อโรค/อาการ (ภาษาไทย)</th>
+                        <th>ชื่อโรค/อาการ (ภาษาอังกฤษ)</th>
                         <th></th>   
                     </tr>
                 </thead>
@@ -210,22 +226,7 @@
             </form>
         
     </div>
-
-    <div class="pagination">
-        {% if page > 1 %}
-            <a href="{{ url_for('manage_chrosymps', page=page-1) }}">ก่อนหน้า</a>
-        {% endif %}
     
-        {% for p in range(1, total_pages + 1) %}
-            <a href="{{ url_for('manage_chrosymps', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
-        {% endfor %}
-    
-        {% if page < total_pages %}
-            <a href="{{ url_for('manage_chrosymps', page=page+1) }}">ถัดไป</a>
-        {% endif %}
-    </div>
-
-
 
 </main>
 <!-- MAIN -->
