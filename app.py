@@ -1383,6 +1383,9 @@ def member_predict(user_id):
 
     user = users_collection.find_one({'_id': ObjectId(user_id)})
 
+    if not user:
+        return redirect(url_for('index'))
+
     dob = user.get('dob')
     today = datetime.today()
     age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
@@ -1607,7 +1610,7 @@ def member_predict(user_id):
                 'warnings': warnings
             })
 
-    return render_template('member_result.html')
+    return render_template('member_result.html', predictions=predictions)
 
 @app.route('/predict', methods=['POST'])
 def predict():
