@@ -424,18 +424,20 @@
     <script>
 
 		function validateForm() {
+			const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+			
+			// กรอง checkbox ที่ต้องการตรวจสอบ (ไม่รวม 'pregnant' และ 'breastfeeding' ถ้ามี)
+			const symptomCheckboxes = Array.from(allCheckboxes).filter(checkbox => checkbox.name !== 'pregnant' && checkbox.name !== 'breastfeeding');
 
-		const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-		const symptomCheckboxes = Array.from(allCheckboxes).filter(checkbox);
+			// ตรวจสอบว่าอย่างน้อย 1 อาการถูกเลือก
+			const isSymptomChecked = symptomCheckboxes.some(checkbox => checkbox.checked);
 
-		const isSymptomChecked = symptomCheckboxes.some(checkbox => checkbox.checked);
+			if (!isSymptomChecked) {
+				alert('กรุณาเลือกอย่างน้อย 1 อาการ');
+				return false;
+			}
 
-		if (!isSymptomChecked) {
-		alert('กรุณาเลือกอย่างน้อย 1 อาการ');
-		return false;
-		}
-
-		return true;
+			return true;
 		}
 
 
