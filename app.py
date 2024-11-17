@@ -980,6 +980,23 @@ def delete_medicine(medicine_id):
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_medicines'))
 
+@app.route('/edit_medicine/<medicine_id>', methods=['GET', 'POST'])
+def edit_medicine(medicine_id):
+    if request.method == 'POST':
+        md_nameEN = request.form['md_nameEN']
+        md_nameTH = request.form['md_nameTH']
+        
+        # อัปเดตเฉพาะชื่อโรคใน MongoDB
+        medicines_data_collection.update_one({'_id': ObjectId(medicine_id)}, {'$set': {'md_nameEN': md_nameEN, 'md_nameTH': md_nameTH}})
+        
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_chrosymps'))
+    
+    # ดึงข้อมูลโรคที่ต้องการแก้ไข
+    medicine = medicines_data_collection.find_one({'_id': ObjectId(medicine_id)})
+
+    return render_template('edit_medicines.html', medicine=medicine)
+
 @app.route('/manage_allergys')
 def manage_allergys():
 
@@ -1020,6 +1037,23 @@ def delete_allergy(allergy_id):
     
     flash('ลบข้อมูลสำเร็จ!', 'success')
     return redirect(url_for('manage_allergys'))
+
+@app.route('/edit_allergy/<allergy_id>', methods=['GET', 'POST'])
+def edit_allergy(allergy_id):
+    if request.method == 'POST':
+        ag_name = request.form['ag_name']
+        ag_detail = request.form['ag_detail']
+        
+        # อัปเดตเฉพาะชื่อโรคใน MongoDB
+        allergys_data_collection.update_one({'_id': ObjectId(allergy_id)}, {'$set': {'ag_name': ag_name, 'ag_detail': ag_detail}})
+        
+        flash('อัปเดตข้อมูลสำเร็จ!', 'success')
+        return redirect(url_for('manage_allergys'))
+    
+    # ดึงข้อมูลโรคที่ต้องการแก้ไข
+    allergy = allergys_data_collection.find_one({'_id': ObjectId(allergy_id)})
+
+    return render_template('edit_allergys.html', allergy=allergy)
 
 @app.route('/manage_chrosymps')
 def manage_chrosymps():

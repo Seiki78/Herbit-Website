@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <title>จัดการข้อมูลการแพ้</title>
+	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <title>แก้ไขข้อมูลยาสมุนไพร</title>
 </head> 
 <body>
     
@@ -104,103 +104,81 @@
 
 <!-- MAIN -->
 <main>
-    <div class="head-title">
+
+	<div class="head-title">
         <div class="left">
             <h2>ข้อมูลการแพ้</h2>
-            <!-- <ul class="breadcrumb">
+            <ul class="breadcrumb">
                 <li>
-                    <a href="{{ url_for('manage_herbals') }}" class="active">จัดการข้อมูล</a>
+                    <a href="{{ url_for('manage_allergys') }}">หน้าหลัก</a>
                 </li>
-            </ul> -->
+				<li><i class='bx bx-chevron-right' ></i></li>
+                <li>
+                    <a class="active" href="{{ url_for('edit_allergy', allergy_id=allergy['_id']) }}">แก้ไขข้อมูล</a>
+                </li>
+            </ul>
         </div>
 
     </div><br>
+
+    <form action="{{ url_for('edit_allergy', allergy_id=allergy['_id']) }}" method="POST">
 
     <div>
         <div class="content">
             <div class="text-container">
-                <h3 style="align-items: center;">เพิ่มข้อมูล</h3>
+                <span><h2 style="align-items: center;">แก้ไขข้อมูล</h2>&nbsp;<p>รหัสการแพ้ - {{ allergy['ag_id'] }}</p></span>
             </div>
+
         </div>
 
-        <form action="{{ url_for('add_allergy') }}" method="POST">
-            <label for="ag_name">ชื่อข้อมูลการแพ้</label>
-            <input type="text" id="ag_name" name="ag_name" required>&nbsp;&nbsp;
-            <label for="ag_detail">รายละเอียด</label>
-            <input type="text" id="ag_detail" name="ag_detail">
-            <button type="submit" class="btn-submit">เพิ่ม</button>
-        </form>
+    </div>
+
+        <div class="table-data">
         
-    </div><br>
-    
-
-    <div class="table-data">
-        <div class="order">
-
-            <table>
-                <thead>
+            <div class="order">
+                <table>
                     <tr>
-                        <th>รหัส</th>
-                        <th>ชื่อการแพ้</th>
-                        <th style="width: 40%;">รายละเอียด</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for allergy in allergys %}
-                    <tr>
-                        <td>{{ allergy['ag_id'] }}</td>
-                        <td>{{ allergy['ag_name'] }}</td>
-                        <td>{{ allergy['ag_detail'] }}</td>
+                        <th>
+                            <label for="ag_name">ชื่อการแพ้</label>
+                        </th>
                         <td>
-                            <a href="{{ url_for('edit_allergy', allergy_id=allergy['_id']) }}">แก้ไข</a>
-                            <form action="{{ url_for('delete_allergy', allergy_id=allergy['_id']) }}" method="POST" style="display:inline;" onsubmit="return confirmDelete()">
-                                <button type="submit">ลบ</button>
-                            </form> 
+                            <input type="text" name="ag_name" value="{{ allergy['ag_name'] }}">
                         </td>
                     </tr>
-                    {% else %}
                     <tr>
-                        <td colspan="3">ไม่พบข้อมูลการแพ้</td>
+                        <th>
+                            <label for="ag_detail">รายละเอียด</label>
+                        </th>
+                        <td>
+                            <input type="text" name="ag_detail" value="{{ allergy['ag_detail'] }}">
+                        </td>
                     </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
 
+                </table><br>
+
+                <button type="submit" class="btn-submit">บันทึกการแก้ไข</button>
+
+            </div>
+     
         </div>
-    </div>
 
-    <div class="pagination">
-        {% if page > 1 %}
-            <a href="{{ url_for('manage_allergys', page=page-1) }}">ก่อนหน้า</a>
-        {% endif %}
-        
-        {% for p in range(1, total_pages + 1) %}
-            <a href="{{ url_for('manage_allergys', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
-        {% endfor %}
-    
-        {% if page < total_pages %}
-            <a href="{{ url_for('manage_allergys', page=page+1) }}">ถัดไป</a>
-        {% endif %}
-    </div>
+    </form>
+	
 
-      
 </main>
 <!-- MAIN -->
 
     </section>
 
-    
-    <script>
-        function confirmDelete() {
-            return confirm("คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลนี้?");
-        }
-      
-    </script>
 
+    <script>
+
+        
+    </script>
+    
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
               
 </body>
 </html>
