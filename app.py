@@ -1376,8 +1376,20 @@ def general_predict():
     return render_template('general_predict.html', chronics=chronics, medicines=medicines, allergys=allergys)
 
 @app.route('/member_predict/<user_id>')
-@login_required  # ใช้ @login_required เพื่อให้แน่ใจว่าเพจนี้สามารถเข้าถึงได้เฉพาะผู้ใช้ที่ล็อกอินแล้วเท่านั้น
+@login_required
 def member_predict(user_id):
+    # โค้ดของหน้า predict สำหรับคนที่ล็อกอิน
+
+    user = users_collection.find_one({'_id': ObjectId(user_id)})
+
+    if not user:
+        return redirect(url_for('index'))
+
+    return render_template('member_predict.html')
+
+@app.route('/mb_predict/<user_id>')
+@login_required  # ใช้ @login_required เพื่อให้แน่ใจว่าเพจนี้สามารถเข้าถึงได้เฉพาะผู้ใช้ที่ล็อกอินแล้วเท่านั้น
+def mb_predict(user_id):
 
     # predict สำหรับสมาชิกที่ล็อกอินแล้ว
 
