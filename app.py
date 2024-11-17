@@ -1361,7 +1361,7 @@ def type_predict():
 
     # ตรวจสอบว่าผู้ใช้ล็อกอินหรือไม่
     if current_user.is_authenticated:
-        return redirect(url_for('member_predict'))
+        return redirect(url_for('member_predict', user_id=current_user.id))
     else:
         return redirect(url_for('general_predict'))
 
