@@ -1023,12 +1023,22 @@ def delete_allergy(allergy_id):
 
 @app.route('/manage_chrosymps')
 def manage_chrosymps():
+    # กำหนดค่าหน้าปัจจุบัน
+    page = request.args.get('page', 1, type=int)
+    per_page = 25  # กำหนดจำนวนข้อมูลต่อหน้า
 
-    # ดึงข้อมูลทั้งหมดจาก Collection
-    chronics = chronics_data_collection.find()
-    symptoms = symptoms_data_collection.find()
+    # นับจำนวนเอกสารทั้งหมดในแต่ละ collection
+    chronics_count = chronics_data_collection.count_documents({})
+    symptoms_count = symptoms_data_collection.count_documents({})
 
-    return render_template('manage_chrosymps.html', chronics=chronics, symptoms=symptoms)
+    # คำนวณจำนวนหน้าทั้งหมด
+    total_pages = max((chronics_count + per_page - 1) // per_page, (symptoms_count + per_page - 1) // per_page)
+
+    # ดึงข้อมูลจาก MongoDB สำหรับทั้งสอง collection โดยใช้ skip และ limit
+    chronics = chronics_data_collection.find().skip((page - 1) * per_page).limit(per_page)
+    symptoms = symptoms_data_collection.find().skip((page - 1) * per_page).limit(per_page)
+
+    return render_template('manage_chrosymps.html', chronics=chronics, symptoms=symptoms, page=page, total_pages=total_pages)
 
 @app.route('/add_chronic', methods=['POST'])
 def add_chronic():

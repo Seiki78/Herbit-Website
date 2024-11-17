@@ -117,7 +117,7 @@
             <a href="" class="back" style="display: flex; align-items: center; justify-content: right;">
             </a>
             <div class="head">
-                <h1>โรค(ประจำตัว)</h1>
+                <h1>โรค (ประจำตัว)</h1>
             </div>
 
             <table>
@@ -209,6 +209,20 @@
                 <button type="submit" class="btn-submit">เพิ่ม</button>
             </form>
         
+    </div>
+
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="{{ url_for('manage_chrosymps', page=page-1) }}">ก่อนหน้า</a>
+        {% endif %}
+    
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('manage_chrosymps', page=p) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+        {% endfor %}
+    
+        {% if page < total_pages %}
+            <a href="{{ url_for('manage_chrosymps', page=page+1) }}">ถัดไป</a>
+        {% endif %}
     </div>
 
 
