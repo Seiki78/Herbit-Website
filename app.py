@@ -1087,9 +1087,10 @@ def add_symptom():
     else:
         st_id = 501  # กำหนดค่าเริ่มต้นเป็น 501 ถ้ายังไม่มีเอกสารใด ๆ (ซึ่งก็ไม่หรอก เพราะมีข้อมูลแล้ว)
     st_name = request.form['st_name']
+    st_nameEN = request.form['st_nameEN']
     
     # เพิ่มข้อมูลใหม่ลงใน Collection chronic
-    symptoms_data_collection.insert_one({'st_id': st_id, 'st_name': st_name})
+    symptoms_data_collection.insert_one({'st_id': st_id, 'st_name': st_name, 'st_nameEN': st_nameEN})
     
     flash('เพิ่มข้อมูลสำเร็จ', 'success')
     return redirect(url_for('manage_chrosymps'))
