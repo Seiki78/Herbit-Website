@@ -1388,7 +1388,7 @@ def member_predict(user_id):
     return render_template('member_predict.html')
 
 @app.route('/mb_predict/<user_id>')
-@login_required  # ใช้ @login_required เพื่อให้แน่ใจว่าเพจนี้สามารถเข้าถึงได้เฉพาะผู้ใช้ที่ล็อกอินแล้วเท่านั้น
+@login_required
 def mb_predict(user_id):
 
     # predict สำหรับสมาชิกที่ล็อกอินแล้ว
