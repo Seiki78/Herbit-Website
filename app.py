@@ -50,7 +50,7 @@ feature_cols = ['pregnant', 'dizziness1', 'Palpitations', 'squeamish', 'vomit',
                 'postpartum_woman', 'Lochia', 'Vaginal_Discharge', 'Nourish_blood',
                 'fever1', 'inner_heat', 'Measles', 'Chickenpox', 'fever2', 'fever3', 
                 'cough', 'phlegm', 'cold', 'Allergic_Rhinitis', 'body_aches', 'tendon', 
-                'Tight_numb', 'muscles_tendons', 'dizziness5']
+                'Tight_numb', 'muscles_tendons', 'dizziness5', 'balancing']
 
 # กำหนด target (ผลลัพธ์ที่ต้องการทำนาย)
 target_col = 'hm_id'
@@ -405,6 +405,7 @@ def add_trains():
     Tight_numb = int(request.form.get('Tight_numb', 0))
     muscles_tendons = int(request.form.get('muscles_tendons', 0))
     dizziness5 = int(request.form.get('dizziness5', 0))
+    balancing = int(request.form.get('balancing', 0))
     hm_id = int(request.form.get('hm_id'))  # hm_id ที่เลือกจาก select
 
     # เพิ่มข้อมูลใหม่ลงใน Collection trains
@@ -447,6 +448,7 @@ def add_trains():
         'Tight_numb': Tight_numb,
         'muscles_tendons': muscles_tendons,
         'dizziness5': dizziness5,
+        'balancing': balancing,
         'hm_id': hm_id  # hm_id ที่ได้จาก select
     })
 
@@ -506,6 +508,7 @@ def edit_trains(train_id):
         Tight_numb = int(request.form.get('Tight_numb', 0))
         muscles_tendons = int(request.form.get('muscles_tendons', 0))
         dizziness5 = int(request.form.get('dizziness5', 0))
+        balancing = int(request.form.get('balancing', 0))
         
         # อัปเดตข้อมูลทุกอย่างใน MongoDB
         trains_collection.update_one({'_id': ObjectId(train_id)}, {'$set': {'Age': Age, 'pregnant': pregnant, 'dizziness1': dizziness1, 'Palpitations': Palpitations,
@@ -518,7 +521,7 @@ def edit_trains(train_id):
                                                                             'inner_heat': inner_heat, 'Measles': Measles, 'Chickenpox': Chickenpox, 'fever2': fever2,
                                                                             'fever3': fever3, 'cough': cough, 'phlegm': phlegm, 'cold': cold, 'Allergic_Rhinitis': Allergic_Rhinitis,
                                                                             'body_aches': body_aches, 'tendon': tendon, 'Tight_numb': Tight_numb, 'muscles_tendons': muscles_tendons,
-                                                                             'dizziness5': dizziness5}})
+                                                                            'dizziness5': dizziness5, 'balancing': balancing}})
         
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
         return redirect(url_for('manage_trains'))
@@ -1403,6 +1406,7 @@ def predict():
     Tight_numb = int(request.form.get('Tight_numb', 0))
     muscles_tendons = int(request.form.get('muscles_tendons', 0))
     dizziness5 = int(request.form.get('dizziness5', 0))
+    balancing = int(request.form.get('balancing', 0))
 
     selected_chronics = request.form.getlist('chronics')
     selected_allergys = request.form.getlist('allergys')
@@ -1447,7 +1451,8 @@ def predict():
         'tendon': [tendon],
         'Tight_numb': [Tight_numb],
         'muscles_tendons': [muscles_tendons],
-        'dizziness5': [dizziness5]
+        'dizziness5': [dizziness5],
+        'balancing': [balancing]
     })
 
     # ทำนายความน่าจะเป็น

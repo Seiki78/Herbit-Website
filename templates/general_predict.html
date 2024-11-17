@@ -461,6 +461,27 @@
 
 					</div>
 
+					<a href="" id="toggleBalancingLink">
+						<li style="background-color: rgb(47, 54, 144);">
+							<span class="text">
+								<h3 style="color: white;">หมวดหมู่: บำรุงธาตุ</h3>
+							</span>
+						</li> 
+					</a>
+
+					<div id="typeBalancing" style="display:none;">
+						<div class="symphony">
+							<div>
+								<label>
+									<input type="checkbox" name="balancing" id="" value="1">
+									<span>บำรุงธาตุ</span>
+								</label>
+							</div>
+		
+						</div>
+
+					</div>
+
 				</ul>
 
 	
@@ -709,6 +730,16 @@
                 typeMuscles.style.display = 'block'; // แสดง div
             } else {
                 typeMuscles.style.display = 'none'; // ซ่อน div
+            }
+        });
+
+		document.getElementById('toggleBalancingLink').addEventListener('click', function(e) {
+            e.preventDefault(); // ป้องกันการทำงานของลิงก์
+            var typeBalancing = document.getElementById('typeBalancing');
+            if (typeBalancing.style.display === 'none') {
+                typeBalancing.style.display = 'block'; // แสดง div
+            } else {
+                typeBalancing.style.display = 'none'; // ซ่อน div
             }
         });
 
