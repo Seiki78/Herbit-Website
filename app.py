@@ -606,6 +606,7 @@ def edit_user(user_id):
         else:
             hashed_password = user['password']
 
+        role = request.form['role']
         fname = request.form['fname']
         lname = request.form['lname']
         gender = int(request.form['gender'])
@@ -613,7 +614,7 @@ def edit_user(user_id):
         breastfeeding = int(request.form.get('breastfeeding', 0))
         
         # อัปเดตข้อมูลผู้ใช้ใน MongoDB
-        users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'fname': fname, 
+        users_collection.update_one({'_id': ObjectId(user_id)}, {'$set': {'username': username, 'email': email, 'password': hashed_password, 'role': role, 'fname': fname, 
                                                                           'lname': lname, 'gender': gender, 'pregnant': pregnant, 'breastfeeding': breastfeeding}})
         
         # ดึง u_id ของ user ปัจจุบัน

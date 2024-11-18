@@ -120,6 +120,13 @@
                     <h3>แก้ไขข้อมูลสมาชิก</h3>
                     <i class='bx bx-search' ></i>
                     <i class='bx bx-filter' ></i>
+                    <div>
+                        <select name="role" id="role">
+                            <option value="" {% if user['role'] is none %}selected{% endif %}>--Role--</option>
+                            <option value="admin" {% if user['role'] == 'admin' %}selected{% endif %}>admin</option>
+                            <option value="member" {% if user['role'] == 'member' %}selected{% endif %}>member</option>
+                        </select>
+                    </div>
                 </div>
                 
                     <table>

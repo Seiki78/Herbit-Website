@@ -121,7 +121,7 @@
                             <label>ชื่อผู้ใช้</label>
                         </td>
                         <td>
-                            {{ user['username'] }}
+                            {{ user['username'] }} ({{ user['role'] }})
                         </td>
                     </tr>
                     <tr>
@@ -134,7 +134,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label>ชื่อ-นามสกุล</label>
+                            <label>ชื่อ-สกุล</label>
                         </td>
                         <td>
                             {{ user['fname'] }} {{ user['lname'] }}
