@@ -1916,7 +1916,7 @@ def predict():
     # ใช้ pydotplus เพื่อสร้างกราฟจาก dot_data
     graph = pydotplus.graph_from_dot_data(dot_data)
 
-    # บันทึกกราฟลงในไฟล์ .png
+    # บันทึกกราฟลงในไฟล์  .png
     plot_filename = 'static/plots/tree_plot.png'
     graph.write_png(plot_filename)
     
