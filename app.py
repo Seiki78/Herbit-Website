@@ -1920,7 +1920,6 @@ def predict():
     plot_filename = 'static/plots/tree_plot.png'
     graph.write_png(plot_filename)
     
-    # ส่งผลลัพธ์ไปยัง template
     return render_template('general_result.html', predictions=predictions)
 
 if __name__ == '__main__':
