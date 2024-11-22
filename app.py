@@ -12,7 +12,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.tree import export_graphviz
 import matplotlib.pyplot as plt
 import pydotplus
-from graphviz import Source
+# from graphviz import Source
 
 app = Flask(__name__)
 
@@ -1904,21 +1904,21 @@ def predict():
 
     # สร้างแผนผังของ Random Forest (เลือกต้นไม้หนึ่ง)
     # ดึงต้นไม้แรกจาก RandomForestClassifier
-    tree = clf.estimators_[0]
+    # tree = clf.estimators_[0]
 
     # สร้างแผนผังด้วย export_graphviz
-    dot_data = export_graphviz(tree, out_file=None, 
-                               feature_names=feature_cols,  
-                               class_names=[str(i) for i in clf.classes_],  
-                               filled=True, rounded=True,  
-                               special_characters=True)
+    # dot_data = export_graphviz(tree, out_file=None, 
+    #                            feature_names=feature_cols,  
+    #                            class_names=[str(i) for i in clf.classes_],  
+    #                            filled=True, rounded=True,  
+    #                            special_characters=True)
 
     # ใช้ pydotplus เพื่อสร้างกราฟจาก dot_data
-    graph = pydotplus.graph_from_dot_data(dot_data)
+    # graph = pydotplus.graph_from_dot_data(dot_data)
 
     # บันทึกกราฟลงในไฟล์  .png
-    plot_filename = 'static/plots/tree_plot.png'
-    graph.write_png(plot_filename)
+    # plot_filename = 'static/plots/tree_plot.png'
+    # graph.write_png(plot_filename)
     
     return render_template('general_result.html', predictions=predictions)
 
