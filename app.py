@@ -197,15 +197,15 @@ def get_sleepResult(user_id):
             age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
 
             if age < 1 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>12 - 16 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
+                sleeResult = 'ปริมาณพักผ่อนที่เหมาะสม<br>12 - 16 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
             elif age >= 1 and age <= 2 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>11 - 14 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
+                sleeResult = 'ปริมาณพักผ่อนที่เหมาะสม<br>11 - 14 ชั่วโมง/ วัน (รวมนอนกลางวัน)​'
             elif age >= 3 and age <= 5 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>9 - 12 ชั่วโมง/ วัน​​'
+                sleeResult = 'ปริมาณพักผ่อนที่เหมาะสม<br>9 - 12 ชั่วโมง/ วัน​​'
             elif age >= 13 and age <= 18 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>8 - 10 ชั่วโมง/ วัน​​'
+                sleeResult = 'ปริมาณพักผ่อนที่เหมาะสม<br>8 - 10 ชั่วโมง/ วัน​​'
             elif age >18 :
-                sleeResult = 'ชั่วโมงนอนที่เหมาะสม<br>7 - 9 ชั่วโมง/ วัน​​'
+                sleeResult = 'ปริมาณพักผ่อนที่เหมาะสม<br>7 - 9 ชั่วโมง/ วัน​​'
 
             return sleeResult
         
