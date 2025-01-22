@@ -149,15 +149,16 @@ def get_bmiResult(user_id):
             height = height / 100
 
             bmi = weight / (height * height)
+            bmi = round(bmi, 2)  # ใช้ round() เพื่อจำกัดทศนิยมที่ 2 ตำแหน่ง
 
             if bmi >= 30:
-                bmiResult = '(30.0 ขึ้นไป)<br>อ้วนมาก'
+                bmiResult = f'({bmi})<br>อ้วนมาก'
             elif bmi >= 25 and bmi < 30:
-                bmiResult = '(25.0 - 29.9)<br>อ้วน'
+                bmiResult = f'({bmi})<br>มากกว่าเกณฑ์'
             elif bmi >= 18.5 and bmi < 25:
-                bmiResult = '(18.5 - 24.9)<br>น้ำหนักปกติ เหมาะสม'
+                bmiResult = f'({bmi})<br>ตามเกณฑ์'
             else:
-                bmiResult = '(น้อยกว่า 18.5)<br>ผอมเกินไป'
+                bmiResult = f'({bmi})<br>ต่ำกว่าเกณฑ์'
 
             return bmiResult
         
