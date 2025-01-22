@@ -1304,30 +1304,27 @@ def edit_profile():
 
         # ดึง u_id ของ user ปัจจุบัน
         u_id = user['u_id']
-
+        
         # รับค่า cn_ids ที่เลือกมาใหม่
         cn_ids = request.form.getlist('cn_ids')
-        # ลบความสัมพันธ์โรคประจำตัว ที่มีอยู่ใน u_cn ก่อนแล้วเพิ่มใหม่ตามที่เลือก
-        if cn_ids:
-            u_cn_collection.delete_many({'u_id': int(u_id)})
-            for cn_id in cn_ids:
-                u_cn_collection.insert_one({'u_id': int(u_id), 'cn_id': int(cn_id)})
+        # ลบข้อมูลเก่าออกเสมอ
+        u_cn_collection.delete_many({'u_id': int(u_id)})
+        # เพิ่มข้อมูลใหม่ (ถ้ามี)
+        for cn_id in cn_ids:
+            u_cn_collection.insert_one({'u_id': int(u_id), 'cn_id': int(cn_id)})
 
         # รับค่า md_ids ที่เลือกมาใหม่
         md_ids = request.form.getlist('md_ids')
-        # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_md ก่อนแล้วเพิ่มใหม่ตามที่เลือก
-        if md_ids:
-            u_md_collection.delete_many({'u_id': int(u_id)})
-            for md_id in md_ids:
-                u_md_collection.insert_one({'u_id': int(u_id), 'md_id': int(md_id)})
+        u_md_collection.delete_many({'u_id': int(u_id)})
+        for md_id in md_ids:
+            u_md_collection.insert_one({'u_id': int(u_id), 'md_id': int(md_id)})
 
         # รับค่า ag_ids ที่เลือกมาใหม่
         ag_ids = request.form.getlist('ag_ids')
-        # ลบความสัมพันธ์ยาที่ใช้ ที่มีอยู่ใน u_ag ก่อนแล้วเพิ่มใหม่ตามที่เลือก
-        if ag_ids:
-            u_ag_collection.delete_many({'u_id': int(u_id)})
-            for ag_id in ag_ids:
-                u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
+        u_ag_collection.delete_many({'u_id': int(u_id)})
+        for ag_id in ag_ids:
+            u_ag_collection.insert_one({'u_id': int(u_id), 'ag_id': int(ag_id)})
+
 
         flash('อัปเดตข้อมูลสำเร็จ!', 'success')
         return redirect(url_for('profile'))  # ไปยังหน้าข้อมูลส่วนตัว
