@@ -1737,10 +1737,21 @@ def predict():
     dizziness5 = int(request.form.get('dizziness5', 0))
     balancing = int(request.form.get('balancing', 0))
 
-    selected_chronics = request.form.getlist('chronics')
-    selected_allergys = request.form.getlist('allergys')
-    selected_medicines = request.form.getlist('medicines')
+    # selected_chronics = request.form.getlist('chronics')
+    # selected_allergys = request.form.getlist('allergys')
+    # selected_medicines = request.form.getlist('medicines')
+
     breastfeeding = int(request.form.get('breastfeeding', 0))
+
+    # ดึงค่ามาในรูปของ String
+    selected_chronics_str = request.form.getlist('chronics')
+    selected_allergys_str = request.form.getlist('allergys')
+    selected_medicines_str = request.form.getlist('medicines')
+
+    # debug ดูค่า string
+    print("String Chronics:", selected_chronics_str)
+    print("String Allergys:", selected_allergys_str)
+    print("String Medicines:", selected_medicines_str)
 
     # สร้าง DataFrame จากข้อมูลที่ได้รับ
     input_data = pd.DataFrame({
@@ -1789,6 +1800,11 @@ def predict():
 
     # สร้างลิสต์ของ hm_id ที่ต้องการลบออกจากผลทำนาย
     hm_ids_to_remove = set()
+
+    # แปลงเป็น int เอาไปวิเคราะห์เช็คเงื่อนไข 
+    selected_chronics = [int(x) for x in selected_chronics_str]
+    selected_allergys = [int(x) for x in selected_allergys_str]
+    selected_medicines = [int(x) for x in selected_medicines_str]
 
     # ถ้า อายุ < 1 ลบ
     if age < 1:
@@ -1874,6 +1890,10 @@ def predict():
     if 406 in selected_medicines:
         hm_ids_to_remove.update([313, 315, 316, 322, 340, 344, 346])
 
+    print("Age:", age)
+    print("Pregnant:", pregnant)
+    print("breastfeeding:", breastfeeding)
+    print("hm_ids_to_remove:", hm_ids_to_remove)
 
     # กรองผลลัพธ์ที่มีความน่าจะเป็นมากกว่า 0
     predictions = []

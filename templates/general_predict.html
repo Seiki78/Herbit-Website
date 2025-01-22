@@ -162,7 +162,7 @@
 	
 
 
-	<form action="{{ url_for('predict') }}" method="POST" onsubmit="return validateForm()">
+	<form id="myForm" action="{{ url_for('predict') }}" method="POST" onsubmit="return validateForm()">
 		
 		<div class="layout-container">
 			<div class="layout-box box-left-top">
@@ -657,6 +657,75 @@
 
     <script>
 
+		// =========== ฟังก์ชัน addSelected =============
+		function addSelected(type) {
+			console.log(`addSelected called for type = ${type}`);
+
+			// select คือ <select multiple>
+			const select = document.getElementById(type);
+			// selectedList คือ <table id="selectedChronicsList"> หรือ ...AllergysList, ...MedicinesList ฯลฯ
+			const selectedList = document.getElementById(`selected${type.charAt(0).toUpperCase() + type.slice(1)}List`);
+			// tbody ภายในตาราง
+			const tableBody = selectedList.querySelector('tbody');
+
+			// เอาเฉพาะ option ที่เป็น highlight ไว้
+			const selectedOptions = Array.from(select.selectedOptions);
+			console.log("selectedOptions =", selectedOptions.map(opt => opt.value));
+
+			selectedOptions.forEach(option => {
+				// เช็คว่าเคย add ซ้ำแล้วหรือยัง (ดูจาก tr[data-value=...])
+				const isAlreadyAdded = Array.from(tableBody.querySelectorAll('tr'))
+										.some(tr => tr.dataset.value === option.value);
+
+				if (!isAlreadyAdded) {
+					// สร้าง <tr> ใหม่
+					const tr = document.createElement('tr');
+					tr.dataset.value = option.value; // ใส่ data-value ไว้ตรวจซ้ำ
+
+					// สร้างช่องแรก ใส่ชื่อรายการ
+					const tdText = document.createElement('td');
+					tdText.textContent = option.textContent;
+					tr.appendChild(tdText);
+
+					// สร้างช่องที่สอง ใส่ปุ่มลบ
+					const tdAction = document.createElement('td');
+					const removeButton = document.createElement('button');
+					removeButton.type = 'button';
+					removeButton.textContent = 'ลบ';
+					removeButton.addEventListener('click', () => {
+						// ลบแถวออก
+						tr.remove();
+						// ลบ hidden input ที่สร้าง
+						const hiddenInput = document.querySelector(`input[name="${type}"][value="${option.value}"]`);
+						if (hiddenInput) hiddenInput.remove();
+					});
+					tdAction.appendChild(removeButton);
+					tr.appendChild(tdAction);
+
+					// เพิ่มแถวเข้า <tbody>
+					tableBody.appendChild(tr);
+
+					// สร้าง hidden input เพื่อส่งค่าไปในฟอร์ม
+					const hiddenInput = document.createElement('input');
+					hiddenInput.type = 'hidden';
+					hiddenInput.name = type;
+					hiddenInput.value = option.value;
+
+					// ใส่ในฟอร์ม id="myForm"
+					const mainForm = document.getElementById('myForm');
+					mainForm.appendChild(hiddenInput);
+
+					console.log(`Added hidden input for ${type} = ${option.value}`);
+				}
+
+				// ยกเลิก highlight เพื่อไม่ให้ค้าง
+				option.selected = false;
+			});
+		}
+
+
+
+
 		function validateForm() {
 
 		const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -744,47 +813,15 @@
         });
 
 
-		function addSelected(type) {
-            const select = document.getElementById(type);
-            const selectedList = document.getElementById(`selected${type.charAt(0).toUpperCase() + type.slice(1)}List`);
 
-            const selectedOptions = Array.from(select.selectedOptions);
 
-            selectedOptions.forEach(option => {
-                // ตรวจสอบว่ามีรายการนี้อยู่แล้วในรายการที่เลือกหรือไม่
-                if (!Array.from(selectedList.children).some(tr => tr.dataset.value === option.value)) {
-                    const tr = document.createElement('tr');
-                    const tdText = document.createElement('td');
-                    tdText.textContent = option.textContent;
-                    const tdAction = document.createElement('td');
-                    
-                    // สร้างปุ่มลบ
-                    const removeButton = document.createElement('button');
-                    removeButton.type = 'button'; // Prevent form submission
-                    removeButton.textContent = 'ลบ';
-                    removeButton.onclick = () => {
-                        selectedList.querySelector(`tr[data-value="${option.value}"]`).remove();
-                        document.querySelector(`input[name="${type}"][value="${option.value}"]`).remove();
-                    };
-                    tdAction.appendChild(removeButton);
 
-                    tr.appendChild(tdText);
-                    tr.appendChild(tdAction);
 
-                    tr.dataset.value = option.value; // Store value in dataset
 
-                    selectedList.querySelector('tbody').appendChild(tr);
 
-                    // เพิ่ม input hidden เพื่อตรวจสอบการส่งค่า
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = type;
-                    hiddenInput.value = option.value;
-                    document.querySelector('form').appendChild(hiddenInput);
-                }
-                option.selected = false; // Deselect the option after adding
-            });
-        }
+
+
+
 
 
 		document.querySelectorAll('input[type=checkbox]').forEach(checkbox => {
