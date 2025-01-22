@@ -149,7 +149,7 @@ def get_bmiResult(user_id):
             height = height / 100
 
             bmi = weight / (height * height)
-            bmi = round(bmi, 2)  # ใช้ round() เพื่อจำกัดทศนิยมที่ 2 ตำแหน่ง
+            bmi = round(bmi)  # ปัดเศษค่า BMI เป็นจำนวนเต็ม
 
             if bmi >= 30:
                 bmiResult = f'({bmi})<br>อ้วนมาก'
