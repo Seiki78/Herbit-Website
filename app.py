@@ -1390,10 +1390,12 @@ def admin_dashboard():
     medicines_count = medicines_data_collection.count_documents({})
     allergies_count = allergys_data_collection.count_documents({})
     warnings_count = warnings_data_collection.count_documents({})
+    symptoms_count = symptoms_data_collection.count_documents({})
 
     return render_template('admin_dashboard.html', herbals_count=herbals_count, trains_count=trains_count,
                            admins_count=admins_count, members_count=members_count, chronics_count=chronics_count,
-                           medicines_count=medicines_count, allergies_count=allergies_count, warnings_count=warnings_count)
+                           medicines_count=medicines_count, allergies_count=allergies_count, warnings_count=warnings_count, 
+                           symptoms_count=symptoms_count)
 
 @app.route('/type_predict')
 def type_predict():
