@@ -149,16 +149,15 @@ def get_bmiResult(user_id):
             height = height / 100
 
             bmi = weight / (height * height)
-            bmi = round(bmi)  # ปัดเศษค่า BMI เป็นจำนวนเต็ม
 
             if bmi >= 30:
-                bmiResult = f'({bmi})<br>อ้วนมาก'
+                bmiResult = '(30.0 ขึ้นไป)<br>อ้วนมาก'
             elif bmi >= 25 and bmi < 30:
-                bmiResult = f'({bmi})<br>มากกว่าเกณฑ์'
+                bmiResult = '(25.0 - 29.9)<br>มากกว่าเกณฑ์'
             elif bmi >= 18.5 and bmi < 25:
-                bmiResult = f'({bmi})<br>ตามเกณฑ์'
+                bmiResult = '(18.5 - 24.9)<br>ตามเกณฑ์'
             else:
-                bmiResult = f'({bmi})<br>ต่ำกว่าเกณฑ์'
+                bmiResult = '(น้อยกว่า 18.5)<br>ต่ำกว่าเกณฑ์'
 
             return bmiResult
         
@@ -174,7 +173,10 @@ def get_waterResult(user_id):
 
         if weight and weight > 0:
 
-            recommendedWaterIntake  = weight * 2.2 * 30/2
+            recommendedWaterIntake = weight * 2.2 * 30 / 2
+
+            # ใช้ round() เพื่อจำกัดทศนิยมให้เหลือแค่ 2 ตำแหน่ง
+            recommendedWaterIntake = round(recommendedWaterIntake, 2)
 
             waterResult = 'ปริมาณดื่มน้ำที่แนะนำต่อวัน<br>' + str(recommendedWaterIntake) + ' มล.'
 
