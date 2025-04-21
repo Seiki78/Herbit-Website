@@ -172,7 +172,7 @@
                     <label for="body_aches">ปวดเมื่อยตามร่างกาย</label>
                 </td>
                 <td>
-                    <input type="checkbox" id="balancing" name="balancing" value="1">
+                    <input type="checkbox" id="balancing" name="balancing" value="1" {% if train['body_aches'] == 1 %}checked{% endif %}>
                     <label for="balancing">ปรับสมดุลธาตุ</label>
                 </td>
             </tr>
