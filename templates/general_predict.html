@@ -159,7 +159,9 @@
 		</form>
 	</div>
 
-	
+	<div class="banner-container">
+		<img src="{{ url_for('static', filename='bn-h2.png') }}" alt="แบนเนอร์เว็บไซต์" class="banner-img">
+	</div>
 
 
 	<form id="myForm" action="{{ url_for('predict') }}" method="POST" onsubmit="return validateForm()">
@@ -169,9 +171,10 @@
 	
 				<div class="content">
 					<div class="text-container">
-						<h4 style="display: inline;">ขั้นที่ 1 <span style="color: var(--blue);">เลือก อาการ</span>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(อย่างน้อย 1 รายการ)</p><br>
-						<h4 style="display: inline;">ขั้นที่ 2 <span style="color: var(--blue);">ระบุวัน/เดือน/ปีเกิด</span>&nbsp;</h4><p style="display: inline; color: rgb(223, 103, 82);">(จำเป็น)</p><br>
-						<h4 style="display: inline;">ขั้นที่ 3 <span style="color: var(--blue);">เลือกข้อมูลสุขภาพ</span>&nbsp;</h4><p style="display: inline;">เช่น โรคประจำตัว การตั้งครรภ์ (หากมี)</p><br>
+						<h3>ขั้นตอนการใช้งาน</h3>
+						<h4 style="display: inline;">ขั้นที่ 1 <span style="color: var(--blue);">เลือกอาการ</span>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(อย่างน้อย 1 รายการ)</p><br>
+						<h4 style="display: inline;">ขั้นที่ 2 <span style="color: var(--blue);">ระบุวัน/เดือน/ปีเกิด</span>&nbsp;</h4><p style="display: inline; color: rgb(223, 103, 82);">(จำเป็นต้องกรอก)</p><br>
+						<h4 style="display: inline;">ขั้นที่ 3 <span style="color: var(--blue);">เลือกข้อมูลสุขภาพ</span>&nbsp;</h4><p style="display: inline;">เช่น โรคประจำตัว การตั้งครรภ์ (ถ้ามี)</p><br>
 						<br>
 						<h3>ขั้นสุดท้าย <span style="color: var(--blue);">กดยืนยันข้อมูล</span> เพื่อเริ่มวิเคราะห์ยาสมุนไพร</h3>
 					</div>
@@ -185,7 +188,12 @@
 					<div>
 						<div class="content">
 							<div class="text-container">
-								<h2 style="display: inline;">วัน/เดือน/ปีเกิด</h2>&nbsp;<p style="display: inline; color: rgb(223, 103, 82);">(จำเป็น)</p>
+								<h2>
+									<span class="circle-number">2</span> ระบุวันเกิดของคุณ
+									
+								</h2><br>
+								<p style="display: inline; color: rgb(223, 103, 82);">(จำเป็นต้องกรอก)</p>
+								<!-- <h2 style="display: inline;">วัน/เดือน/ปีเกิด</h2>&nbsp;<p style="display: inline; color: rgb(223, 103, 82);">(จำเป็นต้องกรอก)</p> -->
 							</div>
 						</div><br>
 						<input type="date" name="dob" id="" required>
@@ -197,7 +205,14 @@
 	
 			</div>
 			<div class="layout-box box-left-bottom">
-				<h4>กดเลือกหมวดหมู่เพื่อดูรายการเพิ่มเติม</h4><p style="display: inline; color: rgb(161, 193, 226);">(กดอีกครั้งเพื่อซ่อน และการเลือกจะไม่หายไป)</p>
+
+				<h2>
+					<span class="circle-number">1</span> เลือกอาการ (อย่างน้อย 1 รายการ)
+					
+				</h2><br>
+				<p style="display: inline; color: rgb(161, 193, 226);">
+					(คลิกหมวดหมู่เพื่อดูอาการเพิ่มเติม กดอีกครั้งจะเป็นการซ่อนหมวดหมู่ และการเลือกจะไม่หายไป)
+				</p>			  
 
 				<ul class="box-info">
 					<a href="" id="toggleDizzinessLink">
@@ -494,7 +509,13 @@
 				<div>
 					<div class="content">
 						<div class="text-container">
-							<h2 style="display: inline;">ข้อมูลสุขภาพ</h2>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(มีผลต่อการวิเคราะห์ข้อมูล)</p>
+							<h2>
+								<span class="circle-number">3</span> ข้อมูลสุขภาพเพิ่มเติม (ถ้ามี)
+								
+							</h2><br>
+							<p style="display: inline; color: rgb(161, 193, 226);">(มีผลต่อการวิเคราะห์ข้อมูล)</p>
+
+							<!-- <h2 style="display: inline;">ข้อมูลสุขภาพ</h2>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(มีผลต่อการวิเคราะห์ข้อมูล)</p> -->
 						</div>
 					</div>
 	
@@ -632,15 +653,24 @@
 					</select>
 					<button type="button" onclick="addSelected('medicines')">เพิ่มข้อมูล</button>
 				</div>
+				<br><br>
 	
 				<div>
 					
+					<h2>
+						<span class="circle-number">4</span> กดยืนยันข้อมูล
+					</h2>
+					<p style="display: inline; color: rgb(161, 193, 226);">
+						เพื่อเริ่มวิเคราะห์ยาสมุนไพร
+					</p>
+
 					<div class="bot2">
 						<button type="submit" class="btn1">
 							<span class="text"><h3>ยืนยันข้อมูล</h3></span>
 						</button>
 					</div>
-					<label style="color: rgb(161, 193, 226);">(กดเพื่อเริ่มวิเคราะห์ยาสมุนไพร)</label>
+
+					<!-- <label style="color: rgb(161, 193, 226);">(กดเพื่อเริ่มวิเคราะห์ยาสมุนไพร)</label> -->
 				</div>
 	
 					

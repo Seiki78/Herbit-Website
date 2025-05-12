@@ -857,6 +857,12 @@ def add_herbal():
     hm_name = request.form['hm_name']
     hm_dosage = request.form['hm_dosage']
     hm_recipe  = request.form['hm_recipe']
+
+    # ตรวจสอบว่าชื่อยาสมุนไพร(ที่จะเพิ่ม)ซ้ำไหม
+    existing_herb = herbals_data_collection.find_one({'hm_name': hm_name})
+    if existing_herb:
+        flash(f'มี "{hm_name}" อยู่ในระบบแล้ว', 'danger')
+        return redirect(url_for('manage_herbals'))
     
     # เพิ่มข้อมูลใหม่ลงใน Collection chronic
     herbals_data_collection.insert_one({'hm_id': hm_id, 'hm_name': hm_name, 'hm_dosage': hm_dosage, 'hm_recipe': hm_recipe})
@@ -1689,6 +1695,11 @@ def mb_predict(user_id):
                 'warnings': warnings
             })
 
+    # หลังจากลูปกรองเสร็จ ถ้าไม่มียาสมุนไพรตัวไหนเข้าข่าย
+    if not predictions:
+        message = "ไม่มีข้อมูลยาสมุนไพรที่ตรงตามข้อมูลของคุณ"
+        return render_template('member_result.html', predictions=None, message=message)
+
     return render_template('member_result.html', predictions=predictions)
 
 @app.route('/predict', methods=['POST'])
@@ -1923,6 +1934,11 @@ def predict():
                 'symptoms': symptoms,
                 'warnings': warnings
             })
+        
+    # หลังจากลูปกรองเสร็จ ถ้าไม่มียาสมุนไพรตัวไหนเข้าข่าย
+    if not predictions:
+        message = "ไม่มีข้อมูลยาสมุนไพรที่ตรงตามข้อมูลของคุณ"
+        return render_template('general_result.html', predictions=None, message=message)
 
     # สร้างแผนผังของ Random Forest (เลือกต้นไม้หนึ่ง)
     # ดึงต้นไม้แรกจาก RandomForestClassifier

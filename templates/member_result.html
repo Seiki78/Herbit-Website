@@ -93,6 +93,7 @@
 
 <div class="table-data">
 
+	{% if predictions %}
     <ul>
         {% for prediction in predictions %}
                 <li class="medication">
@@ -131,6 +132,9 @@
                 </li>
 		{% endfor %}
     </ul>
+	{% elif message %}
+    	<p style="color: red;">{{ message }}</p>
+	{% endif %}
 
     
 </div>

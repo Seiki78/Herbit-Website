@@ -167,13 +167,15 @@
 
 
 <div class="table-data">
-
+	
+	{% if predictions %}
     <ul>
         {% for prediction in predictions %}
                 <li class="medication">
                     <div class="medication-name" onclick="toggleDetails(this)">
 						<h3>{{ prediction.hm_name }}</h3>
-                        
+                        <span class="toggle-label" style="color: #007bff; cursor: pointer;">ดูเพิ่มเติม</span>
+						
                         <div class="medication-info">
 
                             <div class="meds-info">
@@ -206,6 +208,9 @@
                 </li>
 		{% endfor %}
     </ul>
+	{% elif message %}
+    	<p style="color: red;">{{ message }}</p>
+	{% endif %}
 
     
 </div>
@@ -219,13 +224,17 @@
     <script>
 		
 		function toggleDetails(element) {
-            var info = element.querySelector('.medication-info');
-            if (info.style.display === 'none' || info.style.display === '') {
-                info.style.display = 'block';
-            } else {
-                info.style.display = 'none';
-            }
-        }
+			const info = element.querySelector('.medication-info');
+			const label = element.querySelector('.toggle-label');
+
+			if (info.style.display === 'none' || info.style.display === '') {
+				info.style.display = 'block';
+				label.textContent = 'แสดงน้อยลง';
+			} else {
+				info.style.display = 'none';
+				label.textContent = 'ดูเพิ่มเติม';
+			}
+		}
 
 
 		document.addEventListener("DOMContentLoaded", function() {

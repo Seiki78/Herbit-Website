@@ -84,6 +84,10 @@
 <!-- MAIN -->
 <main>
 
+	<div class="banner-container">
+		<img src="{{ url_for('static', filename='bn-h2.png') }}" alt="แบนเนอร์เว็บไซต์" class="banner-img">
+	</div>
+
 	<form action="{{ url_for('mb_predict', user_id=user['_id']) }}" method="POST" onsubmit="return validateForm()">
 		
 		<div class="layout-container">
@@ -91,6 +95,7 @@
 	
 				<div class="content">
 					<div class="text-container">
+						<h3>ขั้นตอนการใช้งาน</h3><br>
 						<h4 style="display: inline;">เลือก<span style="color: var(--blue);"> อาการ</span>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(อย่างน้อย 1 รายการ)</p><br>
 						<br>
 						<h3>จากนั้น<span style="color: var(--blue);"> กดยืนยันข้อมูล</span> เพื่อเริ่มวิเคราะห์ยาสมุนไพร</h3>
@@ -117,7 +122,13 @@
 			</div>
 
 			<div class="layout-box box-left-bottom">
-				<h4>กดเลือกหมวดหมู่เพื่อดูรายการเพิ่มเติม</h4><p style="display: inline; color: rgb(161, 193, 226);">(กดอีกครั้งเพื่อซ่อน และการเลือกจะไม่หายไป)</p>
+				<h2>
+					<span class="circle-number">1</span> เลือกอาการ (อย่างน้อย 1 รายการ)
+					
+				</h2><br>
+				<p style="display: inline; color: rgb(161, 193, 226);">
+					(คลิกหมวดหมู่เพื่อดูอาการเพิ่มเติม กดอีกครั้งจะเป็นการซ่อนหมวดหมู่ และการเลือกจะไม่หายไป)
+				</p>
 
 				<ul class="box-info">
 					<a href="" id="toggleDizzinessLink">
@@ -459,15 +470,20 @@
 					</div>
 				
 				</div>
-				
+				<br><br>
 				<div>
-					
+					<h2>
+						<span class="circle-number">2</span> กดยืนยันข้อมูล
+					</h2>
+					<p style="display: inline; color: rgb(161, 193, 226);">
+						เพื่อเริ่มวิเคราะห์ยาสมุนไพร
+					</p>
 					<div class="bot2">
 						<button type="submit" class="btn1">
 							<span class="text"><h3>ยืนยันข้อมูล</h3></span>
 						</button>
 					</div>
-					<label style="color: rgb(161, 193, 226);">(กดเพื่อเริ่มวิเคราะห์ยาสมุนไพร)</label>
+
 				</div>
 	
 					

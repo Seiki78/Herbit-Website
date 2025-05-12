@@ -1571,3 +1571,29 @@ p {
 .pagination a:hover:not(.active) {
     background-color: #ddd;
 }
+
+.banner-container {
+	width: 100%;
+	overflow: hidden;
+  }
+  
+  .banner-img {
+	width: 100%;
+	height: auto;
+	max-height: 600px; /* ป้องกันภาพสูงเกินไป */
+	object-fit: cover; /* ครอบภาพให้พอดีกับ container โดยไม่บิดเบี้ยว */
+  }  
+  
+  .circle-number {
+    display: inline-block;
+    background-color: var(--blue); /* สีฟ้า */
+    color: white;
+    font-size: 1.2em; /* ขนาดตัวเลขใหญ่กว่าปกติ */
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%; /* ทำให้เป็นวงกลม */
+    margin-right: 8px; /* ระยะห่างจากข้อความ */
+    font-weight: bold;
+  }
