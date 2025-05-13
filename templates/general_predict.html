@@ -173,7 +173,7 @@
 					<div class="text-container">
 						<h3>ขั้นตอนการใช้งาน</h3>
 						<h4 style="display: inline;">ขั้นที่ 1 <span style="color: var(--blue);">เลือกอาการ</span>&nbsp;</h4><p style="display: inline; color: rgb(161, 193, 226);">(อย่างน้อย 1 รายการ)</p><br>
-						<h4 style="display: inline;">ขั้นที่ 2 <span style="color: var(--blue);">ระบุวัน/เดือน/ปีเกิด</span>&nbsp;</h4><p style="display: inline; color: rgb(223, 103, 82);">(จำเป็นต้องกรอก)</p><br>
+						<h4 style="display: inline;">ขั้นที่ 2 <span style="color: var(--blue);">เลือกช่วงอายุของคุณ</span>&nbsp;</h4><p style="display: inline; color: rgb(223, 103, 82);">(จำเป็นต้องกรอก)</p><br>
 						<h4 style="display: inline;">ขั้นที่ 3 <span style="color: var(--blue);">เลือกข้อมูลสุขภาพ</span>&nbsp;</h4><p style="display: inline;">เช่น โรคประจำตัว การตั้งครรภ์ (ถ้ามี)</p><br>
 						<br>
 						<h3>ขั้นสุดท้าย <span style="color: var(--blue);">กดยืนยันข้อมูล</span> เพื่อเริ่มวิเคราะห์ยาสมุนไพร</h3>
@@ -189,14 +189,21 @@
 						<div class="content">
 							<div class="text-container">
 								<h2>
-									<span class="circle-number">2</span> ระบุวันเกิดของคุณ
+									<span class="circle-number">2</span> เลือกช่วงอายุของคุณ
 									
 								</h2><br>
 								<p style="display: inline; color: rgb(223, 103, 82);">(จำเป็นต้องกรอก)</p>
 								<!-- <h2 style="display: inline;">วัน/เดือน/ปีเกิด</h2>&nbsp;<p style="display: inline; color: rgb(223, 103, 82);">(จำเป็นต้องกรอก)</p> -->
 							</div>
 						</div><br>
-						<input type="date" name="dob" id="" required>
+						<!-- <input type="date" name="dob" id="" required> -->
+						<select name="age_group" id="age_group" required>
+							<option value="">--เลือก--</option>
+							<option value="under_1">ต่ำกว่า 1 ปี</option>
+							<option value="under_12">ไม่เกิน 12 ปี</option>
+							<option value="12_to_59">12–59 ปี</option>
+							<option value="60_plus">60 ปีขึ้นไป</option>
+						</select>
 	
 					</div><br>
 	

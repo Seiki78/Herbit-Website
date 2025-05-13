@@ -47,7 +47,7 @@ df = pd.DataFrame(data)
 print(df.head())
 
 # กำหนด feature_cols (ฟีเจอร์ที่ใช้ในการทำนาย)
-feature_cols = ['pregnant', 'dizziness1', 'Palpitations', 'squeamish', 'vomit', 
+feature_cols = ['dizziness1', 'Palpitations', 'squeamish', 'vomit', 
                 'dizziness2', 'dizziness3', 'dizziness4', 'colic1', 'tired', 
                 'cannot_sleep', 'flatulence', 'stomach_ache', 'constipation1', 
                 'diarrhea1', 'hemorrhoids', 'menstruation', 'Menstrual_cramps', 
@@ -1537,7 +1537,6 @@ def mb_predict(user_id):
     balancing = int(request.form.get('balancing', 0))
 
     input_data = pd.DataFrame({
-        'pregnant': [pregnant],
         'dizziness1': [dizziness1],
         'Palpitations': [Palpitations],
         'squeamish': [squeamish],
@@ -1706,10 +1705,18 @@ def mb_predict(user_id):
 def predict():
     # ดึงข้อมูลจากฟอร์ม
 
-    dob_str = request.form['dob']    # แปลงวันเกิดเป็น datetime object
-    dob = datetime.strptime(dob_str, '%Y-%m-%d')
-    today = datetime.today()
-    age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+    age_group = request.form['age_group']
+    # กำหนดช่วงอายุ
+    if age_group == 'under_1':
+        age = 0
+    elif age_group == 'under_12':
+        age = 5  # ประมาณ
+    elif age_group == '12_to_59':
+        age = 30
+    elif age_group == '60_plus':
+        age = 65
+    else:
+        age = None
 
     pregnant = int(request.form.get('pregnant', 0))
     dizziness1 = int(request.form.get('dizziness1', 0))
@@ -1768,7 +1775,6 @@ def predict():
 
     # สร้าง DataFrame จากข้อมูลที่ได้รับ
     input_data = pd.DataFrame({
-        'pregnant': [pregnant],
         'dizziness1': [dizziness1],
         'Palpitations': [Palpitations],
         'squeamish': [squeamish],
